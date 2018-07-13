@@ -1,0 +1,165 @@
+/************************* STYLES PRINCIPAUX *******************************/
+body
+{
+  font-family:sans-serif;
+  margin:0;
+}
+hr { width:100%; }
+h1 { text-align:center; }
+h2 { margin-left:3em; }
+h3
+{
+    background-color:black;
+    color:white;
+    font-size:0.9em;
+    margin-bottom:0;
+    padding:1em;
+    text-align:center;
+}
+
+/************************** NAVBAR ET LOGO  ********************************/
+header
+{
+  background-image: url("../images/ice.jpg");
+  margin:0;
+  height:3em;
+}
+
+/***************************************************************************
+                                  CORPS
+****************************************************************************/
+/******************************** POSTS ************************************/
+.news
+{
+    width:70%;
+    margin:auto;
+}
+.news p
+{
+    background-color:#CCCCCC;
+    margin-top:0px;
+    padding:1em;
+}
+
+/******************************* COMMENTS **********************************/
+.commentBox
+{
+    width:70%;
+    margin: 0.5em auto;
+    padding:1em;
+    display:flex;
+    background-color:#F5F5F5;
+}
+.commentBox:hover { background-color:#E8E8E8; }
+.author
+{
+  width:10%;
+  padding:1em;
+  text-align:center;
+  color:#1E90FF;
+}
+.author p { margin:auto; }
+.comment
+{
+  padding:1em;
+  width:90%;
+  position:relative;
+}
+.date-time
+{
+  position:absolute;
+  right:1em;
+  top:0;
+}
+.options
+{
+  display:flex;
+  justify-content:flex-end;
+}
+.option
+{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+.modify
+{
+  margin-right:0.5em;
+}
+.signaler
+{
+  margin-left:0.5em;
+}
+.options p
+{
+  margin:0;
+  text-align: right;
+}
+a
+{
+    text-decoration:none;
+    color: blue;
+}
+.comment form { display:flex; }
+.comment form textarea
+{
+  width: 60%;
+  height: 4em;
+}
+.comment form button
+{
+  border:none;
+  background:none;
+  font-size:2em;
+}
+.comment form a
+{
+  border:none;
+  background:none;
+  font-size:2em;
+  margin-top: 0.35em;
+}
+.comment form .fa-times-circle
+{
+  background-color:#ff6666;
+  color:#ff0000;
+  border-radius:50%;
+}
+.comment form .fa-check-circle
+{
+  color:#4f994f;
+  background-color: #84FF84;
+  border-radius: 50%;
+  cursor:pointer;
+}
+
+/************************* NOUVEAU COMMENTAIRE *****************************/
+.postForm
+{
+  background-color:#CCCCCC;
+  padding:1em;
+  width:70%;
+  margin:auto;
+}
+/***************************************************************************
+					                     SERVICES
+****************************************************************************/
+/****************************** SECTION ************************************/
+/****************** POSITION DES TEXTES VS VIGNETTES ***********************/
+/***************************************************************************
+					                     PORTFOLIO
+****************************************************************************/
+
+/****************************** ENTETE *************************************/
+/******************************* CORPS *************************************/
+/****************************** TOGGLER ************************************/
+/***************************** HOVER NAV ***********************************/
+/****************************** PROJETS ************************************/
+/***************************************************************************
+					                       CONTACT
+****************************************************************************/
+/***************************************************************************
+                              RESPONSIVE
+****************************************************************************/
+
+/************************** 1025 - 1200 px *********************************/
