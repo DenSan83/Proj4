@@ -1,5 +1,4 @@
 <?php
-include_once('controller/frontend.php');
 
 class Router
 {
@@ -9,8 +8,12 @@ class Router
                       "home"          => ["controller" => 'Home', "method" => 'listPosts' ],
                       "post"          => ["controller" => 'Home', "method" => 'post'],
                       "addComment"    => ["controller" => 'Home', "method" => 'addComment'],
+                      "onlineComment" => ["controller" => 'Home', "method" => 'onlineComment'],
                       "modifyComment" => ["controller" => 'Home', "method" => 'modifyComment'],
                       "commentUpdate" => ["controller" => 'Home', "method" => 'commentUpdate'],
+                      "delete"        => ["controller" => 'Home', "method" => 'deleteComment'],
+                      "login"         => ["controller" => 'Home', "method" => 'login'],
+                      "logout"        => ["controller" => 'Home', "method" => 'logout'],
                     ];
 
   public function __construct($request)
@@ -27,7 +30,7 @@ class Router
   public function getParams()
   {
     $params = null;
-    // extract $_GET params
+    // extract $_GET params :
     $elements = explode('/',$this->request);
     unset($elements[0]);
 
@@ -37,7 +40,7 @@ class Router
       $i++;
     }
 
-    // extract $_POST params
+    // extract $_POST params :
     if($_POST)
     {
       foreach($_POST as $key => $val)

@@ -3,27 +3,36 @@
 class View
 {
   private $template;
+  const LIST_POST = VIEW.'listPostsView.php';
+  const POST_VIEW = VIEW.'postView.php';
 
-  public function __construct($template = null)
+  public function __construct($template)
   {
     $this->template = $template;
   }
 
-  public function listPosts($param)
+  public function render($params)
   {
-    extract($param);
-    include('view/Frontend/listPostsView.php');
-  }
-
-  public function postView($params = array())
-  {
-    extract($params);
-    include('view/frontend/postView.php');
+    $template = $this->template;
+    switch($template)
+    {
+      case 'postsList':
+        include(self::LIST_POST);
+        break;
+      case 'postView':
+        include(self::POST_VIEW);
+    }
   }
 
   public function redirect($route)
   {
-    header('Location: index.php?r=post/id/'.$route);
+    header('Location: '.HOST.'post/id/'.$route);
+    exit;
+  }
+
+  public function goHome()
+  {
+    header('Location: '.HOST);
     exit;
   }
 }

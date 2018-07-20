@@ -3,6 +3,9 @@ body
 {
   font-family:sans-serif;
   margin:0;
+  position:absolute;
+  min-height:46em;
+  width:100%;
 }
 hr { width:100%; }
 h1 { text-align:center; }
@@ -22,8 +25,96 @@ header
 {
   background-image: url("../images/ice.jpg");
   margin:0;
-  height:3em;
+  height:10em;
+  display:flex;
+  padding:1em;
 }
+header a { text-decoration:none; color:#000; }
+.logo
+{
+  position:absolute;
+  left:4em;
+  display:flex;
+  align-content:center;
+  justify-content:center;
+  margin-top:1.5em;
+  background-color:rgba(255,255,255,0.8);
+  padding:1em;
+  border-radius:10px;
+
+}
+.user
+{
+  position:absolute;
+  right:5em;
+  display:flex;
+  align-content:center;
+  justify-content:center;
+  margin-top:2em;
+  background-color:rgba(255,255,255,0.8);
+  padding:1em;
+  border-radius:10px;
+}
+.avatar
+{
+  border:1px solid black;
+  border-radius:50%;
+  overflow:hidden;
+  width:50px;
+  height:50px;
+  margin-right:1em;
+}
+.avatar img
+{
+  display:inline;
+  margin: 0 auto;
+  height: 100%;
+  width: auto;
+}
+.user p
+{
+  font-weight:bold;
+}
+.menu
+{
+  display:none;
+}
+.menu a
+{
+  color:#0000FF;
+  text-decoration:underline;
+}
+.user:hover ~ .menu,
+.menu:hover
+{
+  border:1px solid black;
+  position:absolute;
+  right:5em;
+  top:8.3em;
+  background-color: #fff;
+  padding:0.5em;
+  display:flex;
+  z-index:5;
+}
+.menu button
+{
+  background-color:#fff;
+  border:none;
+  font-weight:bold;
+  cursor:pointer;
+  padding:1em;
+}
+select:hover
+{
+  border:1px solid black;
+  position:absolute;
+  right:5em;
+  top:8.3em;
+  background-color: #fff;
+  padding:0.5em;
+  display:flex;
+}
+
 
 /***************************************************************************
                                   CORPS
@@ -51,10 +142,32 @@ header
     background-color:#F5F5F5;
 }
 .commentBox:hover { background-color:#E8E8E8; }
+.commentAvatar
+{
+  border:1px solid black;
+  border-radius:50%;
+  overflow:hidden;
+  width:50px;
+  height:50px;
+  margin:5px auto;
+}
+.commentAvatar img
+{
+  display:inline;
+  margin: 0 auto;
+  height: 100%;
+  width: auto;
+}
 .author
 {
   width:10%;
   padding:1em;
+  text-align:center;
+  color:#1E90FF;
+}
+span strong
+{
+  width:10%;
   text-align:center;
   color:#1E90FF;
 }
@@ -82,13 +195,9 @@ header
   flex-direction:column;
   align-items:center;
 }
-.modify
+.modify, .signaler, .repondre
 {
-  margin-right:0.5em;
-}
-.signaler
-{
-  margin-left:0.5em;
+  margin: 0 0.3em;
 }
 .options p
 {
@@ -98,7 +207,7 @@ header
 a
 {
     text-decoration:none;
-    color: blue;
+    color:#0000FF;
 }
 .comment form { display:flex; }
 .comment form textarea
@@ -132,32 +241,64 @@ a
   border-radius: 50%;
   cursor:pointer;
 }
+.options form button
+{
+  font-size:1em;
+  cursor:pointer;
+}
+.option .fas, .option span
+{
+  border: none;
+  text-decoration: none;
+  color: #0000FF;
+}
 
 /************************* NOUVEAU COMMENTAIRE *****************************/
-.postForm
+#optionsSession
 {
   background-color:#CCCCCC;
   padding:1em;
   width:70%;
   margin:auto;
+  margin-bottom:10em;
+  display:flex;
+  flex-direction:row;
+  justify-content:space-around;
 }
-/***************************************************************************
-					                     SERVICES
-****************************************************************************/
-/****************************** SECTION ************************************/
-/****************** POSITION DES TEXTES VS VIGNETTES ***********************/
-/***************************************************************************
-					                     PORTFOLIO
-****************************************************************************/
+input[type="text"], input[type="password"]
+{
+  width:80%;
+}
+.noCaptcha, .noUser
+{
+  color:red;
+  margin:0.8em;
+}
+.offLine, .login
+{
+  width:20em;
+  padding:1em;
+  background-color:#E8E8E8;
+}
+.offLineSp
+{
+  width:20em;
+}
 
-/****************************** ENTETE *************************************/
-/******************************* CORPS *************************************/
-/****************************** TOGGLER ************************************/
-/***************************** HOVER NAV ***********************************/
-/****************************** PROJETS ************************************/
 /***************************************************************************
-					                       CONTACT
+					                       FOOTER
 ****************************************************************************/
+footer
+{
+  height:5em;
+  color:#fff;
+  background-color:#000;
+  padding:1em;
+  margin-top:2em;
+  width:100%;
+  position:absolute;
+  bottom:0;
+}
 /***************************************************************************
                               RESPONSIVE
 ****************************************************************************/

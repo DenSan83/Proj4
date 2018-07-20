@@ -1,5 +1,5 @@
 <?php
-namespace OpenClassrooms\Blog\Model;
+//namespace Dennis\Blog\model;
 
 class Manager
 {
