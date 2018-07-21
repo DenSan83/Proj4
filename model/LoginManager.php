@@ -27,22 +27,25 @@ class LoginManager extends Manager
     return $reqlogin->fetch();
   }
 
-  public function getAvatar($pseudo)
+  public function retrievePw($login)
+  {
+    $db = $this->dbConnect();
+    $reqlogin = $db->prepare('SELECT mdp FROM membres WHERE pseudo = ?');
+    $reqlogin->execute(array($login));
+    $mdpHache = $reqlogin->fetch();
+
+    return $mdpHache[0];
+  }
+
+  public function getAvatar($id)
   {
     $db = $this->dbConnect();
 
-    $avatar = $db->prepare('SELECT avatar FROM membres WHERE pseudo = :pseudo');
-    $avatar->bindValue(':pseudo',$pseudo);
+    $avatar = $db->prepare('SELECT avatar FROM membres WHERE id = :id');
+    $avatar->bindValue(':id',$id);
     $avatar->execute();
+    $pic = $avatar->fetch();
 
-    return $avatar->fetch();
-  }
-
-  public function loggedIn($user)
-  {
-    //login
-    // envoyer au controlleur :
-    $_SESSION['user_session']['user_pseudo'] = $user['pseudo'];
-    $_SESSION['user_session']['user_avatar'] = $user['avatar'];
+    return $pic[0];
   }
 }

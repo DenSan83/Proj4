@@ -24,15 +24,28 @@
           </a>
           <div class="container row col-sm-2 dropdown">
             <?php
-            if(empty($_SESSION)){ // sans session
+            if(empty($_SESSION['user_session'])){ // sans session
             ?>
             <div class="btn-group dropdown">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <img class="rounded-circle" src="<?= HOST ?>public/images/avatar/default.png" alt="avatar user" width="50px" height="50px">
                 Se connecter
               </button>
+              <?php
+              if(isset($_POST['noUser']) && $_POST['noUser'] == 1)
+              {
+                echo '<div class="container" id="noUser">Pseudo ou mot de passe incorrect !</div>';
+              }
+              ?>
               <div class="dropdown-menu dropdown-menu-right bg-lg">
                 <form method="post" action="<?= HOST ?>login">
+                  <?php
+                  if(isset($postId)){
+                  ?>
+                  <input type="hidden" name="postId" value="<?= $postId ?>">
+                  <?php
+                  }
+                  ?>
 
                   <div style="margin-bottom:15px;margin-top:25px" class="input-group">
                     <div class="col-md-12">
@@ -58,7 +71,6 @@
           					<a href="#"><b>Je n'ai pas encore une compte</b></a>
           				</div>
                 </form>
-                <?php if(isset($noUser) && $noUser == 1) { echo 'Pseudo ou mot de passe incorrect !'; } ?>
               </div>
             </div>
             <?php
@@ -67,7 +79,7 @@
             <div class="user">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <?php
-                if(empty($_SESSION) || empty($_SESSION['user_session']['user_avatar'])){
+                if(empty($_SESSION['user_session']) || empty($_SESSION['user_session']['user_avatar'])){
                 ?>
                 <img class="rounded-circle" src="<?= HOST ?>public/images/avatar/default.png" alt="avatar user" width="50px" height="50px">
                 <?php
@@ -81,7 +93,7 @@
               </button>
               <div class="dropdown-menu dropdown-menu-right bg-lg">
                 <form action="<?= HOST ?>logout" method="post">
-                  <button type="logout" name="logout">Se déconnecter</button>
+                  <button type="logout" name="logout" class="col-12 bg-white" style="border:none;cursor:pointer">Se déconnecter</button>
                 </form>
               </div>
             </div>

@@ -5,6 +5,7 @@ class View
   private $template;
   const LIST_POST = VIEW.'listPostsView.php';
   const POST_VIEW = VIEW.'postView.php';
+  const EDIT_COMMENT_VIEW = VIEW.'editCommentView.php';
 
   public function __construct($template)
   {
@@ -21,6 +22,10 @@ class View
         break;
       case 'postView':
         include(self::POST_VIEW);
+        break;
+      case 'editCommentView':
+        include(self::EDIT_COMMENT_VIEW);
+        break;
     }
   }
 

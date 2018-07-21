@@ -1,4 +1,3 @@
-
 <?php $title = 'Mon blog'; ?>
 
 <?php ob_start();  // debut de contenu à stocker ?>

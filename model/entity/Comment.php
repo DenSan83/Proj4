@@ -4,14 +4,16 @@ class Comment
   private $_id,
           $_post_id,
           $_author,
+          $_author_id,
           $_comment,
-          $_date_com;
+          $_comment_date_fr;
 
   public function getId()       { return $this->_id; }
   public function getPostId()   { return $this->_post_id; }
   public function getAuthor()   { return $this->_author; }
+  public function getAuthorId() { return $this->_author_id; }
   public function getComment()  { return $this->_comment; }
-  public function getDateCom()  { return $this->_date_com; }
+  public function getDateCom()  { return $this->_comment_date_fr; }
 
   public function __construct($data)
   {
@@ -38,9 +40,9 @@ class Comment
 
   public function setPost_id($postId)
   {
-    $id = (int) $id;
-    if($id > 0)
-      $this->_id = $id;
+    $postId = (int) $postId;
+    if($postId > 0)
+      $this->_post_id = $postId;
   }
 
   public function setAuthor($author)
@@ -49,19 +51,26 @@ class Comment
       $this->_author = htmlspecialchars($author);
   }
 
+  public function setAuthor_id($authorId)
+  {
+    $authorId = (int) $authorId;
+    if($authorId > 0)
+      $this->_author_id = $authorId;
+  }
+
   public function setComment($comment)
   {
      $this->_comment = nl2br(htmlspecialchars($comment));
   }
 
-  public function setDate_com($date)
+  public function setComment_date_fr($date)
   {
-    $this->_date_com = $date;
+    $this->_comment_date_fr = $date;
   }
 
   public function getDateFr()
   {
-    $dateFr = explode(' ',$this->_date_com);
+    $dateFr = explode(' ',$this->_comment_date_fr);
     $heure = $dateFr[2];
 
     $date = explode('/',$dateFr[0]);

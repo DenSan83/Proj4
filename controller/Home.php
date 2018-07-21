@@ -54,7 +54,7 @@ class Home
           $author = $prenom.' '.$nom;
           if (!empty($author) && !empty($comment)) {
             $commentManager = new CommentManager();
-            $affectedLines = $commentManager->postComment($postId,$author,$comment);
+            $affectedLines = $commentManager->postComment($postId,$author,$authorId, $comment);
           } else {
             echo 'Veuillez remplir tous les champs';
           }
@@ -76,7 +76,7 @@ class Home
     extract($params);
     if (!empty($pseudo) && !empty($comment)) {
       $commentManager = new CommentManager();
-      $affectedLines = $commentManager->postComment($postId,$pseudo,$comment);
+      $affectedLines = $commentManager->postComment($postId,$pseudo,$authorId,$comment);
     } else {
       echo 'no user or no comment detected';
     }
@@ -95,20 +95,11 @@ class Home
     $postManager = new PostManager();
     $commentManager = new CommentManager();
 
-    $postExist = (bool) $postManager->getPost($postId);
-    $commExist = $commentManager->linkComments($commId); // when "true" returns post_id
+    $post = $postManager->getPost($postId);
+    $comments = $commentManager->getComments($postId);
 
-    if ($postId > 0 && $commId > 0 && $postExist && $commExist)
-    {
-      if($commExist !== $postId) $postId = $commExist;
-      $post = $postManager->getPost($postId);
-      $comments = $commentManager->getComments($postId);
-
-      $myView = new View('postView');
-      $myView->render(array('post' => $post,'comments' => $comments, 'commId' => $commId));
-    } else {
-      echo 'Impossible trouver le commentaire';
-    }
+    $myView = new View('editCommentView');
+    $myView->render(array('post' => $post,'comments' => $comments, 'commentId' => $commentId));
   }
 
   public function commentUpdate($params)
@@ -116,13 +107,10 @@ class Home
     extract($params);
     $commentManager = new CommentManager();
     $modified = $commentManager->commentUpdate($commentId,$updated);
+    $modified .= '#comment'.$commentId;
 
-    if ($modified > 0) {
-      $myView = new View('postView');
-      $myView->redirect($modified);
-    } else {
-      throw new Exception('Post non trouvé');
-    }
+    $myView = new View('postView');
+    $myView->redirect($modified);
   }
 
   public function deleteComment($data)
@@ -137,9 +125,7 @@ class Home
 
   public function login($params)
   {
-    var_dump($params);exit();
-    extract($params);
-
+    extract($params); //$password = password_hash($password,PASSWORD_DEFAULT);
     if (isset($login))
     {
       $login = htmlspecialchars($login);
@@ -148,22 +134,27 @@ class Home
       if (!empty($password) && !empty($login))
       {
         $reqlogin = new LoginManager;
-        $userExist = (bool) $reqlogin->loginCount(array('login' => $login, 'password' => $password));
-        //$verify = password_very($password, [mot de passe hachée]);
-        if ($userExist) //ici
+        $hashedPw = $reqlogin->retrievePw($login);
+
+        if (password_verify($password, $hashedPw))
         {
           // Tous les test passées, on fais login session
-          $userinfo = $reqlogin->login(array('login' => $login, 'password' => $password));
-          $reqlogin->loggedIn($userinfo);
-          $myView = new View('postView');
-          if ($postId !== null){
-            $myView->redirect($postId);
-          } else {
-            $myView->goHome();
-          }
-         } else {
-           header('Location: '.HOST.'post/id/'.$postId.'/noUser/1#optionsSession');
-         }
+          $user = $reqlogin->login(array('login' => $login, 'password' => $hashedPw));
+          unset($_SESSION['noUser']);
+
+          $_SESSION['user_session']['user_pseudo']  = $user['pseudo'];
+          $_SESSION['user_session']['user_avatar']  = $user['avatar'];
+          $_SESSION['user_session']['user_id']      = $user['id'];
+        } else {
+          $_SESSION['noUser'] = 1;
+        }
+
+        $myView = new View('postView');
+        if ($postId !== null){
+          $myView->redirect($postId);
+        } else {
+          $myView->goHome();
+        }
        }
      }
   }

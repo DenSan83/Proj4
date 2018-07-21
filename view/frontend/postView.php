@@ -1,6 +1,7 @@
 <?php
 extract($params);
 $title = $post->getTitle();
+$postId = $post->getId();
 ?>
 
 <?php ob_start(); ?>
@@ -21,93 +22,57 @@ $siteKey = '6LeVFmQUAAAAAGSSMYlzvv-GvhyxhKNymbAAxtWe'; // votre clé publique
 
 <h2>Commentaires</h2>
 <?php
-while ($comment = $comments->fetch())
+if(empty($comments[0]))
 {
-  if (isset($commId) && $comment['id'] == $commId){
-    // modifier commentaire
-  ?>
-  <div class="commentBox" id="<?php echo $commId?>">
-    <div class="author">
-      <div class="commentAvatar">
-        <?php
-        $avatarCheck = new LoginManager;
-        $myAvatar = $avatarCheck->getAvatar($comment['author']);
-        if($myAvatar['avatar'] !== null ){
-        ?>
-          <img class="rounded-circle" src="<?= HOST ?>public/images/avatar/<?= $myAvatar['avatar'] ?>" alt="avatar user" width="50px" height="50px">
-        <?php
-        } else {
-        ?>
-          <img class="rounded-circle" src="<?= HOST ?>public/images/avatar/default.png" alt="avatar user" width="50px" height="50px">
-        <?php
-        }
-        ?>
-      </div>
-        <p><strong><?= htmlspecialchars($comment['author']) ?></strong></p>
-    </div>
-    <div class="comment">
-      <p class="date-time"> <i class="far fa-clock"></i> le <?= $comment['comment_date_fr'] ?></p>
-      <form method="post" action="<?= HOST ?>commentUpdate">
-        <textarea name="updated" rows="2" cols="40"><?= nl2br(htmlspecialchars($comment['comment'])) ?></textarea>
-        <input type="hidden" name="commentId" value="<?= $comment['id'] ?>">
-
-        <button type="submit"><i class="far fa-check-circle"></i></button>
-        <a href="<?= HOST ?>post/id/<?= $post['id'] ?>"><i class="far fa-times-circle"></i></a>
-      </form>
-      <hr/>
-      <div class="options">
-        <form action="<?= HOST ?>delete" method="post">
-          <input type="hidden" name="postId" value="<?= $post['id'] ?>">
-          <input type="hidden" name="commId" value="<?= $comment['id'] ?>">
-          <button type="submit" name="effacer" class="option effacer">
-            <i class="fas fa-trash-alt"></i>
-            <span>Effacer</span>
-          </button>
-        </form>
-      </div>
-    </div>
-  </div>
-<?php
-  } else {
-  // montrer commentaire
 ?>
-<div class="container rounded row commentBox col-10 col-lg-9" style="border:1px solid blue; margin:1em auto">
-  <div class="container author col-3 justify-content-center">
+<div class="container rounded bg-info text-white justify-content-center" style="height:3em;margin:2em auto">
+  <p class="col-5" style="margin:1em auto">Ce post ne contient pas encore des commentaires.</p>
+</div>
+<?php
+} else {
+  foreach ($comments as $comment)
+  {
+    if (isset($commentId) && $comment->getId() == $commentId)
+    {
+      // modifier commentaire
+      $editing = $comment;
+      echo $editCommentView;
+    } else {
+      // montrer commentaire
+?>
+<div class="container rounded row commentBox col-10 col-lg-9" style="border:1px solid blue; margin:1em auto; padding:0" id="comment<?= $comment->getId() ?>">
+  <div class="container-liquid author col-2" style="margin-top:1em;padding:0">
     <div class="commentAvatar">
       <?php
-      $avatarCheck = new LoginManager;
-      $myAvatar = $avatarCheck->getAvatar($comment['author']);
-      if($myAvatar['avatar'] !== null ){
-      ?>
-        <img class="rounded-circle" src="<?= HOST ?>public/images/avatar/<?= $myAvatar['avatar'] ?>" alt="avatar user" width="50px" height="50px">
-      <?php
+      if($comment->getAuthorId()) {
+      $avatarCheck = new LoginManager();
+      $authorId = $comment->getAuthorId();
+      $myAvatar = $avatarCheck->getAvatar($authorId);
       } else {
-      ?>
-        <img class="rounded-circle" src="<?= HOST ?>public/images/avatar/default.png" alt="avatar user" width="50px" height="50px">
-      <?php
+        $myAvatar = 'default.png';
       }
       ?>
+        <img class="rounded-circle" src="<?= HOST ?>public/images/avatar/<?= $myAvatar ?>" alt="avatar user" width="50px" height="50px" style="border:1px solid blue">
     </div>
-      <p><strong><?= htmlspecialchars($comment['author']) ?></strong></p>
+      <p><strong><?= $comment->getAuthor() ?></strong></p>
   </div>
-  <div class="container-liquid comment col-8">
+  <div class="container-liquid comment col-10">
     <div class="container-liquid row justify-content-end">
-      <p class="date-time"> <i class="far fa-clock"></i> le <?= $comment['comment_date_fr'] ?></p>
+      <p class="date-time"> <i class="far fa-clock"></i> le <?= $comment->getDateFr() ?></p>
     </div>
-    <p><?= nl2br(htmlspecialchars($comment['comment'])) ?></p>
-    <hr/>
-    <div class="container-liquid row justify-contend-end options col-3">
-      <?php
-      if (!empty($user) && $comment['author'] == $_SESSION['user_session']['user_pseudo'])
-      {
-      ?>
-      <div class="container col-3">
-        <form action="<?= HOST ?>modifyComment" method="post">
-          <input type="hidden" name="postId" value="<?= $post['id'] ?>">
-          <input type="hidden" name="commId" value="<?= $comment['id'] ?>">
-          <button type="submit" name="button" class="option modify">
-            <i class="fas fa-edit"></i>
-            <span>Modifier</span>
+    <p><?= $comment->getComment() ?></p>
+    <hr/ style="margin-bottom:0">
+    <div class="container-liquid row options ">
+    <?php
+    if (!empty($_SESSION['user_session']) && $_SESSION['user_session']['user_id'] == $comment->getAuthorId()) {
+    ?>
+      <div class="container-liquid col-12 row justify-content-end" style="padding:0">
+        <form action="<?= HOST ?>modifyComment#comment<?= $comment->getId()?>" method="post"class="container row justify-content-end col-6" style="padding:0">
+          <input type="hidden" name="postId" value="<?= $post->getId() ?>">
+          <input type="hidden" name="commentId" value="<?= $comment->getId() ?>">
+          <button type="submit" class="container col-5 text-primary bg-white option modify" style="margin:0;border:none;cursor:pointer">
+            <i class="fas fa-edit col-7"></i>
+            <span class="col-7">Modifier</span>
           </button>
         </form>
       </div>
@@ -125,41 +90,32 @@ while ($comment = $comments->fetch())
       <?php
       }
       ?>
-      <!-- <div class="container-liquid row col-3">
-        <a href="#">
-          <div class="option repondre">
-            <i class="fas fa-reply"></i>
-            <span>Répondre</span>
-          </div>
-        </a>
-      </div> -->
     </div>
   </div>
 </div>
 <?php
+    }
   }
 }
+
 //ajouter commentaire
 ?>
 <div id="optionsSession" class="container-liquid justify-content-center row bg-secondary" >
   <div class="offLine">
     <?php
-    if (empty($user)){
+    if (empty($_SESSION['user_session'])){
     ?>
     <form action="<?= HOST ?>addComment/id/<?= $post->getId() ?>" method="post" style="margin:1em auto">
       <h4>Ajouter un commentaire sans connexion :</h4>
       <input type="hidden" name="postId" value="<?= $post->getId() ?>">
       <div class="form-group">
-        <!-- <label for="exampleFormControlInput1">Nom</label> -->
         <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom" required>
       </div>
       <div class="form-group">
-        <!-- <label for="exampleFormControlInput1">Prenom</label> -->
         <input type="text" class="form-control" id="prenom" name="prenom" placeholder="Prenom" required>
       </div>
 
       <div class="form-group">
-        <!-- <label for="exampleFormControlTextarea1">Commentaire</label> -->
         <textarea class="form-control" id="comment" name="comment" rows="3" placeholder="Commentaire" required></textarea>
       </div>
 
@@ -179,9 +135,10 @@ while ($comment = $comments->fetch())
     <?php
     } else {
     ?>
-    <form action="<?= HOST ?>onlineComment/id/<?= $post['id'] ?>" method="post">
+    <form action="<?= HOST ?>onlineComment/id/<?= $post->getId() ?>" method="post">
       <h4>Ajouter un message en tant que <span><strong><?= $_SESSION['user_session']['user_pseudo'] ?></strong></span> :</h4>
-      <input type="hidden" name="postId" value="<?= $post['id'] ?>">
+      <input type="hidden" name="postId" value="<?= $post->getId() ?>">
+      <input type="hidden" name="authorId" value="<?= $_SESSION['user_session']['user_id'] ?>">
       <input type="hidden" id="pseudo" name="pseudo" value="<?= $_SESSION['user_session']['user_pseudo'] ?>" required/>
 
       <label for="comment">Commentaire</label><br />
