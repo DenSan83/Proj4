@@ -2,6 +2,13 @@
 
 class LoginManager extends Manager
 {
+  public function usersCount()
+  {
+    $db = $this->dbConnect();
+
+    $usersCount = $db->query('SELECT * FROM membres');
+    return $usersCount->rowcount();
+  }
   public function loginCount($params)
   {
     extract($params);

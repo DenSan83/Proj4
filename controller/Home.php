@@ -22,16 +22,23 @@ class Home
       $post = $postManager->getPost($id);
       $comments = $commentManager->getComments($id);
 
+      $avatarList = array();
+      $loginManager = new LoginManager();
+      for ($i = 1; $i <= $loginManager->usersCount(); $i++)
+      {
+          $avatar = $loginManager->getAvatar($i);
+          if(empty($avatar)) { $avatar = 'default.png'; }
+          $avatarList += [$i => $avatar];
+      }
+
       $myView = new View('postView');
-      $parametres = array('post' => $post,'comments' => $comments);
+      $parametres = array('post' => $post,'comments' => $comments, 'avatarList' => $avatarList);
       if (isset($noCaptcha))
-      {
-        $parametres = array('post' => $post,'comments' => $comments, 'noCaptcha' => $noCaptcha);
-      }
+        $parametres += ['noCaptcha' => $noCaptcha];
+
       if (isset($noUser))
-      {
-        $parametres = array('post' => $post,'comments' => $comments, 'noUser' => $noUser);
-      }
+        $parametres += ['noUser' => $noUser];
+
       $myView->render($parametres);
     } else {
       echo '404';
@@ -98,8 +105,22 @@ class Home
     $post = $postManager->getPost($postId);
     $comments = $commentManager->getComments($postId);
 
+    $avatarList = array();
+    $loginManager = new LoginManager();
+    for ($i = 1; $i <= $loginManager->usersCount(); $i++)
+    {
+        $avatar = $loginManager->getAvatar($i);
+        if(empty($avatar)) { $avatar = 'default.png'; }
+        $avatarList += [$i => $avatar];
+    }
+
     $myView = new View('editCommentView');
-    $myView->render(array('post' => $post,'comments' => $comments, 'commentId' => $commentId));
+    $myView->render(array(
+      'post' => $post,
+      'comments' => $comments,
+      'avatarList' => $avatarList,
+      'commentId' => $commentId
+    ));
   }
 
   public function commentUpdate($params)
@@ -125,11 +146,11 @@ class Home
 
   public function login($params)
   {
-    extract($params); //$password = password_hash($password,PASSWORD_DEFAULT);
+    extract($params); //$params = array($login,$password)
     if (isset($login))
     {
       $login = htmlspecialchars($login);
-      $password = htmlspecialchars($password);
+      $password = htmlspecialchars($password); //$password = password_hash($password,PASSWORD_DEFAULT);
 
       if (!empty($password) && !empty($login))
       {

@@ -1,5 +1,5 @@
 <?php
-extract($params);
+extract($params); //var_dump($params);exit();// $params = array($post,$comments,$avatarList,($noUser,$noCaptcha))
 $title = $post->getTitle();
 $postId = $post->getId();
 ?>
@@ -32,7 +32,7 @@ if(empty($comments[0]))
 } else {
   foreach ($comments as $comment)
   {
-    if (isset($commentId) && $comment->getId() == $commentId)
+    if (isset($commentId) && $comment->getId() == $commentId) // when modifyComment($commentId)
     {
       // modifier commentaire
       $editing = $comment;
@@ -45,9 +45,7 @@ if(empty($comments[0]))
     <div class="commentAvatar">
       <?php
       if($comment->getAuthorId()) {
-      $avatarCheck = new LoginManager();
-      $authorId = $comment->getAuthorId();
-      $myAvatar = $avatarCheck->getAvatar($authorId);
+      $myAvatar = $avatarList[$comment->getAuthorId()];
       } else {
         $myAvatar = 'default.png';
       }

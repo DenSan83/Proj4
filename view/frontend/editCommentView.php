@@ -6,12 +6,9 @@ foreach($comments as $comment) {
 <div  class="container rounded row commentBox col-10 col-lg-9" style="border:1px solid blue; margin:1em auto; padding:0" id="comment<?= $comment->getId() ?>">
   <div class="container-liquid author col-2" style="margin-top:1em;padding:0">
     <div class="commentAvatar">
-      <?php //var_dump($commentId);
-      //var_dump($comment->getId()); $comment->getId() === $commentId
+      <?php
       if($comment->getAuthorId()) {
-      $avatarCheck = new LoginManager();
-      $authorId = $comment->getAuthorId();
-      $myAvatar = $avatarCheck->getAvatar($authorId);
+      $myAvatar = $avatarList[$comment->getAuthorId()];
       } else {
         $myAvatar = 'default.png';
       }

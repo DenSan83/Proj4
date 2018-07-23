@@ -1,5 +1,4 @@
 <?php
-//namespace Dennis\Blog\model;
 
 class Manager
 {
