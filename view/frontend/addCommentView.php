@@ -25,7 +25,7 @@
         </div>
         <?php } ?>
         <div class="row justify-content-center">
-            <button type="submit" class="btn btn-primary col-8">Submit</button>
+            <button type="submit" class="btn btn-primary col-8">Envoyer</button>
         </div>
       </div>
 
@@ -33,15 +33,18 @@
     <?php
     } else {
     ?>
-    <form action="<?= HOST ?>onlineComment/id/<?= $post->getId() ?>" method="post">
-      <h4>Ajouter un message en tant que <span><strong><?= $_SESSION['user_session']['user_pseudo'] ?></strong></span> :</h4>
+    <form action="<?= HOST ?>onlineComment/id/<?= $post->getId() ?>" method="post" style="margin:1em auto">
+      <h4>Ajouter un message en tant que <span class="text-primary"><strong><?= $_SESSION['user_session']['user_pseudo'] ?></strong></span> :</h4>
       <input type="hidden" name="postId" value="<?= $post->getId() ?>">
       <input type="hidden" name="authorId" value="<?= $_SESSION['user_session']['user_id'] ?>">
       <input type="hidden" id="pseudo" name="pseudo" value="<?= $_SESSION['user_session']['user_pseudo'] ?>" required/>
 
-      <label for="comment">Commentaire</label><br />
-      <textarea id="comment" name="comment" cols= "35" rows="3" required></textarea><br/><br/>
-      <input type="submit" id="submitOnline" /> <br/>
+      <div class="form-group">
+        <textarea class="form-control" id="comment" name="comment" cols= "35" rows="3" placeholder="Commentaire" required></textarea>
+      </div>
+      <div class="row justify-content-center">
+          <button type="submit" id="submitOnline" class="btn btn-primary col-8">Envoyer</button>
+      </div>
     </form>
     <?php
     }

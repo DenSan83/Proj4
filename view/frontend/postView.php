@@ -6,12 +6,12 @@ $postId = $post->getId();
 ob_start();
 $siteKey = '6LeVFmQUAAAAAGSSMYlzvv-GvhyxhKNymbAAxtWe'; // captcha: clé publique ?>
 <div class="rounded container news" style="border:1px solid black; margin:1em auto;">
-  <div class="container-liquid row justify-content-between bg-dark text-white">
+  <div class="container-liquid row justify-content-between bg-dark text-white" style="padding:0.5em">
     <div class="container row align-items-start col-4">
       <h3> <?= $post->getTitle() ?> </h3>
     </div>
     <div class="container row align-items-end col-3">
-      <em>le <?= $post->getCreationDate() ?></em>
+      <em>le <?= $post->getDateFr() ?></em>
     </div>
   </div>
     <p> <?= $post->getContent() ?> </p>
@@ -37,9 +37,9 @@ if(empty($comments[0]))
     } else {
       // montrer commentaire
 ?>
-<div class="container rounded row commentBox col-10 col-lg-9" style="border:1px solid blue; margin:1em auto; padding:0" id="comment<?= $comment->getId() ?>">
-  <div class="container-liquid author col-2" style="margin-top:1em;padding:0">
-    <div class="commentAvatar">
+<div class="container rounded row commentBox col-10 col-lg-9 justify-content-between" style="border:1px solid blue; margin:1em auto; padding:0" id="comment<?= $comment->getId() ?>">
+  <div class="container-liquid author col-2 row align-items-center" >
+    <div class="container-liquid commentAvatar justify-content-center col-6 offset-3">
       <?php
       if($comment->getAuthorId()) {
       $myAvatar = $avatarList[$comment->getAuthorId()];
@@ -47,17 +47,20 @@ if(empty($comments[0]))
         $myAvatar = 'default.png';
       }
       ?>
-      <img class="rounded-circle" src="<?= HOST ?>public/images/avatar/<?= $myAvatar ?>" alt="avatar user" width="50px" height="50px" style="border:1px solid blue">
+      <img class="rounded-circle" src="<?= HOST ?>public/images/avatar/<?= $myAvatar ?>" alt="avatar user" width="50px" height="50px" style="border:1px solid blue; margin: 0 auto">
     </div>
+    <div class="container col-6 offset-3">
       <p><strong><?= $comment->getAuthor() ?></strong></p>
+    </div>
+
   </div>
-  <div class="container-liquid comment col-10">
-    <div class="container-liquid row justify-content-end">
+  <div class="container-liquid comment align-self-end col-10">
+    <div class="container-liquid row justify-content-end" style="padding:0.5em 1em">
       <p class="date-time"> <i class="far fa-clock"></i> le <?= $comment->getDateFr() ?></p>
     </div>
     <p><?= $comment->getComment() ?></p>
     <hr/ style="margin-bottom:0">
-    <div class="container-liquid row options ">
+    <div class="container-liquid row options" style="padding:0.2em;min-height:3.5em">
     <?php
     if (!empty($_SESSION['user_session']) && $_SESSION['user_session']['user_id'] == $comment->getAuthorId()) {
     ?>
@@ -72,7 +75,8 @@ if(empty($comments[0]))
         </form>
       </div>
       <?php
-      } else {
+      }
+      elseif (!empty($_SESSION['user_session']['user_pseudo'])){
       ?>
       <div class="container-liquid col-12 row justify-content-end" style="padding:0">
         <form action="<?= HOST ?>flagComment" method="post"class="container row justify-content-end col-6" style="padding:0">

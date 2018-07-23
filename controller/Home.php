@@ -148,9 +148,11 @@ class Home
   {
     extract($data); // $data = array($postId,$commentId)
     $commentManager = new CommentManager();
-    $commentManager->flagComment($commentId,$_SESSION['user_session']['user_pseudo']);
-    $postId .= '#comment'.$commentId;
-    $_SESSION['flagged'] = $commentId;
+    $succes = $commentManager->flagComment($commentId,$_SESSION['user_session']['user_pseudo']);
+    if($succes){
+      $postId .= '#comment'.$commentId;
+      $_SESSION['flagged'] = $commentId;
+    }
 
     $myView = new View('postView');
     $myView->redirect($postId);
