@@ -1,5 +1,6 @@
 <?php
-ob_start(); extract($params);
+ob_start();
+extract($params);
 foreach($comments as $comment) {
   if($comment->getId() == (int) $commentId){
 ?>

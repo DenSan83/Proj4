@@ -6,6 +6,7 @@ class Comment
           $_author,
           $_author_id,
           $_comment,
+          $_flag,
           $_comment_date_fr;
 
   public function getId()       { return $this->_id; }
@@ -13,6 +14,7 @@ class Comment
   public function getAuthor()   { return $this->_author; }
   public function getAuthorId() { return $this->_author_id; }
   public function getComment()  { return $this->_comment; }
+  public function getFlag()     { return $this->_flag; }
   public function getDateCom()  { return $this->_comment_date_fr; }
 
   public function __construct($data)
@@ -61,6 +63,11 @@ class Comment
   public function setComment($comment)
   {
      $this->_comment = nl2br(htmlspecialchars($comment));
+  }
+
+  public function setFlag($flag)
+  {
+    $this->_flag = (bool) $flag;
   }
 
   public function setComment_date_fr($date)

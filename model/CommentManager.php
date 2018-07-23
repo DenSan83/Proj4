@@ -48,4 +48,15 @@ class CommentManager extends Manager{
 
     return $del;
   }
+
+  public function flagComment($commentId, $flagger){
+    $db = $this->dbConnect();
+
+    $comments = $db->prepare('INSERT INTO flagged(comment_id, flagger, flag_date) VALUES(:commentId, :flagger, NOW())');
+    $comments->bindValue(':commentId',$commentId);
+    $comments->bindValue(':flagger',$flagger);
+    $affectedLines = $comments->execute();
+
+    return $affectedLines;
+  }
 }

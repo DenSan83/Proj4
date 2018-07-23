@@ -144,6 +144,18 @@ class Home
     $myView->redirect($postId);
   }
 
+  public function flagComment($data)
+  {
+    extract($data); // $data = array($postId,$commentId)
+    $commentManager = new CommentManager();
+    $commentManager->flagComment($commentId,$_SESSION['user_session']['user_pseudo']);
+    $postId .= '#comment'.$commentId;
+    $_SESSION['flagged'] = $commentId;
+
+    $myView = new View('postView');
+    $myView->redirect($postId);
+  }
+
   public function login($params)
   {
     extract($params); //$params = array($login,$password)
@@ -154,7 +166,7 @@ class Home
 
       if (!empty($password) && !empty($login))
       {
-        $reqlogin = new LoginManager;
+        $reqlogin = new LoginManager();
         $hashedPw = $reqlogin->retrievePw($login);
 
         if (password_verify($password, $hashedPw))

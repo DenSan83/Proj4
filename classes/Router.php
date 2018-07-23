@@ -12,6 +12,7 @@ class Router
                       "modifyComment" => ["controller" => 'Home', "method" => 'modifyComment'],
                       "commentUpdate" => ["controller" => 'Home', "method" => 'commentUpdate'],
                       "delete"        => ["controller" => 'Home', "method" => 'deleteComment'],
+                      "flagComment"   => ["controller" => 'Home', "method" => 'flagComment'],
                       "login"         => ["controller" => 'Home', "method" => 'login'],
                       "logout"        => ["controller" => 'Home', "method" => 'logout'],
                     ];

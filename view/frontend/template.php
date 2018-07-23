@@ -32,7 +32,7 @@
                 Se connecter
               </button>
               <?php
-              if(isset($_POST['noUser']) && $_POST['noUser'] == 1)
+              if(isset($_SESSION['noUser']) && $_SESSION['noUser'] == 1)
               {
                 echo '<div class="container" id="noUser">Pseudo ou mot de passe incorrect !</div>';
               }
