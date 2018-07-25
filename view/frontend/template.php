@@ -68,7 +68,7 @@
                   </div>
 
                   <div class="bottom text-center">
-          					<a href="#"><b>Je n'ai pas encore une compte</b></a>
+          					<a href="<?= HOST ?>newUser"><b>Je n'ai pas encore une compte</b></a>
           				</div>
                 </form>
               </div>

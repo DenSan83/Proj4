@@ -9,6 +9,38 @@ class LoginManager extends Manager
     $usersCount = $db->query('SELECT * FROM membres');
     return $usersCount->rowcount();
   }
+
+  public function pseudoCheck($pseudo)
+  {
+    $db = $this->dbConnect();
+    $pseudoCheck = $db->prepare('SELECT * FROM membres WHERE pseudo = :pseudo');
+    $pseudoCheck->bindValue(':pseudo',$pseudo);
+    $pseudoCheck->execute();
+    return $pseudoCheck->rowcount();
+  }
+
+  public function emailCheck($email)
+  {
+    $db = $this->dbConnect();
+    $pseudoCheck = $db->prepare('SELECT * FROM membres WHERE email = :email');
+    $pseudoCheck->bindValue(':email',$email);
+    $pseudoCheck->execute();
+    return $pseudoCheck->rowcount();
+  }
+
+  public function newUser($data)
+  {
+    extract($data);
+    $db = $this->dbConnect();
+    $newMember = $db->prepare('INSERT INTO membres(pseudo,email,mdp) VALUES(:pseudo,:email,:password)');
+    $verify = $newMember->execute(array(
+      'pseudo' => $pseudo,
+      'email' => $email,
+      'password' => $password
+    ));
+    return $verify;
+  }
+
   public function loginCount($params)
   {
     extract($params);

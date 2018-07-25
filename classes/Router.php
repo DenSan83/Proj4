@@ -15,6 +15,8 @@ class Router
                       "flagComment"   => ["controller" => 'Home', "method" => 'flagComment'],
                       "login"         => ["controller" => 'Home', "method" => 'login'],
                       "logout"        => ["controller" => 'Home', "method" => 'logout'],
+                      "newUser"       => ["controller" => 'Home', "method" => 'newUser'],
+                      "verifyNewUser" => ["controller" => 'Home', "method" => 'verifyNewUser'],
                     ];
 
   public function __construct($request)

@@ -201,4 +201,85 @@ class Home
     $myView = new View('postLists');
     $myView->goHome();
   }
+
+  public function newUser($errorList = null)
+  {
+    if (!isset($errorList)){
+      $myView = new View('newUser');
+      $myView->render();
+      exit();
+    }
+    $errorList = array();
+
+    if(empty($_POST['pseudo'])) {
+      $errPseudo = 'Veuillez choisir un nom d\'utilisateur !';
+      $errorList += ['errPseudo' => $errPseudo];
+    } else {
+      $loginManager = new LoginManager();
+      $pseudoExist = $loginManager->pseudoCheck($_POST['pseudo']);
+      if ($pseudoExist !== 0) {
+        $errPseudo = 'Le nom d\'utilisateur est déjà enregistré. Veuillez choisir un nom d\'utilisateur different';
+        $errorList += ['errPseudo' => $errPseudo];
+      }
+    }
+
+    if(empty($_POST['email'])) {
+      $errEmail = 'Veuillez renseigner un adresse email !';
+      $errorList += ['errEmail' => $errEmail];
+    } else {
+      $loginManager = new LoginManager();
+      $emailExist = $loginManager->emailCheck($_POST['email']);
+      if ($emailExist !== 0) {
+        $errEmail = 'L\'adresse email renseigné est déjà enregistré. Veuillez vous enregistrer avec un email different';
+      } else {
+        if(!filter_var($_POST['email'],FILTER_VALIDATE_EMAIL)){
+          $errEmail = 'Veuillez renseigner un adresse email valide !';
+          $errorList += ['errEmail' => $errEmail];
+        }
+      }
+    }
+
+    if(empty($_POST['email2'])) {
+      $errEmail2 = 'Veuillez confirmer votre adresse email !';
+      $errorList += ['errEmail2' => $errEmail2];
+    } else {
+      if($_POST['email'] !== $_POST['email2']){
+        $errEmail2 = 'Les deux adresses email ne se correspondent pas !';
+        $errorList += ['errEmail2' => $errEmail2];
+      }
+    }
+
+    if(empty($_POST['password'])) {
+      $errPassword = 'Veuillez introduire un mot de passe !';
+      $errorList += ['errPassword' => $errPassword];
+    }
+    if(empty($_POST['password2'])) {
+      $errPassword2 = 'Veuillez confirmer votre mot de passe !';
+      $errorList += ['errPassword2' => $errPassword2];
+    } else {
+      if ($_POST['password'] !== $_POST['password2']){
+        $errPassword2 = 'Les mot de passe ne se correspondent pas';
+        $errorList += ['errPassword2' => $errPassword2];
+      }
+    }
+
+    if (empty($errorList)) {
+      $loginManager = new LoginManager();
+      $errClear = $loginManager->newUser(array(
+        'pseudo'    => $_POST['pseudo'],
+        'email'     => $_POST['email'],
+        'password'  => password_hash($_POST['password'],PASSWORD_DEFAULT)
+      ));
+
+      if($errClear) {
+        $errClear = '<b>'.$_POST['pseudo'].'</b>, votre compte a été crée.';
+        $errorList += ['errClear' => $errClear];
+      } else {
+        $errClear = 'Il y a eu un problème de connection, veuillez reesayer ultérieurement';
+      }
+
+    }
+    $myView = new View('newUser');
+    $myView->render($errorList);
+  }
 }
