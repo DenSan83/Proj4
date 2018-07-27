@@ -16,7 +16,8 @@ class Router
                       "login"         => ["controller" => 'Home', "method" => 'login'],
                       "logout"        => ["controller" => 'Home', "method" => 'logout'],
                       "newUser"       => ["controller" => 'Home', "method" => 'newUser'],
-                      "verifyNewUser" => ["controller" => 'Home', "method" => 'verifyNewUser'],
+                      "editProfile"   => ["controller" => 'Home', "method" => 'editProfile'],
+                      "updateProfile" => ["controller" => 'Home', "method" => 'updateProfile'],
                     ];
 
   public function __construct($request)

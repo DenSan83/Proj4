@@ -7,6 +7,7 @@ class View
   const POST_VIEW = VIEW.'postView.php';
   const EDIT_COMMENT_VIEW = VIEW.'editCommentView.php';
   const NEW_USER = VIEW.'newUser.php';
+  const EDIT_PROFILE = VIEW.'editProfile.php';
 
   public function __construct($template)
   {
@@ -14,7 +15,7 @@ class View
   }
 
   public function render($params = null)
-  { 
+  {
     $template = $this->template;
     switch($template)
     {
@@ -29,6 +30,9 @@ class View
         break;
       case 'newUser':
         include(self::NEW_USER);
+        break;
+      case 'editProfile':
+        include(self::EDIT_PROFILE);
         break;
     }
   }

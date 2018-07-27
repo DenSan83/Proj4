@@ -12,7 +12,7 @@ foreach($params as $post){
 <div class="rounded container news" style="border:1px solid black; margin:1em auto;">
   <div class="row justify-content-between bg-dark text-white" >
     <div class="col-4">
-        <h3><?= $post->getTitle() ?> </h3>
+        <h3><?= htmlspecialchars($post->getTitle()) ?> </h3>
     </div>
     <div class="col-3">
         <h5><em>le <?= $post->getDateFr() ?></em></h5>

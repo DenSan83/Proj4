@@ -15,7 +15,7 @@ class Comment
   public function getAuthorId() { return $this->_author_id; }
   public function getComment()  { return $this->_comment; }
   public function getFlag()     { return $this->_flag; }
-  public function getDateCom()  { return $this->_comment_date_fr; }
+  public function getDateCom()  { return $this->_comment_date_fr; } //setlocalefr
 
   public function __construct($data)
   {

@@ -2,8 +2,9 @@
 class CommentManager extends Manager{
   public function getComments($postId){
     $db = $this->dbConnect();
-    $req = $db->prepare('SELECT id, post_id, author, author_id, comment, DATE_FORMAT(date_com, "%d/%m/%Y à %H:%i") AS comment_date_fr FROM comments WHERE post_id = ? ORDER BY date_com');
-    $req->execute(array($postId));
+    $req = $db->prepare('SELECT id, post_id, author, author_id, comment, DATE_FORMAT(date_com, "%d/%m/%Y à %H:%i") AS comment_date_fr FROM comments WHERE post_id = :id ORDER BY date_com');
+    $req->bindValue(':id',$postId);
+    $req->execute();
     $comments = $req->fetchAll();
     $arrObjet = array();
     foreach ($comments as $comment) {
@@ -43,9 +44,10 @@ class CommentManager extends Manager{
 
   public function deleteComment($id){
     $db = $this->dbConnect();
-    $deleted = $db->prepare('DELETE FROM comments WHERE id = ?');
-    $del = $deleted->execute(array($id));
-
+    $deleted = $db->prepare('DELETE FROM comments WHERE id = :id');
+    $deleted->bindValue(':id',$id);
+    $del = $deleted->execute();
+//user_id = $_session['user']
     return $del;
   }
 

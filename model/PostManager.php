@@ -2,7 +2,8 @@
 class PostManager extends Manager{
   public function getPosts(){
     $db = $this->dbConnect();
-    $req = $db->query('SELECT id, title, content, DATE_FORMAT(creation_date, "%d/%m/%Y à %H:%i") AS creation_date_fr FROM posts ORDER BY creation_date DESC LIMIT 0, 7');
+    $req = $db->prepare('SELECT id, title, content, DATE_FORMAT(creation_date, "%d/%m/%Y à %H:%i") AS creation_date_fr FROM posts ORDER BY creation_date DESC LIMIT 0, 7');
+    $req->execute();
     $posts = $req->fetchAll();
     $arrObjet = array();
     foreach ($posts as $post) {
@@ -15,8 +16,9 @@ class PostManager extends Manager{
 
   public function getPost($postId){
     $db = $this->dbConnect();
-    $req = $db->prepare('SELECT id, title, content, DATE_FORMAT(creation_date, "%d/%m/%Y à %H:%i") AS creation_date_fr FROM posts WHERE id = ?');
-    $req->execute(array($postId));
+    $req = $db->prepare('SELECT id, title, content, DATE_FORMAT(creation_date, "%d/%m/%Y à %H:%i") AS creation_date_fr FROM posts WHERE id = :id');
+    $req->bindValue(':id',$postId);
+    $req->execute();
     $data = $req->fetch();
     $objPost = new Post($data);
 

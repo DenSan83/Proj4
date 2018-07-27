@@ -8,7 +8,7 @@ ob_start();
   <form method="post" action="<?= HOST ?>newUser" class="form-horizontal col-10 justify-content-center" role="form">
     <h2 style="margin:0.5em auto;text-align:center">Créez votre compte</h2>
     <div class="form-group">
-      <label for="firstName" class="col-sm-3 control-label">Pseudo *</label>
+      <label for="pseudo" class="col-sm-3 control-label">Pseudo *</label>
       <div class="col-sm-12">
         <input type="text" id="pseudo" placeholder="Pseudo" class="form-control" name="pseudo" value="<?php if(isset($_POST['pseudo'])) echo $_POST['pseudo']; ?>" autofocus required>
       </div>
@@ -39,7 +39,7 @@ ob_start();
         ?>
     </div>
     <div class="form-group">
-      <label for="email" class="col-sm-3 control-label">Confirmer email* </label>
+      <label for="email2" class="col-sm-3 control-label">Confirmer email* </label>
         <div class="col-sm-12">
           <input type="email" id="email2" placeholder="Confirmer email" class="form-control" name= "email2" value="<?php if(isset($_POST['email2'])) echo $_POST['email2']; ?>" required>
         </div>
@@ -69,7 +69,7 @@ ob_start();
       ?>
     </div>
     <div class="form-group">
-      <label for="password" class="col-sm-3 control-label">Confirmer mot de passe*</label>
+      <label for="password2" class="col-sm-3 control-label">Confirmer mot de passe*</label>
       <div class="col-sm-12">
         <input type="password" id="password2" placeholder="Confirmer mot de passe" class="form-control" name="password2" required>
       </div>

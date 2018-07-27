@@ -5,6 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title><?= $title ?></title>
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
         <!-- <link href="<?= HOST ?>public/css/style.css" rel="stylesheet" /> -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -19,7 +20,7 @@
         <nav class="container-fluid row sticky-top justify-content-between" style="padding:1em">
           <a class="navbar-brand text-dark col-5" href="<?= HOST ?>">
             <div class="rounded col-sm-12" style="margin:1em; background-color:rgba(255,255,255,0.4)">
-              <h1>Billet Simple pour Alaska</h1>
+              <h1 style="font-size:3vw">Billet Simple pour Alaska</h1>
             </div>
           </a>
           <div class="container row col-sm-2 dropdown">
