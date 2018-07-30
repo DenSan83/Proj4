@@ -47,7 +47,7 @@ class CommentManager extends Manager{
     $deleted = $db->prepare('DELETE FROM comments WHERE id = :id');
     $deleted->bindValue(':id',$id);
     $del = $deleted->execute();
-//user_id = $_session['user']
+
     return $del;
   }
 
@@ -55,6 +55,7 @@ class CommentManager extends Manager{
     $db = $this->dbConnect();
 
     $check = $db->prepare('UPDATE comments SET flag = :flag WHERE id = :id');
+    $check->bindValue(':flag',1);
     $check->bindValue(':id',$commentId);
     $check->execute();
 
