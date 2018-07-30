@@ -18,6 +18,7 @@ class Router
                       "newUser"       => ["controller" => 'Home', "method" => 'newUser'],
                       "editProfile"   => ["controller" => 'Home', "method" => 'editProfile'],
                       "updateProfile" => ["controller" => 'Home', "method" => 'updateProfile'],
+                      "admin"         => ["controller" => 'Home', "method" => 'admin'],
                     ];
 
   public function __construct($request)

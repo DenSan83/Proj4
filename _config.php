@@ -20,6 +20,7 @@ class MyAutoload
     define('ENTITY',MODEL.'entity/');
     define('MOD_MANAGER',MODEL.'manager/');
     define('VIEW',ROOT.'view/frontend/');
+    define('VIEW_BCK',ROOT.'view/backend/');
     define('CONTROLLER',ROOT.'controller/');
     define('CLASSES',ROOT.'classes/');
     define('ASSETS',ROOT.'public/');

@@ -8,6 +8,7 @@ class View
   const EDIT_COMMENT_VIEW = VIEW.'editCommentView.php';
   const NEW_USER = VIEW.'newUser.php';
   const EDIT_PROFILE = VIEW.'editProfile.php';
+  const ADMIN_VIEW = VIEW_BCK.'adminView.php';
 
   public function __construct($template)
   {
@@ -33,6 +34,9 @@ class View
         break;
       case 'editProfile':
         include(self::EDIT_PROFILE);
+        break;
+      case 'adminView':
+        include(self::ADMIN_VIEW);
         break;
     }
   }

@@ -93,6 +93,16 @@
                 ?>
               </button>
               <div class="dropdown-menu dropdown-menu-right bg-lg">
+                <?php
+                if($_SESSION['user_session']['user_status'] == 'admin'){
+                ?>
+                <form action="<?= HOST ?>admin" method="post">
+                  <button type="admin" name="admin" class="col-12 bg-white" style="border:none;cursor:pointer">Administrer le site</button>
+                </form>
+                <hr/>
+                <?php
+                }
+                ?>
                 <form action="<?= HOST ?>editProfile" method="post">
                   <input type="hidden" name="userId" value="<?php $_SESSION['user_session']['user_id'] ?>">
                   <button type="logout" name="logout" class="col-12 bg-white" style="border:none;cursor:pointer">Editer mon Profil</button>

@@ -20,8 +20,8 @@ foreach($comments as $comment) {
       <p><strong><?= $comment->getAuthor() ?></strong></p>
     </div>
   </div>
-  <div class="container-liquid comment col-10">
-    <div class="container-liquid row justify-content-end">
+  <div class="container-liquid comment align-self-end col-10">
+    <div class="container-liquid row justify-content-end" style="padding:0.5em 1em;">
       <p class="date-time"> <i class="far fa-clock"></i> le <?= $comment->getDateFr() ?></p>
     </div>
     <form method="post" action="<?= HOST ?>commentUpdate" class="row align-items-start">
@@ -32,16 +32,36 @@ foreach($comments as $comment) {
       <a href="<?= HOST ?>post/id/<?= $post->getId().'#comment'.$comment->getId() ?>" class="btn-danger rounded" style="padding:0.8em;margin-left:0.5em"><i class="far fa-times-circle"></i></a>
     </form>
     <hr/ style="margin-bottom:0">
-    <div class="container-liquid row options ">
-      <div class="container-liquid col-12 row justify-content-end" style="padding:0">
-        <form action="<?= HOST ?>delete" method="post" class="container row justify-content-end col-6" style="padding:0">
-          <input type="hidden" name="postId" value="<?= $post->getId() ?>">
-          <input type="hidden" name="commId" value="<?= $comment->getId() ?>">
-          <button type="submit" name="effacer" class="container col-5 text-primary bg-white option effacer"  style="margin:0;border:none;cursor:pointer">
-            <i class="fas fa-trash-alt col-9"></i>
-            <span>Effacer</span>
-          </button>
-        </form>
+    <div class="container-liquid col-12 row options justify-content-end" style="padding:0;margin:0">
+      <div class="container row justify-content-end col-6" style="padding:0">
+        <button type="submit" name="effacer" class="container col-5 text-primary bg-white option effacer" data-toggle="modal" data-target="#effacer" style="margin:0;border:none;cursor:pointer">
+          <i class="fas fa-trash-alt col-9"></i>
+          <span>Effacer</span>
+        </button>
+
+        <div class="modal fade" id="effacer" tabindex="-1" role="dialog" aria-labelledby="eraseCommentLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Effacer commentaire</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              </div>
+              <div class="modal-body">
+                Êtes-vous sûr de vouloir supprimer ce commentaire ?
+              </div>
+              <div class="modal-footer">
+                <form action="<?= HOST ?>delete" method="post" style="padding:0">
+                  <input type="hidden" name="postId" value="<?= $post->getId() ?>">
+                  <input type="hidden" name="commId" value="<?= $comment->getId() ?>">
+                  <button type="submit" class="btn btn-primary"><i class="icon icon-check icon-lg"></i> Oui, supprimer</button>
+                </form>
+
+                <button type="button" class="btn btn-inverse" data-dismiss="modal"><i class="icon icon-times icon-lg"></i> Non, fermer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>

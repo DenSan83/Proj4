@@ -174,41 +174,39 @@ class Home
         if (password_verify($password, $hashedPw))
         {
           // Tous les test passées, on fais login session
-          $user = $reqlogin->login(array('login' => $login, 'password' => $hashedPw));//var_dump($user);exit();
+          $user = $reqlogin->login(array('login' => $login, 'password' => $hashedPw));
           unset($_SESSION['noUser']);
 
           $_SESSION['user_session']['user_id']      = $user['id'];
           $_SESSION['user_session']['user_pseudo']  = $user['pseudo'];
           $_SESSION['user_session']['user_avatar']  = $user['avatar'];
           $_SESSION['user_session']['user_email']   = $user['email'];
+          $_SESSION['user_session']['user_status']  = $user['status'];
 
-          var_dump($user);
-          // qui s'est connecté? admin/membre
-          if($user['status'] == 'membre')
-          {
-            $myView = new View('postView');
-            if ($postId !== null){
-              $myView->redirect($postId);
-            } else {
-              $myView->goHome();
-            }
+          $myView = new View('postView');
+          if ($postId !== null){
+            $myView->redirect($postId);
           } else {
-              //backend:
-
-              var_dump($_SESSION);
+            $myView->goHome();
           }
-
         } else {
           // utilisateur inexistant
           $_SESSION['noUser'] = 1;
         }
-        var_dump($_SESSION);
-
       }
-
     }
   }
 
+  public function admin()
+  {
+    if ($_SESSION['user_session']['user_status'] == 'admin'){ //var_dump($_SESSION);exit();
+      $myView = new View('adminView');
+      $myView->render();
+      //header('Location: '.HOST.'/view/backend/adminView.php');
+    } else {
+      header('Location: '.HOST);
+    }
+  }
   public function logout()
   {
     session_destroy();
