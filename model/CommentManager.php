@@ -54,6 +54,10 @@ class CommentManager extends Manager{
   public function flagComment($commentId, $flagger){
     $db = $this->dbConnect();
 
+    $check = $db->prepare('UPDATE comments SET flag = :flag WHERE id = :id');
+    $check->bindValue(':id',$commentId);
+    $check->execute();
+
     $comments = $db->prepare('INSERT INTO flagged(comment_id, flagger, flag_date) VALUES(:commentId, :flagger, NOW())');
     $comments->bindValue(':commentId',$commentId);
     $comments->bindValue(':flagger',$flagger);

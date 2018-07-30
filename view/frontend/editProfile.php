@@ -1,6 +1,6 @@
 <?php $title = 'Modifier mon profil' ?>
 <?php
-if(isset($params))
+if(is_array($params))
   extract($params);
 ob_start();
 ?>
@@ -96,7 +96,7 @@ ob_start();
       </div>
     </div>
 
-    <button type="submit" class="btn btn-primary btn-block col-12">Mise à jour</button>
+    <button type="submit" class="btn btn-primary btn-block col-12 maj">Mise à jour</button>
     <a href="<?= HOST ?>" style="text-decoration:none">
       <div class="btn btn-light btn-block col-12" style="margin-top:1em">
         Retour à l'accueil

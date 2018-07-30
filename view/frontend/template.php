@@ -20,7 +20,7 @@
         <nav class="container-fluid row sticky-top justify-content-between" style="padding:1em">
           <a class="navbar-brand text-dark col-5" href="<?= HOST ?>">
             <div class="rounded col-sm-12" style="margin:1em; background-color:rgba(255,255,255,0.4)">
-              <h1 style="font-size:3vw">Billet Simple pour Alaska</h1>
+              <h1 style="font-size:3vw;" >Billet Simple pour Alaska</h1>
             </div>
           </a>
           <div class="container row col-sm-2 dropdown">
@@ -84,7 +84,7 @@
                 ?>
                 <img class="rounded-circle" src="<?= HOST ?>public/images/avatar/default.png" alt="avatar user" width="50px" height="50px">
                 <?php
-                } else {
+              } else {
                 ?>
                 <img src="<?= HOST ?>public/images/avatar/<?= $_SESSION['user_session']['user_avatar'] ?>" class="rounded-circle" alt="avatar user" width="50px" height="50px">
                 <?php
@@ -115,5 +115,10 @@
           FOOTER
         </div>
       </footer>
+      <script>
+          $(".maj").click(function(){
+            location.reload(true);
+          });
+      </script>
     </body>
 </html>

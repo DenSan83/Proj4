@@ -174,25 +174,39 @@ class Home
         if (password_verify($password, $hashedPw))
         {
           // Tous les test passées, on fais login session
-          $user = $reqlogin->login(array('login' => $login, 'password' => $hashedPw));
+          $user = $reqlogin->login(array('login' => $login, 'password' => $hashedPw));//var_dump($user);exit();
           unset($_SESSION['noUser']);
 
           $_SESSION['user_session']['user_id']      = $user['id'];
           $_SESSION['user_session']['user_pseudo']  = $user['pseudo'];
           $_SESSION['user_session']['user_avatar']  = $user['avatar'];
           $_SESSION['user_session']['user_email']   = $user['email'];
+
+          var_dump($user);
+          // qui s'est connecté? admin/membre
+          if($user['status'] == 'membre')
+          {
+            $myView = new View('postView');
+            if ($postId !== null){
+              $myView->redirect($postId);
+            } else {
+              $myView->goHome();
+            }
+          } else {
+              //backend:
+
+              var_dump($_SESSION);
+          }
+
         } else {
+          // utilisateur inexistant
           $_SESSION['noUser'] = 1;
         }
+        var_dump($_SESSION);
 
-        $myView = new View('postView');
-        if ($postId !== null){
-          $myView->redirect($postId);
-        } else {
-          $myView->goHome();
-        }
-       }
-     }
+      }
+
+    }
   }
 
   public function logout()
@@ -295,10 +309,11 @@ class Home
 
   public function updateProfile()
   {
+    $errorList = array();
     if(isset($_FILES['avatar']) && !empty($_FILES['avatar']['name'])) {
       $tailleMax = 2097152; // octets pour 2Mo
       $extensionsValides = array('jpg','jpeg','gif','png');
-      if($_FILES['avatar']['size'] <= $tailleMax){
+      if($_FILES['avatar']['size'] <= $tailleMax && $_FILES['avatar']['size'] != 0){
         $extensionUpload = strtolower(substr(strrchr($_FILES['avatar']['name'],'.'),1));
         // strchr: renvoyer extension du fichier après point '.' /
         // substr : ignorer le caractère "1" de la chaine /
@@ -308,11 +323,10 @@ class Home
           $resultat = move_uploaded_file($_FILES['avatar']['tmp_name'],$chemin);
           if($resultat){
             $loginManager = new LoginManager();
-            $loginManager->avatarUpdate($_SESSION['user_session']['user_id'].'.'.$extensionUpload);
-            $user = $loginManager->getUser($_SESSION['user_session']['user_pseudo']);
 
-            $myView = new View('editProfile');
-            $myView->render($user);
+            $_SESSION['user_session']['user_avatar'] = $_SESSION['user_session']['user_id'].'.'.$extensionUpload;
+            $loginManager->avatarUpdate($_SESSION['user_session']['user_avatar']);
+            $user = $loginManager->getUser($_SESSION['user_session']['user_pseudo']);
           } else {
             $errAvatar = 'Erreur de chargement de photo';
           }
@@ -322,45 +336,47 @@ class Home
       } else {
         $errAvatar = 'Votre photo de profil ne doit pas depasser 2 Mo';
       }
-    }
-    $errorList = array();
-    //verifier si pseudo existe:
-    $loginManager = new LoginManager();
-    if ($_POST['pseudo'] !== $_SESSION['user_session']['user_pseudo']){
-      $pseudoExist = (bool)$loginManager->pseudoCheck($_POST['pseudo']);
-      if ($pseudoExist){
-        $errPseudo = 'Ce nom d\'utilisateur est déjà pris. Veuillez choisir un autre';
-        $errorList += ['errPseudo' => $errPseudo];
-      }
-    }
-    //verifier si email existe:
-    if ($_POST['email'] !== $_SESSION['user_session']['user_email']){
-      $emailExist = (bool)$loginManager->emailCheck($_POST['email']);
-      if ($emailExist){
-        $errEmail = 'Cet adresse email est déjà pris. Veuillez renseigner un autre';
-        $errorList += ['errEmail' => $errEmail];
-      }
-    }
-    //verifier si password = valide:
-    //verifier si pw = pw2:
-    if ($_POST['password'] !== $_POST['password2']){
-      $errPassword2 = 'Les mots de passe ne se correspondent pas';
-      $errorList += ['errPassword2' => $errPassword2];
-    }
-    if(empty($errorList)){
-      $loginManager->userUpdate(array(
-        'id'        => $_SESSION['user_session']['user_id'],
-        'pseudo'    => $_POST['pseudo'],
-        'email'     => $_POST['email'],
-        'password'  => password_hash($_POST['password'],PASSWORD_DEFAULT)
-      ));
-      $_SESSION['user_session']['user_pseudo']  = $_POST['pseudo'];
-      $_SESSION['user_session']['user_email']   = $_POST['email'];
+      if(isset($errAvatar)) $errorList += ['errAvatar' => $errAvatar];
+    } else {
 
-      $errClear = '  Succès ! Le profil a été mis à jour.';
-      $errorList += ['errClear' => $errClear];
+      //verifier si pseudo existe:
+      $loginManager = new LoginManager();
+      if ($_POST['pseudo'] !== $_SESSION['user_session']['user_pseudo']){
+        $pseudoExist = (bool)$loginManager->pseudoCheck($_POST['pseudo']);
+        if ($pseudoExist){
+          $errPseudo = 'Ce nom d\'utilisateur est déjà pris. Veuillez choisir un autre';
+          $errorList += ['errPseudo' => $errPseudo];
+        }
+      }
+      //verifier si email existe:
+      if ($_POST['email'] !== $_SESSION['user_session']['user_email']){
+        $emailExist = (bool)$loginManager->emailCheck($_POST['email']);
+        if ($emailExist){
+          $errEmail = 'Cet adresse email est déjà pris. Veuillez renseigner un autre';
+          $errorList += ['errEmail' => $errEmail];
+        }
+      }
+      //verifier si password = valide:
+      //verifier si pw = pw2:
+      if ($_POST['password'] !== $_POST['password2']){
+        $errPassword2 = 'Les mots de passe ne se correspondent pas';
+        $errorList += ['errPassword2' => $errPassword2];
+      } var_dump($errorList);exit();
     }
-    $myView = new View ('editProfile');
-    $myView->render($errorList);
+      if(empty($errorList)){
+        $loginManager->userUpdate(array(
+          'id'        => $_SESSION['user_session']['user_id'],
+          'pseudo'    => $_POST['pseudo'],
+          'email'     => $_POST['email'],
+          'password'  => password_hash($_POST['password'],PASSWORD_DEFAULT)
+        ));
+        $_SESSION['user_session']['user_pseudo']  = $_POST['pseudo'];
+        $_SESSION['user_session']['user_email']   = $_POST['email'];
+
+        $errClear = '  Succès ! Le profil a été mis à jour.';
+        $errorList += ['errClear' => $errClear];
+      }
+      $myView = new View ('editProfile');
+      $myView->render($errorList);
   }
 }
