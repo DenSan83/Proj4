@@ -7,25 +7,26 @@
       <h4>Ajouter un commentaire sans connexion :</h4>
       <input type="hidden" name="postId" value="<?= $post->getId() ?>">
       <div class="form-group">
-        <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom" required>
+        <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom" >
       </div>
       <div class="form-group">
-        <input type="text" class="form-control" id="prenom" name="prenom" placeholder="Prenom" required>
+        <input type="text" class="form-control" id="prenom" name="prenom" placeholder="Prenom" >
       </div>
 
       <div class="form-group">
-        <textarea class="form-control" id="comment" name="comment" rows="3" placeholder="Commentaire" required></textarea>
+        <textarea class="form-control" id="comment" name="comment" rows="3" placeholder="Commentaire" ></textarea>
       </div>
 
       <div class="container-liquid">
         <div class="g-recaptcha col-7 row justify-content-center" data-sitekey="<?php echo $siteKey; ?>" style="margin:0.5em auto; width:305px"></div>
-        <?php if(isset($noCaptcha) && $noCaptcha == 1) { ?>
+        <?php
+        if(isset($commentError)) { ?>
         <div class="noCaptcha bg-danger text-white col-9 rounded row justify-content-center" style="padding:1em; margin:0.5em auto">
-           <i class="fas fa-exclamation-triangle"></i><span> Veuillez completer le Captcha ! </span>
+          <span><i class="fas fa-exclamation-triangle"></i>&nbsp;&nbsp;</span><span><?= htmlspecialchars($commentError) ?></span>
         </div>
         <?php } ?>
         <div class="row justify-content-center">
-            <button type="submit" class="btn btn-primary col-8">Envoyer</button>
+          <button type="submit" class="btn btn-primary col-8">Envoyer</button>
         </div>
       </div>
 

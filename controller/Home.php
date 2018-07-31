@@ -14,7 +14,7 @@ class Home
 
   public function post($params)
   {
-    extract($params);
+    extract($params); //var_dump($params);exit();
     $postManager = new PostManager();
     $idExist = (bool) $postManager->getPost($id);
     if ($id > 0 && $idExist) {
@@ -26,16 +26,26 @@ class Home
       $loginManager = new LoginManager();
       for ($i = 1; $i <= $loginManager->usersCount(); $i++)
       {
-          $avatar = $loginManager->getAvatar($i);
-          if(empty($avatar)) { $avatar = 'default.png'; }
-          $avatarList += [$i => $avatar];
+        $userAv = $loginManager->getAvatar($i);
+        if(empty($userAv['avatar'])) { $userAv['avatar'] = 'default.png'; }
+        if(empty($userAv['status'])) { $userAv['status'] = 'visiteur'; }
+        $avatarList += [$i => $userAv];
       }
 
       $myView = new View('postView');
       $parametres = array('post' => $post,'comments' => $comments, 'avatarList' => $avatarList);
-      if (isset($noCaptcha))
-        $parametres += ['noCaptcha' => $noCaptcha];
-
+      if (isset($noCaptcha)){
+        $noCaptcha = 'Veuillez completer le Captcha !';
+        $parametres += ['commentError' => $noCaptcha];
+      }
+      if (isset($noFields)){
+        $noFields = 'Tous les champs doit etre remplis !';
+        $parametres += ['commentError' => $noFields];
+      }
+      if (isset($impossible)){
+        $impossible = 'Impossible d\'ajouter le commentaire !';
+        $parametres += ['commentError' => $impossible];
+      }
       if (isset($noUser))
         $parametres += ['noUser' => $noUser];
 
@@ -52,29 +62,33 @@ class Home
     $reCaptcha = new ReCaptcha($secret);
     if(isset($_POST["g-recaptcha-response"]))
     {
-        $resp = $reCaptcha->verifyResponse(
-            $_SERVER["REMOTE_ADDR"],
-            $_POST["g-recaptcha-response"]
-            );
-        if ($resp != null && $resp->success)
-        {
-          $author = $prenom.' '.$nom;
-          if (!empty($author) && !empty($comment)) {
-            $commentManager = new CommentManager();
-            $affectedLines = $commentManager->postComment($postId,$author,$authorId, $comment);
-          } else {
-            echo 'Veuillez remplir tous les champs';
-          }
-
-          if ($affectedLines === false) {
-              throw new Exception('Impossible d\'ajouter le commentaire !');
-          } else {
-            $myView = new View('postView');
-            $myView->redirect($postId.'#'.$comment['id']);
-          }
+      $resp = $reCaptcha->verifyResponse(
+        $_SERVER["REMOTE_ADDR"],
+        $_POST["g-recaptcha-response"]
+      );
+      $parametres = array('id' => $postId);
+      if ($resp != null && $resp->success)
+      {
+        $author = $prenom.' '.$nom;
+        if (!empty($author) && !empty($comment)) {
+          $commentManager = new CommentManager();
+          $affectedLines = $commentManager->postComment($postId,$author,$authorId, $comment);
         } else {
-          header('Location: '.HOST.'post/id/'.$postId.'/noCaptcha/1#optionsSession');
+          $parametres += ['noFields' => 1];
+          $this->post($parametres);
         }
+
+        if ($affectedLines == false) {
+          $parametres += ['impossible' => 1];
+          $this->post($parametres);
+        } else {
+          $myView = new View('postView');
+          $myView->redirect($postId.'#'.$comment['id']);
+        }
+      } else {
+        $parametres += ['noCaptcha' => 1];
+        $this->post($parametres);
+      }
     }
   }
 
@@ -84,12 +98,10 @@ class Home
     if (!empty($pseudo) && !empty($comment)) {
       $commentManager = new CommentManager();
       $affectedLines = $commentManager->postComment($postId,$pseudo,$authorId,$comment);
-    } else {
-      echo 'no user or no comment detected';
     }
 
     if ($affectedLines === false) {
-        throw new Exception('Impossible d\'ajouter le commentaire !');exit();
+        throw new Exception('Impossible d\'ajouter le commentaire !');
     } else {
       $myView = new View('postView');
       $myView->redirect($postId);
@@ -127,8 +139,11 @@ class Home
   {
     extract($params);
     $commentManager = new CommentManager();
-    $modified = $commentManager->commentUpdate($commentId,$updated);
-    $modified .= '#comment'.$commentId;
+    $check = $commentManager->verifyAuthor($commentId,$_SESSION['user_session']['user_id']);
+    if($check){
+      $modified = $commentManager->commentUpdate($commentId,$updated);
+      $modified .= '#comment'.$commentId;
+    }
 
     $myView = new View('postView');
     $myView->redirect($modified);
@@ -138,10 +153,12 @@ class Home
   {
     extract($data); //if (!empty($data))
     $commentManager = new CommentManager();
-    $reponse = $commentManager->deleteComment($commId);
+    $check = $commentManager->verifyAuthor($commId,$_SESSION['user_session']['user_id']);
+    if($check)
+      $reponse = $commentManager->deleteComment($commId);
 
     $myView = new View('postView');
-    $myView->redirect($postId); //verif bootstrap modales
+    $myView->redirect($postId);
   }
 
   public function flagComment($data)
@@ -199,10 +216,9 @@ class Home
 
   public function admin()
   {
-    if ($_SESSION['user_session']['user_status'] == 'admin'){ //var_dump($_SESSION);exit();
+    if ($_SESSION['user_session']['user_status'] == 'admin'){
       $myView = new View('adminView');
       $myView->render();
-      //header('Location: '.HOST.'/view/backend/adminView.php');
     } else {
       header('Location: '.HOST);
     }
@@ -359,7 +375,7 @@ class Home
       if ($_POST['password'] !== $_POST['password2']){
         $errPassword2 = 'Les mots de passe ne se correspondent pas';
         $errorList += ['errPassword2' => $errPassword2];
-      } var_dump($errorList);exit();
+      }
     }
       if(empty($errorList)){
         $loginManager->userUpdate(array(

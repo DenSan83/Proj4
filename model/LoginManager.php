@@ -84,12 +84,12 @@ class LoginManager extends Manager
   {
     $db = $this->dbConnect();
 
-    $avatar = $db->prepare('SELECT avatar FROM membres WHERE id = :id');
+    $avatar = $db->prepare('SELECT pseudo,avatar,status FROM membres WHERE id = :id');
     $avatar->bindValue(':id',$id);
     $avatar->execute();
-    $pic = $avatar->fetch();
+    $userAv = $avatar->fetch();
 
-    return $pic[0];
+    return $userAv;
   }
 
   public function avatarUpdate($avtName)

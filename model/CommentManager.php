@@ -35,8 +35,9 @@ class CommentManager extends Manager{
     $comments->execute();
 
     $db = $this->dbConnect();
-    $req = $db->prepare('SELECT post_id FROM comments WHERE id = ?');
-    $req->execute(array($commentId));
+    $req = $db->prepare('SELECT post_id FROM comments WHERE id = :id');
+    $req->bindValue(':id',$commentId);
+    $req->execute();
     $post = $req->fetch();
 
     return $post['post_id'];
@@ -65,5 +66,21 @@ class CommentManager extends Manager{
     $affectedLines = $comments->execute();
 
     return $affectedLines;
+  }
+
+  public function verifyAuthor($commId,$author){
+    $db = $this->dbConnect();
+
+    $req = $db->prepare('SELECT author_id FROM comments WHERE id = :id');
+    $req->bindValue(':id',$commId);
+    $req->execute();
+    $check = $req->fetch();
+    $authorId = (int)$check[0];
+
+    if($authorId === (int)$author){
+      return (bool) true;
+    } else {
+      return (bool) false;
+    }
   }
 }
