@@ -17,12 +17,12 @@ foreach($comments as $comment) {
         <img class="rounded-circle" src="<?= HOST ?>public/images/avatar/<?= $myAvatar ?>" alt="avatar user" width="50px" height="50px" style="border:1px solid blue">
     </div>
     <div class="container col-6 offset-3">
-      <p><strong><?= $comment->getAuthor() ?></strong></p>
+      <p><strong><?= htmlspecialchars($comment->getAuthor()) ?></strong></p>
     </div>
   </div>
   <div class="container-liquid comment align-self-end col-10">
     <div class="container-liquid row justify-content-end" style="padding:0.5em 1em;">
-      <p class="date-time"> <i class="far fa-clock"></i> le <?= $comment->getDateFr() ?></p>
+      <p class="date-time"> <i class="far fa-clock"></i> le <?= htmlspecialchars($comment->getDateFr()) ?></p>
     </div>
     <form method="post" action="<?= HOST ?>commentUpdate" class="row align-items-start">
       <textarea name="updated" rows="2" cols="80"><?= nl2br(htmlspecialchars($comment->getComment())) ?></textarea>

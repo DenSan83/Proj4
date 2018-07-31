@@ -23,12 +23,12 @@ class Home
       $comments = $commentManager->getComments($id);
 
       $avatarList = array();
+      $elmZero = array('avatar' => 'default.png','status' => 'visiteur' );
+      $avatarList += [ 0 => $elmZero];
       $loginManager = new LoginManager();
       for ($i = 1; $i <= $loginManager->usersCount(); $i++)
       {
         $userAv = $loginManager->getAvatar($i);
-        if(empty($userAv['avatar'])) { $userAv['avatar'] = 'default.png'; }
-        if(empty($userAv['status'])) { $userAv['status'] = 'visiteur'; }
         $avatarList += [$i => $userAv];
       }
 

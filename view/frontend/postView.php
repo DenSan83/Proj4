@@ -1,5 +1,5 @@
 <?php
-extract($params); //var_dump($params);exit();// $params = array($post,$comments,$avatarList,($noUser,$noCaptcha))
+extract($params); //var_dump($params);exit();// $params = array($post,$comments,$avatarList)
 $title = $post->getTitle();
 $postId = $post->getId();
 
@@ -8,13 +8,13 @@ $siteKey = '6LeVFmQUAAAAAGSSMYlzvv-GvhyxhKNymbAAxtWe'; // captcha: clé publique
 <div class="rounded container news" style="border:1px solid black; margin:1em auto;">
   <div class="container-liquid row justify-content-between bg-dark text-white" style="padding:0.5em">
     <div class="container row align-items-start col-4">
-      <h3> <?= $post->getTitle() ?> </h3>
+      <h3> <?= htmlspecialchars($post->getTitle()) ?> </h3>
     </div>
     <div class="container row align-items-end col-3">
-      <em>le <?= $post->getDateFr() ?></em>
+      <em>le <?= htmlspecialchars($post->getDateFr()) ?></em>
     </div>
   </div>
-    <p> <?= $post->getContent() ?> </p>
+    <p> <?=  nl2br(htmlspecialchars($post->getContent())) ?> </p>
 </div>
 
 <h2>Commentaires</h2>
@@ -44,23 +44,23 @@ if(empty($comments[0]))
       if($comment->getAuthorId()) {
       $myAvatar = $avatarList[$comment->getAuthorId()];
       } else {
-        $myAvatar['avatar'] = 'default.png';
-        $myAvatar = array('pseudo' => $comment->getAuthor(),'avatar' => 'default.png','status' => 'visiteur' );
+        $myAvatar = $avatarList[0];
+        $myAvatar['pseudo'] = $comment->getAuthor();
       }
       ?>
       <img class="rounded-circle" src="<?= HOST ?>public/images/avatar/<?= $myAvatar['avatar'] ?>" alt="avatar user" width="50px" height="50px" style="border:1px solid blue; margin: 0 auto">
     </div>
     <div class="container col-6 offset-3 align-items-center">
-      <p><strong><?= $myAvatar['pseudo'] ?></strong></p>
-      <p><?= $myAvatar['status'] ?></p>
+      <p><strong><?= htmlspecialchars($myAvatar['pseudo']) ?></strong></p>
+      <p><?= htmlspecialchars($myAvatar['status']) ?></p>
     </div>
 
   </div>
   <div class="container-liquid comment align-self-end col-10">
     <div class="container-liquid row justify-content-end" style="padding:0.5em 1em">
-      <p class="date-time"> <i class="far fa-clock"></i> le <?= $comment->getDateFr() ?></p>
+      <p class="date-time"> <i class="far fa-clock"></i> le <?= htmlspecialchars($comment->getDateFr()) ?></p>
     </div>
-    <p><?= $comment->getComment() ?></p>
+    <p><?=  nl2br(htmlspecialchars($comment->getComment())) ?></p>
     <hr/ style="margin-bottom:0">
     <div class="container-liquid row options" style="padding:0.2em;min-height:3.5em">
     <?php

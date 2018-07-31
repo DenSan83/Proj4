@@ -18,7 +18,7 @@
       </div>
 
       <div class="container-liquid">
-        <div class="g-recaptcha col-7 row justify-content-center" data-sitekey="<?php echo $siteKey; ?>" style="margin:0.5em auto; width:305px"></div>
+        <div class="g-recaptcha col-7 row justify-content-center" data-sitekey="<?= $siteKey ?>" style="margin:0.5em auto; width:305px"></div>
         <?php
         if(isset($commentError)) { ?>
         <div class="noCaptcha bg-danger text-white col-9 rounded row justify-content-center" style="padding:1em; margin:0.5em auto">

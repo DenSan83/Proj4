@@ -20,7 +20,7 @@ ob_start();
       if (isset($errAvatar)){
       ?>
       <div class="container bg-danger col-6 text-white rounded" style="margin-top:0.5em">
-        <p style="margin:0.5em auto;text-align:center"><?= $errAvatar ?></p>
+        <p style="margin:0.5em auto;text-align:center"><?= htmlspecialchars($errAvatar) ?></p>
       </div>
       <?php
       }
@@ -36,7 +36,7 @@ ob_start();
       if (isset($errPseudo)){
       ?>
       <div class="container bg-danger col-6 text-white rounded" style="margin-top:0.5em">
-        <p style="margin:0.5em auto;text-align:center"><?= $errPseudo ?></p>
+        <p style="margin:0.5em auto;text-align:center"><?= htmlspecialchars($errPseudo) ?></p>
       </div>
       <?php
       }
@@ -52,7 +52,7 @@ ob_start();
         if (isset($errEmail)){
         ?>
         <div class="container bg-danger col-6 text-white rounded" style="margin-top:0.5em">
-          <p style="margin:0.5em auto;text-align:center"><?= $errEmail ?></p>
+          <p style="margin:0.5em auto;text-align:center"><?= htmlspecialchars($errEmail) ?></p>
         </div>
         <?php
         }
@@ -68,7 +68,7 @@ ob_start();
       if (isset($errPassword)){
       ?>
       <div class="container bg-danger col-6 text-white rounded" style="margin-top:0.5em">
-        <p style="margin:0.5em auto;text-align:center"><?= $errPassword ?></p>
+        <p style="margin:0.5em auto;text-align:center"><?= htmlspecialchars($errPassword) ?></p>
       </div>
       <?php
       }
@@ -83,7 +83,7 @@ ob_start();
       if (isset($errPassword2)){
       ?>
       <div class="container bg-danger col-6 text-white rounded" style="margin-top:0.5em">
-        <p style="margin:0.5em auto;text-align:center"><?= $errPassword2 ?></p>
+        <p style="margin:0.5em auto;text-align:center"><?= htmlspecialchars($errPassword2) ?></p>
       </div>
       <?php
       }
@@ -107,11 +107,11 @@ ob_start();
   if(isset($errClear)){
   ?>
   <div class="container bg-success col-8 text-white rounded justify-content-center" style="margin-top:0.5em;padding:2em">
-      <p style="margin:0.5em auto;text-align:center"> <i class="far fa-check-circle"></i> <?= $errClear ?></p>
+      <p style="margin:0.5em auto;text-align:center"> <i class="far fa-check-circle"></i> <?= htmlspecialchars($errClear) ?></p>
   </div>
   <?php
   }
   ?>
-</div> <!-- ./container -->
+</div>
 <?php $content = ob_get_clean(); ?>
 <?php require(VIEW.'template.php'); ?>

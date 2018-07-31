@@ -15,10 +15,10 @@ foreach($params as $post){
         <h3><?= htmlspecialchars($post->getTitle()) ?> </h3>
     </div>
     <div class="col-3">
-        <h5><em>le <?= $post->getDateFr() ?></em></h5>
+        <h5><em>le <?= htmlspecialchars($post->getDateFr()) ?></em></h5>
     </div>
   </div>
-  <p> <?= $post->getShortContent(60) ?> </p>
+  <p> <?=  nl2br(htmlspecialchars($post->getShortContent(60))) ?> </p>
   <em><a href="<?= HOST ?>post/id/<?= $post->getId() ?>">Lire la suite >></a></em>
 </div>
   <?php
@@ -27,6 +27,6 @@ foreach($params as $post){
 <div class="container col-3" style="margin:1em auto">
     <a href="#">Lire tout le Chapitre 1</a>
 </div>
-<?php $content = ob_get_clean(); //fin du contenu à stocker (dans $content) ?>
+<?php $content = ob_get_clean(); ?>
 
 <?php require('view/frontend/template.php'); ?>
