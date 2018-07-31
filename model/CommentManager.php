@@ -83,4 +83,19 @@ class CommentManager extends Manager{
       return (bool) false;
     }
   }
+
+  public function getLast($num)
+  {
+    $db = $this->dbConnect();
+    $req = $db->prepare('SELECT id, post_id, author, author_id, comment, DATE_FORMAT(date_com, "%d/%m/%Y à %H:%i") AS comment_date_fr FROM comments ORDER BY date_com DESC LIMIT '.(int)$num);
+    $req->execute();
+    $comments = $req->fetchAll();
+    $arrObjet = array();
+    foreach ($comments as $comment) {
+      $monObjet = new Comment($comment);
+      array_push($arrObjet,$monObjet);
+    }
+
+    return $arrObjet;
+  }
 }

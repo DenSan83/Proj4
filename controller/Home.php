@@ -217,8 +217,17 @@ class Home
   public function admin()
   {
     if ($_SESSION['user_session']['user_status'] == 'admin'){
+      //get last comments
+      $commentManager = new CommentManager();
+      $lastComments = $commentManager->getLast(5);
+
+      //get flagged
+      
+      //envelopper dans array
+
+      $params = array('lastComments' => $lastComments);
       $myView = new View('adminView');
-      $myView->render();
+      $myView->render($params);
     } else {
       header('Location: '.HOST);
     }
