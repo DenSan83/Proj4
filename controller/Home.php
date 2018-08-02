@@ -14,7 +14,7 @@ class Home
 
   public function post($params)
   {
-    extract($params); //var_dump($params);exit();
+    extract($params);
     $postManager = new PostManager();
     $idExist = (bool) $postManager->getPost($id);
     if ($id > 0 && $idExist) {
@@ -83,7 +83,7 @@ class Home
           $this->post($parametres);
         } else {
           $myView = new View('postView');
-          $myView->redirect($postId.'#'.$comment['id']);
+          $myView->redirect('post/id/'.$postId.'#'.$comment['id']);
         }
       } else {
         $parametres += ['noCaptcha' => 1];
@@ -104,7 +104,7 @@ class Home
         throw new Exception('Impossible d\'ajouter le commentaire !');
     } else {
       $myView = new View('postView');
-      $myView->redirect($postId);
+      $myView->redirect('post/id/'.$postId);
     }
   }
 
@@ -146,7 +146,7 @@ class Home
     }
 
     $myView = new View('postView');
-    $myView->redirect($modified);
+    $myView->redirect('post/id/'.$modified);
   }
 
   public function deleteComment($data)
@@ -158,7 +158,7 @@ class Home
       $reponse = $commentManager->deleteComment($commId);
 
     $myView = new View('postView');
-    $myView->redirect($postId);
+    $myView->redirect('post/id/'.$postId);
   }
 
   public function flagComment($data)
@@ -172,16 +172,17 @@ class Home
     }
 
     $myView = new View('postView');
-    $myView->redirect($postId);
+    $myView->redirect('post/id/'.$postId);
   }
 
   public function login($params)
   {
+    $myView = new View('postView');
     extract($params); //$params = array($login,$password)
     if (isset($login))
     {
       $login = htmlspecialchars($login);
-      $password = htmlspecialchars($password);
+      //$password = htmlspecialchars($password);
 
       if (!empty($password) && !empty($login))
       {
@@ -200,9 +201,9 @@ class Home
           $_SESSION['user_session']['user_email']   = $user['email'];
           $_SESSION['user_session']['user_status']  = $user['status'];
 
-          $myView = new View('postView');
+
           if ($postId !== null){
-            $myView->redirect($postId);
+            $myView->redirect('post/id/'.$postId);
           } else {
             $myView->goHome();
           }
@@ -212,6 +213,7 @@ class Home
         }
       }
     }
+    $myView->goHome();
   }
 
   public function admin()
@@ -220,12 +222,18 @@ class Home
       //get last comments
       $commentManager = new CommentManager();
       $lastComments = $commentManager->getLast(5);
+      //sur quel post? => post_id->post_titre
 
       //get flagged
-      
-      //envelopper dans array
+      $flagged = $commentManager->getFlagged();
+      //var_dump($flagged[0]);exit(); // id, comment_id, flagger, flag_date
+      foreach($flagged as $flagComment){
+        //id, auteur du comment, comment, flagger, date_flagged, supr, unflag
+        //$flagComment['comment_id'], auteur du comment, comment, $flagComment['flagger'], $flagComment['flag_date'], supr, unflag
+      }
 
-      $params = array('lastComments' => $lastComments);
+      //envelopper dans array
+      $params = array('lastComments' => $lastComments,'flagged' => $flagged);
       $myView = new View('adminView');
       $myView->render($params);
     } else {
@@ -249,6 +257,7 @@ class Home
     }
     $errorList = array();
 
+    //verif pseudo
     if(empty($_POST['pseudo'])) {
       $errPseudo = 'Veuillez choisir un nom d\'utilisateur !';
       $errorList += ['errPseudo' => $errPseudo];
@@ -261,6 +270,7 @@ class Home
       }
     }
 
+    //verif email
     if(empty($_POST['email'])) {
       $errEmail = 'Veuillez renseigner un adresse email !';
       $errorList += ['errEmail' => $errEmail];
@@ -303,10 +313,11 @@ class Home
 
     if (empty($errorList)) {
       $loginManager = new LoginManager();
+      $hashed = password_hash($_POST['password'],PASSWORD_DEFAULT, ['cost' => 12]);
       $errClear = $loginManager->newUser(array(
         'pseudo'    => $_POST['pseudo'],
         'email'     => $_POST['email'],
-        'password'  => password_hash($_POST['password'],PASSWORD_DEFAULT)
+        'password'  => $hashed
       ));
 
       if($errClear) {
@@ -327,29 +338,29 @@ class Home
     $user = $loginManager->getUser($_SESSION['user_session']['user_pseudo']);
 
     $myView = new View('editProfile');
+    //$myView->redirect('editProfile');
     $myView->render();
   }
 
   public function updateProfile()
   {
-    $errorList = array();
+    unset($_SESSION['update_err']);
     if(isset($_FILES['avatar']) && !empty($_FILES['avatar']['name'])) {
       $tailleMax = 2097152; // octets pour 2Mo
       $extensionsValides = array('jpg','jpeg','gif','png');
       if($_FILES['avatar']['size'] <= $tailleMax && $_FILES['avatar']['size'] != 0){
         $extensionUpload = strtolower(substr(strrchr($_FILES['avatar']['name'],'.'),1));
-        // strchr: renvoyer extension du fichier après point '.' /
-        // substr : ignorer le caractère "1" de la chaine /
+        // strrchr: renvoyer extension du fichier à partir du point '.' /
+        // substr : ignorer le caractère "1" de la chaine (le point) /
         // strtolower : tout en minuscule /
         if(in_array($extensionUpload,$extensionsValides)){ // voir si l'extensionUpload contient un extensionValide
           $chemin = 'public/images/avatar/'.$_SESSION['user_session']['user_id'].'.'.$extensionUpload;
           $resultat = move_uploaded_file($_FILES['avatar']['tmp_name'],$chemin);
           if($resultat){
             $loginManager = new LoginManager();
-
             $_SESSION['user_session']['user_avatar'] = $_SESSION['user_session']['user_id'].'.'.$extensionUpload;
             $loginManager->avatarUpdate($_SESSION['user_session']['user_avatar']);
-            $user = $loginManager->getUser($_SESSION['user_session']['user_pseudo']);
+            $_SESSION['update_err']['errClear'] = '  Succès ! L\'avatar a été mis à jour.';
           } else {
             $errAvatar = 'Erreur de chargement de photo';
           }
@@ -359,47 +370,61 @@ class Home
       } else {
         $errAvatar = 'Votre photo de profil ne doit pas depasser 2 Mo';
       }
-      if(isset($errAvatar)) $errorList += ['errAvatar' => $errAvatar];
+      if(isset($errAvatar))
+        $_SESSION['update_err'] = array('errAvatar' => $errAvatar);
+
     } else {
 
-      //verifier si pseudo existe:
+      $data = array();
       $loginManager = new LoginManager();
-      if ($_POST['pseudo'] !== $_SESSION['user_session']['user_pseudo']){
-        $pseudoExist = (bool)$loginManager->pseudoCheck($_POST['pseudo']);
-        if ($pseudoExist){
-          $errPseudo = 'Ce nom d\'utilisateur est déjà pris. Veuillez choisir un autre';
-          $errorList += ['errPseudo' => $errPseudo];
+      $data = array();
+      if ($_POST['pseudo'] !== $_SESSION['user_session']['user_pseudo']){       // verif pseudo
+        $pseudo = $_POST['pseudo'];
+        $data += ['pseudo' => $pseudo];
+      }
+      if ($_POST['email'] !== $_SESSION['user_session']['user_email']){         // verif email
+        $email = $_POST['email'];
+        $data += ['email' => $email];
+      }
+      if(!empty($_POST['password'])){                                           //verif password
+        $pwSize = strlen($_POST['password']);
+        if($pwSize >= 6){ // min 6 caractères
+          $hashedPw = password_hash($_POST['password'],PASSWORD_DEFAULT,['cost' => 12]);
+        } else {
+          $errPassword = 'Le mot de passe doit avoir au moins 6 caractères.';
+          $data += ['errPassword' => $errPassword];
         }
+      } else {
+        $hashedPw = null;
       }
-      //verifier si email existe:
-      if ($_POST['email'] !== $_SESSION['user_session']['user_email']){
-        $emailExist = (bool)$loginManager->emailCheck($_POST['email']);
-        if ($emailExist){
-          $errEmail = 'Cet adresse email est déjà pris. Veuillez renseigner un autre';
-          $errorList += ['errEmail' => $errEmail];
-        }
+      if ($_POST['password'] !== $_POST['password2']){                          // verif pw = pw2
+        $errPassword2 = 'Les mots de passe ne se correspondent pas.';
+        $data += ['errPassword2' => $errPassword2];
       }
-      //verifier si password = valide:
-      //verifier si pw = pw2:
-      if ($_POST['password'] !== $_POST['password2']){
-        $errPassword2 = 'Les mots de passe ne se correspondent pas';
-        $errorList += ['errPassword2' => $errPassword2];
-      }
-    }
-      if(empty($errorList)){
-        $loginManager->userUpdate(array(
+
+      $newUser = new User($data);
+      $arrErrors = $newUser->getErrors();
+
+      if(empty($arrErrors)){
+        $userInfos = array(
           'id'        => $_SESSION['user_session']['user_id'],
           'pseudo'    => $_POST['pseudo'],
-          'email'     => $_POST['email'],
-          'password'  => password_hash($_POST['password'],PASSWORD_DEFAULT)
-        ));
+          'email'     => $_POST['email']
+        );
+        if(!empty($hashedPw))
+          $userInfos += ['mdp' => $hashedPw];
+        $loginManager->userUpdate($userInfos);
         $_SESSION['user_session']['user_pseudo']  = $_POST['pseudo'];
         $_SESSION['user_session']['user_email']   = $_POST['email'];
 
         $errClear = '  Succès ! Le profil a été mis à jour.';
-        $errorList += ['errClear' => $errClear];
+        $arrErrors += ['errClear' => $errClear];
       }
-      $myView = new View ('editProfile');
-      $myView->render($errorList);
+
+      $_SESSION['update_err'] = $arrErrors;
+    }
+    $myView = new View();
+    //$myView->render($errorList);
+    $myView->redirect('editProfile');
   }
 }

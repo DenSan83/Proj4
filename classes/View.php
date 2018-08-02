@@ -10,7 +10,7 @@ class View
   const EDIT_PROFILE = VIEW.'editProfile.php';
   const ADMIN_VIEW = VIEW_BCK.'adminView.php';
 
-  public function __construct($template)
+  public function __construct($template = null)
   {
     $this->template = $template;
   }
@@ -43,13 +43,13 @@ class View
 
   public function redirect($route)
   {
-    header('Location: '.HOST.'post/id/'.$route);
-    exit;
+    header('Location: '.HOST.$route);
+    exit();
   }
 
   public function goHome()
   {
     header('Location: '.HOST);
-    exit;
+    exit();
   }
 }

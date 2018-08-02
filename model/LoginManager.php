@@ -53,8 +53,6 @@ class LoginManager extends Manager
     return $user;
   }
 
-
-
   public function loginCount($params)
   {
     extract($params);
@@ -108,10 +106,13 @@ class LoginManager extends Manager
     $db = $this->dbConnect();
 
     $updateUser = $db->prepare('UPDATE membres SET pseudo = :pseudo,email = :email,mdp = :mdp WHERE id = :id ');
+    if(empty($mdp))
+      $updateUser = $db->prepare('UPDATE membres SET pseudo = :pseudo,email = :email WHERE id = :id ');
     $updateUser->bindValue(':id',$id);
     $updateUser->bindValue(':pseudo',$pseudo);
     $updateUser->bindValue(':email',$email);
-    $updateUser->bindValue(':mdp',$password);
+    if(!empty($mdp))
+      $updateUser->bindValue(':mdp',$mdp);
     $updateUser->execute();
   }
 }

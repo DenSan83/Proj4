@@ -98,4 +98,14 @@ class CommentManager extends Manager{
 
     return $arrObjet;
   }
+
+  public function getFlagged()
+  {
+    $db = $this->dbConnect();
+    $req = $db->prepare('SELECT * FROM flagged ORDER BY flag_date DESC');
+    $req->execute();
+    $flagged = $req->fetchAll();
+
+    return $flagged;
+  }
 }
