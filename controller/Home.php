@@ -248,88 +248,65 @@ class Home
     $myView->goHome();
   }
 
-  public function newUser($errorList = null)
+  public function newUser($errors = null)
   {
-    if (!isset($errorList)){
+    if (!isset($errors)){
       $myView = new View('newUser');
       $myView->render();
       exit();
     }
-    $errorList = array();
+    $data = array();
 
-    //verif pseudo
-    if(empty($_POST['pseudo'])) {
-      $errPseudo = 'Veuillez choisir un nom d\'utilisateur !';
-      $errorList += ['errPseudo' => $errPseudo];
+    if(empty($_POST['pseudo'])) {                                               // verif pseudo
+      $data += ['errPseudo' => 'Veuillez choisir un nom d\'utilisateur !'];
     } else {
-      $loginManager = new LoginManager();
-      $pseudoExist = $loginManager->pseudoCheck($_POST['pseudo']);
-      if ($pseudoExist !== 0) {
-        $errPseudo = 'Le nom d\'utilisateur est déjà enregistré. Veuillez choisir un nom d\'utilisateur different';
-        $errorList += ['errPseudo' => $errPseudo];
-      }
+      $data += ['pseudo' => $_POST['pseudo']];
     }
 
-    //verif email
-    if(empty($_POST['email'])) {
-      $errEmail = 'Veuillez renseigner un adresse email !';
-      $errorList += ['errEmail' => $errEmail];
+    if(empty($_POST['email'])) {                                                // verif email
+      $data += ['errEmail' => 'Veuillez renseigner un adresse email !'];
     } else {
-      $loginManager = new LoginManager();
-      $emailExist = $loginManager->emailCheck($_POST['email']);
-      if ($emailExist !== 0) {
-        $errEmail = 'L\'adresse email renseigné est déjà enregistré. Veuillez vous enregistrer avec un email different';
-      } else {
-        if(!filter_var($_POST['email'],FILTER_VALIDATE_EMAIL)){
-          $errEmail = 'Veuillez renseigner un adresse email valide !';
-          $errorList += ['errEmail' => $errEmail];
-        }
-      }
+      $data += ['email' => $_POST['email']];
     }
-
-    if(empty($_POST['email2'])) {
-      $errEmail2 = 'Veuillez confirmer votre adresse email !';
-      $errorList += ['errEmail2' => $errEmail2];
+    if(empty($_POST['email2'])) {                                               // verif email2
+      $data += ['errEmail2' => 'Veuillez confirmer votre adresse email !'];
     } else {
       if($_POST['email'] !== $_POST['email2']){
-        $errEmail2 = 'Les deux adresses email ne se correspondent pas !';
-        $errorList += ['errEmail2' => $errEmail2];
+        $data += ['errEmail2' => 'Les deux adresses email ne se correspondent pas !'];
       }
     }
 
-    if(empty($_POST['password'])) {
-      $errPassword = 'Veuillez introduire un mot de passe !';
-      $errorList += ['errPassword' => $errPassword];
+    if(empty($_POST['password'])) {                                             // verif password
+      $data += ['errPassword' => 'Veuillez introduire un mot de passe !'];
+    } else {
+      if(strlen($_POST['password']) >= 6){ // min 6 caractères
+        $hashedPw = password_hash($_POST['password'],PASSWORD_DEFAULT,['cost' => 12]);
+      } else {
+        $data += ['errPassword' => 'Le mot de passe doit avoir au moins 6 caractères.'];
+      }
     }
-    if(empty($_POST['password2'])) {
-      $errPassword2 = 'Veuillez confirmer votre mot de passe !';
-      $errorList += ['errPassword2' => $errPassword2];
+    if(empty($_POST['password2'])) {                                            // verif password2
+      $data += ['errPassword2' => 'Veuillez confirmer votre mot de passe !'];
     } else {
       if ($_POST['password'] !== $_POST['password2']){
-        $errPassword2 = 'Les mot de passe ne se correspondent pas';
-        $errorList += ['errPassword2' => $errPassword2];
+        $data += ['errPassword2' => 'Les mot de passe ne se correspondent pas'];
       }
     }
 
-    if (empty($errorList)) {
+    $newUser = new User($data);
+    $arrErrors = $newUser->getErrors();
+
+    if(empty($arrErrors)){
       $loginManager = new LoginManager();
-      $hashed = password_hash($_POST['password'],PASSWORD_DEFAULT, ['cost' => 12]);
       $errClear = $loginManager->newUser(array(
         'pseudo'    => $_POST['pseudo'],
         'email'     => $_POST['email'],
-        'password'  => $hashed
+        'password'  => $hashedPw
       ));
-
-      if($errClear) {
-        $errClear = '<b>'.$_POST['pseudo'].'</b>, votre compte a été crée.';
-        $errorList += ['errClear' => $errClear];
-      } else {
-        $errClear = 'Il y a eu un problème de connection, veuillez reesayer ultérieurement';
-      }
-
+      $arrErrors += ['errClear' => '<b>'.$_POST['pseudo'].'</b>, votre compte a été crée.'];
     }
     $myView = new View('newUser');
-    $myView->render($errorList);
+    $myView->render($arrErrors);
   }
 
   public function editProfile()
@@ -338,7 +315,6 @@ class Home
     $user = $loginManager->getUser($_SESSION['user_session']['user_pseudo']);
 
     $myView = new View('editProfile');
-    //$myView->redirect('editProfile');
     $myView->render();
   }
 
@@ -376,30 +352,23 @@ class Home
     } else {
 
       $data = array();
-      $loginManager = new LoginManager();
-      $data = array();
       if ($_POST['pseudo'] !== $_SESSION['user_session']['user_pseudo']){       // verif pseudo
-        $pseudo = $_POST['pseudo'];
-        $data += ['pseudo' => $pseudo];
+        $data += ['pseudo' => $_POST['pseudo']];
       }
       if ($_POST['email'] !== $_SESSION['user_session']['user_email']){         // verif email
-        $email = $_POST['email'];
-        $data += ['email' => $email];
+        $data += ['email' => $_POST['email']];
       }
       if(!empty($_POST['password'])){                                           //verif password
-        $pwSize = strlen($_POST['password']);
-        if($pwSize >= 6){ // min 6 caractères
+        if(strlen($_POST['password']) >= 6){ // min 6 caractères
           $hashedPw = password_hash($_POST['password'],PASSWORD_DEFAULT,['cost' => 12]);
         } else {
-          $errPassword = 'Le mot de passe doit avoir au moins 6 caractères.';
-          $data += ['errPassword' => $errPassword];
+          $data += ['errPassword' => 'Le mot de passe doit avoir au moins 6 caractères.'];
         }
       } else {
         $hashedPw = null;
       }
       if ($_POST['password'] !== $_POST['password2']){                          // verif pw = pw2
-        $errPassword2 = 'Les mots de passe ne se correspondent pas.';
-        $data += ['errPassword2' => $errPassword2];
+        $data += ['errPassword2' => 'Les mots de passe ne se correspondent pas.'];
       }
 
       $newUser = new User($data);
@@ -413,18 +382,17 @@ class Home
         );
         if(!empty($hashedPw))
           $userInfos += ['mdp' => $hashedPw];
+        $loginManager = new LoginManager();
         $loginManager->userUpdate($userInfos);
         $_SESSION['user_session']['user_pseudo']  = $_POST['pseudo'];
         $_SESSION['user_session']['user_email']   = $_POST['email'];
 
-        $errClear = '  Succès ! Le profil a été mis à jour.';
-        $arrErrors += ['errClear' => $errClear];
+        $arrErrors += ['errClear' => '  Succès ! Le profil a été mis à jour.'];
       }
 
       $_SESSION['update_err'] = $arrErrors;
     }
     $myView = new View();
-    //$myView->render($errorList);
     $myView->redirect('editProfile');
   }
 }

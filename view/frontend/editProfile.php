@@ -1,7 +1,5 @@
-<?php $title = 'Modifier mon profil' ?>
 <?php
-if(is_array($params))
-  extract($params);
+$title = 'Modifier mon profil';
 ob_start();
 ?>
 <div class="container row col-9 bg-secondary rounded justify-content-center" style="margin:2em auto; padding:2em">
@@ -62,7 +60,7 @@ ob_start();
     <div class="form-group">
       <label for="password" class="col-sm-6 control-label">Changer mot de passe :</label>
       <div class="col-sm-12">
-        <input type="password" id="password" placeholder="Mot de passe" class="form-control" name="password">
+        <input type="password" id="password" placeholder="Mot de passe (au moins 6 caractères)" class="form-control" name="password">
       </div>
       <?php
       if (isset($_SESSION['update_err']['errPassword'])){
@@ -113,5 +111,8 @@ ob_start();
   }
   ?>
 </div>
-<?php unset($_SESSION['update_err']); $content = ob_get_clean(); ?>
-<?php require(VIEW.'template.php'); ?>
+<?php
+unset($_SESSION['update_err']);
+$content = ob_get_clean();
+require(VIEW.'template.php');
+?>

@@ -1,5 +1,5 @@
-<?php $title = 'Créer une compte utilisateur'; ?>
 <?php
+$title = 'Créer une compte utilisateur';
 if(!empty($params)) extract($params);
 ob_start();
 ?>
@@ -8,9 +8,9 @@ ob_start();
   <form method="post" action="<?= HOST ?>newUser" class="form-horizontal col-10 justify-content-center" role="form">
     <h2 style="margin:0.5em auto;text-align:center">Créez votre compte</h2>
     <div class="form-group">
-      <label for="pseudo" class="col-sm-3 control-label">Pseudo *</label>
+      <label for="pseudo" class="col-sm-6 control-label">Pseudo *</label>
       <div class="col-sm-12">
-        <input type="text" id="pseudo" placeholder="Pseudo" class="form-control" name="pseudo" value="<?php if(isset($_POST['pseudo'])) echo $_POST['pseudo']; ?>" autofocus required>
+        <input type="text" id="pseudo" placeholder="Pseudo" class="form-control" name="pseudo" value="<?php if(isset($_POST['pseudo'])) echo $_POST['pseudo']; ?>" autofocus >
       </div>
       <?php
       if (isset($errPseudo)){
@@ -24,9 +24,9 @@ ob_start();
     </div>
 
     <div class="form-group">
-      <label for="email" class="col-sm-3 control-label">Email* </label>
+      <label for="email" class="col-sm-6 control-label">Email* </label>
         <div class="col-sm-12">
-          <input type="email" id="email" placeholder="Email" class="form-control" name= "email" value="<?php if(isset($_POST['email'])) echo $_POST['email']; ?>" required>
+          <input type="email" id="email" placeholder="Email" class="form-control" name= "email" value="<?php if(isset($_POST['email'])) echo $_POST['email']; ?>" >
         </div>
         <?php
         if (isset($errEmail)){
@@ -39,9 +39,9 @@ ob_start();
         ?>
     </div>
     <div class="form-group">
-      <label for="email2" class="col-sm-3 control-label">Confirmer email* </label>
+      <label for="email2" class="col-sm-6 control-label">Confirmer email* </label>
         <div class="col-sm-12">
-          <input type="email" id="email2" placeholder="Confirmer email" class="form-control" name= "email2" value="<?php if(isset($_POST['email2'])) echo $_POST['email2']; ?>" required>
+          <input type="email" id="email2" placeholder="Confirmer email" class="form-control" name= "email2" value="<?php if(isset($_POST['email2'])) echo $_POST['email2']; ?>" >
         </div>
         <?php
         if (isset($errEmail2)){
@@ -54,9 +54,9 @@ ob_start();
         ?>
     </div>
     <div class="form-group">
-      <label for="password" class="col-sm-3 control-label">Mot de passe*</label>
+      <label for="password" class="col-sm-6 control-label">Mot de passe*</label>
       <div class="col-sm-12">
-        <input type="password" id="password" placeholder="Mot de passe" class="form-control" name="password" required>
+        <input type="password" id="password" placeholder="Mot de passe (au moins 6 caractères)" class="form-control" name="password" >
       </div>
       <?php
       if (isset($errPassword)){
@@ -69,9 +69,9 @@ ob_start();
       ?>
     </div>
     <div class="form-group">
-      <label for="password2" class="col-sm-3 control-label">Confirmer mot de passe*</label>
+      <label for="password2" class="col-sm-6 control-label">Confirmer mot de passe*</label>
       <div class="col-sm-12">
-        <input type="password" id="password2" placeholder="Confirmer mot de passe" class="form-control" name="password2" required>
+        <input type="password" id="password2" placeholder="Confirmer mot de passe" class="form-control" name="password2" >
       </div>
       <?php
       if (isset($errPassword2)){
