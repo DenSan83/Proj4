@@ -5,20 +5,22 @@ class Router
   private $request;
 
   private $routes = [
-                      "home"          => ["controller" => 'Home', "method" => 'listPosts' ],
-                      "post"          => ["controller" => 'Home', "method" => 'post'],
-                      "addComment"    => ["controller" => 'Home', "method" => 'addComment'],
-                      "onlineComment" => ["controller" => 'Home', "method" => 'onlineComment'],
-                      "modifyComment" => ["controller" => 'Home', "method" => 'modifyComment'],
-                      "commentUpdate" => ["controller" => 'Home', "method" => 'commentUpdate'],
-                      "delete"        => ["controller" => 'Home', "method" => 'deleteComment'],
-                      "flagComment"   => ["controller" => 'Home', "method" => 'flagComment'],
-                      "login"         => ["controller" => 'Home', "method" => 'login'],
-                      "logout"        => ["controller" => 'Home', "method" => 'logout'],
-                      "newUser"       => ["controller" => 'Home', "method" => 'newUser'],
-                      "editProfile"   => ["controller" => 'Home', "method" => 'editProfile'],
-                      "updateProfile" => ["controller" => 'Home', "method" => 'updateProfile'],
-                      "admin"         => ["controller" => 'Home', "method" => 'admin'],
+                      "home"          => ["controller" => 'FrontController', "method" => 'listPosts' ],
+                      "post"          => ["controller" => 'FrontController', "method" => 'post'],
+                      "addComment"    => ["controller" => 'FrontController', "method" => 'addComment'],
+                      "newUser"       => ["controller" => 'FrontController', "method" => 'newUser'],
+
+                      "login"         => ["controller" => 'UserController', "method" => 'login'],
+                      "logout"        => ["controller" => 'UserController', "method" => 'logout'],
+                      "onlineComment" => ["controller" => 'UserController', "method" => 'onlineComment'],
+                      "modifyComment" => ["controller" => 'UserController', "method" => 'modifyComment'],
+                      "commentUpdate" => ["controller" => 'UserController', "method" => 'commentUpdate'],
+                      "delete"        => ["controller" => 'UserController', "method" => 'deleteComment'],
+                      "flagComment"   => ["controller" => 'UserController', "method" => 'flagComment'],
+                      "editProfile"   => ["controller" => 'UserController', "method" => 'editProfile'],
+                      "updateProfile" => ["controller" => 'UserController', "method" => 'updateProfile'],
+
+                      "admin"         => ["controller" => 'BackController', "method" => 'admin'],
                     ];
 
   public function __construct($request)

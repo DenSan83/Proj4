@@ -10,7 +10,7 @@ ob_start();
     <div class="form-group">
       <label for="pseudo" class="col-sm-6 control-label">Pseudo *</label>
       <div class="col-sm-12">
-        <input type="text" id="pseudo" placeholder="Pseudo" class="form-control" name="pseudo" value="<?php if(isset($_POST['pseudo'])) echo $_POST['pseudo']; ?>" autofocus >
+        <input type="text" id="pseudo" placeholder="Pseudo" class="form-control" name="pseudo" value="<?php if(isset($_POST['pseudo'])) echo $_POST['pseudo']; ?>" autofocus required>
       </div>
       <?php
       if (isset($errPseudo)){
@@ -26,7 +26,7 @@ ob_start();
     <div class="form-group">
       <label for="email" class="col-sm-6 control-label">Email* </label>
         <div class="col-sm-12">
-          <input type="email" id="email" placeholder="Email" class="form-control" name= "email" value="<?php if(isset($_POST['email'])) echo $_POST['email']; ?>" >
+          <input type="email" id="email" placeholder="Email" class="form-control" name= "email" value="<?php if(isset($_POST['email'])) echo $_POST['email']; ?>" required>
         </div>
         <?php
         if (isset($errEmail)){
@@ -41,7 +41,7 @@ ob_start();
     <div class="form-group">
       <label for="email2" class="col-sm-6 control-label">Confirmer email* </label>
         <div class="col-sm-12">
-          <input type="email" id="email2" placeholder="Confirmer email" class="form-control" name= "email2" value="<?php if(isset($_POST['email2'])) echo $_POST['email2']; ?>" >
+          <input type="email" id="email2" placeholder="Confirmer email" class="form-control" name= "email2" value="<?php if(isset($_POST['email2'])) echo $_POST['email2']; ?>" required>
         </div>
         <?php
         if (isset($errEmail2)){
@@ -56,7 +56,7 @@ ob_start();
     <div class="form-group">
       <label for="password" class="col-sm-6 control-label">Mot de passe*</label>
       <div class="col-sm-12">
-        <input type="password" id="password" placeholder="Mot de passe (au moins 6 caractères)" class="form-control" name="password" >
+        <input type="password" id="password" placeholder="Mot de passe (au moins 6 caractères)" class="form-control" name="password" required>
       </div>
       <?php
       if (isset($errPassword)){
@@ -71,7 +71,7 @@ ob_start();
     <div class="form-group">
       <label for="password2" class="col-sm-6 control-label">Confirmer mot de passe*</label>
       <div class="col-sm-12">
-        <input type="password" id="password2" placeholder="Confirmer mot de passe" class="form-control" name="password2" >
+        <input type="password" id="password2" placeholder="Confirmer mot de passe" class="form-control" name="password2" required>
       </div>
       <?php
       if (isset($errPassword2)){
