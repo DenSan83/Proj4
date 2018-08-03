@@ -26,28 +26,17 @@ class FrontController
       $elmZero = array('avatar' => 'default.png','status' => 'visiteur' );
       $avatarList += [ 0 => $elmZero];
       $loginManager = new LoginManager();
-      for ($i = 1; $i <= $loginManager->usersCount(); $i++)
-      {
+      for ($i = 1; $i <= $loginManager->usersCount(); $i++) {
         $userAv = $loginManager->getAvatar($i);
         $avatarList += [$i => $userAv];
       }
 
       $myView = new View('postView');
       $parametres = array('post' => $post,'comments' => $comments, 'avatarList' => $avatarList);
-      if (isset($noCaptcha)){
-        $noCaptcha = 'Veuillez completer le Captcha !';
-        $parametres += ['commentError' => $noCaptcha];
-      }
-      if (isset($noFields)){
-        $noFields = 'Tous les champs doit etre remplis !';
-        $parametres += ['commentError' => $noFields];
-      }
-      if (isset($impossible)){
-        $impossible = 'Impossible d\'ajouter le commentaire !';
-        $parametres += ['commentError' => $impossible];
-      }
       if (isset($noUser))
         $parametres += ['noUser' => $noUser];
+      if (isset($success))
+        $parametres += ['success' => $success];
 
       $myView->render($parametres);
     } else {
@@ -66,29 +55,25 @@ class FrontController
         $_SERVER["REMOTE_ADDR"],
         $_POST["g-recaptcha-response"]
       );
-      $parametres = array('id' => $postId);
+
       if ($resp != null && $resp->success)
       {
-        $author = $prenom.' '.$nom;
-        if (!empty($author) && !empty($comment)) {
-          $commentManager = new CommentManager();
-          $affectedLines = $commentManager->postComment($postId,$author,$authorId, $comment);
-        } else {
-          $parametres += ['noFields' => 1];
-          $this->post($parametres);
+        if(empty($prenom) || empty($nom) || empty($comment)){
+          $_SESSION['comment']['error'] = 'Veuillez remplir tous les champs';
         }
 
-        if ($affectedLines == false) {
-          $parametres += ['impossible' => 1];
-          $this->post($parametres);
-        } else {
-          $myView = new View('postView');
-          $myView->redirect('post/id/'.$postId.'#'.$comment['id']);
+        if (!isset($_SESSION['comment']['error'])){
+          $author = $prenom.' '.$nom;
+          $authorId = null;
+          $commentManager = new CommentManager();
+          $commentManager->postComment($postId,$author,$authorId, $comment);
+          $_SESSION['comment']['success'] = 1;
         }
       } else {
-        $parametres += ['noCaptcha' => 1];
-        $this->post($parametres);
+        $_SESSION['comment']['error'] = 'Veuillez completer le Captcha !';
       }
+      $myView = new View('postView');
+      $myView->redirect('post/id/'.$postId);
     }
   }
 

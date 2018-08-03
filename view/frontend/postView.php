@@ -1,5 +1,5 @@
 <?php
-extract($params); //var_dump($params);exit();// $params = array($post,$comments,$avatarList)
+extract($params); // $params = array($post,$comments,$avatarList)
 $title = $post->getTitle();
 $postId = $post->getId();
 
@@ -14,11 +14,18 @@ $siteKey = '6LeVFmQUAAAAAGSSMYlzvv-GvhyxhKNymbAAxtWe'; // captcha: clé publique
       <em>le <?= htmlspecialchars($post->getDateFr()) ?></em>
     </div>
   </div>
-    <p> <?=  nl2br(htmlspecialchars($post->getContent())) ?> </p>
+    <p> <?= nl2br(htmlspecialchars($post->getContent())) ?> </p>
 </div>
 
 <h2>Commentaires</h2>
 <?php
+if (isset($_SESSION['comment']['success'])){
+?>
+<div class="container rounded text-white bg-success col-4" style="text-align:center;padding:1em">
+  <span><i class="fas fa-check-circle"></i>&nbsp;&nbsp;</span><span>Votre commentaire à été ajouté !</span>
+</div>
+<?php
+}
 if(empty($comments[0]))
 {
 ?>

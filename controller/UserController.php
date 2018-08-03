@@ -52,17 +52,20 @@ class UserController
   public function onlineComment($params)
   {
     extract($params);
+    if (empty($pseudo)){
+      $_SESSION['comment']['error'] = 'Le commentaire n\'a pas été ajouté. Veuillez reesayer ulterieurement';
+    }
+    if(empty($comment)){
+      $_SESSION['comment']['error'] = 'Veuillez ajouter un commentaire';
+    }
     if (!empty($pseudo) && !empty($comment)) {
       $commentManager = new CommentManager();
-      $affectedLines = $commentManager->postComment($postId,$pseudo,$authorId,$comment);
+      $commentManager->postComment($postId,$pseudo,$authorId,$comment);
+      $_SESSION['comment']['success'] = 1;
     }
 
-    if ($affectedLines === false) {
-        throw new Exception('Impossible d\'ajouter le commentaire !');
-    } else {
-      $myView = new View('postView');
-      $myView->redirect('post/id/'.$postId);
-    }
+    $myView = new View('postView');
+    $myView->redirect('post/id/'.$postId);
   }
 
   public function modifyComment($params)

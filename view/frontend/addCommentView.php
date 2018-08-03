@@ -7,22 +7,22 @@
       <h4>Ajouter un commentaire sans connexion :</h4>
       <input type="hidden" name="postId" value="<?= $post->getId() ?>">
       <div class="form-group">
-        <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom" >
+        <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom" required>
       </div>
       <div class="form-group">
-        <input type="text" class="form-control" id="prenom" name="prenom" placeholder="Prenom" >
+        <input type="text" class="form-control" id="prenom" name="prenom" placeholder="Prenom" required>
       </div>
 
       <div class="form-group">
-        <textarea class="form-control" id="comment" name="comment" rows="3" placeholder="Commentaire" ></textarea>
+        <textarea class="form-control" id="comment" name="comment" rows="3" placeholder="Commentaire" required></textarea>
       </div>
 
       <div class="container-liquid">
         <div class="g-recaptcha col-7 row justify-content-center" data-sitekey="<?= $siteKey ?>" style="margin:0.5em auto; width:305px"></div>
         <?php
-        if(isset($commentError)) { ?>
+        if(isset($_SESSION['comment']['error'])) { ?>
         <div class="noCaptcha bg-danger text-white col-9 rounded row justify-content-center" style="padding:1em; margin:0.5em auto">
-          <span><i class="fas fa-exclamation-triangle"></i>&nbsp;&nbsp;</span><span><?= htmlspecialchars($commentError) ?></span>
+          <span><i class="fas fa-exclamation-triangle"></i>&nbsp;&nbsp;</span><span><?= htmlspecialchars($_SESSION['comment']['error']) ?></span>
         </div>
         <?php } ?>
         <div class="row justify-content-center">
@@ -48,6 +48,13 @@
       </div>
     </form>
     <?php
+    if (isset($_SESSION['comment']['error'])){
+    ?>
+    <div class="container rounded text-white bg-danger col-8" style="text-align:center; margin-bottom:1em">
+      <span><i class="fas fa-exclamation-triangle"></i>&nbsp;&nbsp;</span> <span><?= $_SESSION['comment']['error'] ?></span>
+    </div>
+    <?php
+      }
     }
     ?>
   </div>

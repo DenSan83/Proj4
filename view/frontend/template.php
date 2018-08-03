@@ -124,6 +124,10 @@
         <div class="container-fluid bg-dark text-light" style="height:5em">
           FOOTER
         </div>
+        <?php
+        usleep(1);
+        unset($_SESSION['comment']);
+        ?>
       </footer>
       <script>
           $(".maj").click(function(){
