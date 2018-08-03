@@ -61,7 +61,6 @@ if(empty($comments[0]))
       <p><strong><?= htmlspecialchars($myAvatar['pseudo']) ?></strong></p>
       <p><?= htmlspecialchars($myAvatar['status']) ?></p>
     </div>
-
   </div>
   <div class="container-liquid comment align-self-end col-10">
     <div class="container-liquid row justify-content-end" style="padding:0.5em 1em">

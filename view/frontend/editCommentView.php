@@ -5,19 +5,21 @@ foreach($comments as $comment) {
   if($comment->getId() == (int) $commentId){
 ?>
 <div  class="container rounded row commentBox col-10 col-lg-9 justify-content-between" style="border:1px solid blue; margin:1em auto; padding:0" id="comment<?= $comment->getId() ?>">
-  <div class="container-liquid author col-2 row align-items-center">
-    <div class="container-liquid commentAvatar justify-content-center col-6 offset-3">
+  <div class="container-liquid author col-2 row align-items-center" >
+    <div class="container-liquid commentAvatar col-4 offset-3">
       <?php
       if($comment->getAuthorId()) {
       $myAvatar = $avatarList[$comment->getAuthorId()];
       } else {
-        $myAvatar = 'default.png';
+        $myAvatar = $avatarList[0];
+        $myAvatar['pseudo'] = $comment->getAuthor();
       }
       ?>
-        <img class="rounded-circle" src="<?= HOST ?>public/images/avatar/<?= $myAvatar ?>" alt="avatar user" width="50px" height="50px" style="border:1px solid blue">
+      <img class="rounded-circle" src="<?= HOST ?>public/images/avatar/<?= $myAvatar['avatar'] ?>" alt="avatar user" width="50px" height="50px" style="border:1px solid blue; margin: 0 auto">
     </div>
-    <div class="container col-6 offset-3">
-      <p><strong><?= htmlspecialchars($comment->getAuthor()) ?></strong></p>
+    <div class="container col-6 offset-3 align-items-center">
+      <p><strong><?= htmlspecialchars($myAvatar['pseudo']) ?></strong></p>
+      <p><?= htmlspecialchars($myAvatar['status']) ?></p>
     </div>
   </div>
   <div class="container-liquid comment align-self-end col-10">

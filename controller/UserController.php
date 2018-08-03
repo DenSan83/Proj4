@@ -77,6 +77,8 @@ class UserController
     $comments = $commentManager->getComments($postId);
 
     $avatarList = array();
+    $elmZero = array('avatar' => 'default.png','status' => 'visiteur' );
+    $avatarList += [ 0 => $elmZero];
     $loginManager = new LoginManager();
     for ($i = 1; $i <= $loginManager->usersCount(); $i++)
     {
