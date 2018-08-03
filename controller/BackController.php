@@ -7,24 +7,23 @@ class BackController
       //get last comments
       $commentManager = new CommentManager();
       $lastComments = $commentManager->getLast(5);
-      //sur quel post? => post_id->post_titre
+      $postManager = new PostManager();
 
       //get flagged
       $flagged = $commentManager->getFlagged();
-      //var_dump($flagged[0]);exit(); // id, comment_id, flagger, flag_date
-      foreach($flagged as $flagComment){
-        //id, auteur du comment, comment, flagger, date_flagged, supr, unflag
-        //$flagComment['comment_id'], auteur du comment, comment, $flagComment['flagger'], $flagComment['flag_date'], supr, unflag
-      }
 
       //envelopper dans array
-      $params = array('lastComments' => $lastComments,'flagged' => $flagged);
+      $params = array(
+        'lastComments' => $lastComments,
+        'postManager' => $postManager,
+        'flagged' => $flagged,
+        'commentManager' => $commentManager
+      );
       $myView = new View('adminView');
       $myView->render($params);
     } else {
       $myView = new View();
       $myView->goHome();
-      //header('Location: '.HOST);
     }
   }
 }

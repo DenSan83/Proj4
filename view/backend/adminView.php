@@ -15,7 +15,7 @@ ob_start();
         <thead class="thead-dark">
           <tr>
             <th scope="col">ID</th>
-            <th scope="col" style="width:20%">Auteur</th>
+            <th scope="col" style="width:15%">Auteur</th>
             <th scope="col" style="width:30%">Commentaire</th>
             <th scope="col" style="width:20%">Sur le post...</th>
             <th scope="col">Date</th>
@@ -29,7 +29,7 @@ ob_start();
             <th scope="row"><?= $comment->getId() ?></th>
             <td><?= $comment->getAuthor() ?></td>
             <td style="color:blue"><?= $comment->getComment() ?></td>
-            <td>(titre du post)</td>
+            <td><?= $postManager->getPost($comment->getPostId())->getTitle() ?></td>
             <td>le <?= $comment->getDateFr() ?></td>
           </tr>
           </a>
@@ -48,31 +48,57 @@ ob_start();
   <h4>Nouveaux commentaires signalés</h4>
   <div class="container rounded" style="border:1px solid black; padding:0;overflow:hidden">
     <div class="comments">
-      <table class="table table-hover">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col" style="width:20%">Auteur</th>
-            <th scope="col" style="width:50%">Commentaire</th>
-            <th scope="col">Signalé par</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php
-          foreach ($flagged as $flag) {
-          ?>
-          <tr onclick="window.location='<?= HOST.'post/id/'.$flag['comment_id'] ?>';" style="cursor:pointer">
-            <th scope="row"><?= $flag['id'] ?></th>
-            <td><?= $flag['flagger'] ?></td>
-            <td style="color:blue"><?= $flag['comment_id'] ?></td>
-            <td>le <?= $flag['flag_date'] ?></td>
-          </tr>
-          </a>
-          <?php
-          }
-          ?>
-        </tbody>
+
+      <table class="table">
+        <tr>
+          <td style="padding:0">
+            <table class="table">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col" style="width:5%">ID</th>
+                  <th scope="col" style="width:10%">Auteur</th>
+                  <th scope="col" style="width:40%">Commentaire</th>
+                  <th scope="col" style="width:10%">Signalé par</th>
+                  <th scope="col" style="width:16%">Signalé le...</th>
+                  <th scope="col" style="text-align:center">Enlever</th>
+                  <th scope="col" style="text-align:center">Effacer</th>
+                </tr>
+              </thead>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:0">
+            <div class="" style="max-height:15em; overflow:auto;">
+              <table class="table">
+                <tbody>
+                  <?php
+                  foreach ($flagged as $flag) {
+                  ?>
+                  <tr>
+                    <th scope="row" style="width:5%"><?= $flag['id'] ?></th>
+                    <td style="width:10%"><?= $commentManager->getComment($flag['comment_id'])['author'] ?></td>
+                    <td onclick="window.location='<?= HOST.'post/id/'.$commentManager->getComment($flag['comment_id'])['post_id'].'#comment'.$flag['comment_id'] ?>';" style="color:blue;cursor:pointer;width:40%"><?= $commentManager->getComment($flag['comment_id'])['comment'] ?></td>
+                    <td style="width:10%"><?= $flag['flagger'] ?></td>
+                    <td style="width:16%"><?= $flag['flag_date'] ?></td>
+                    <td onclick="window.location='#';" style="cursor:pointer" align="center"><i class="fas fa-thumbs-up text-info"></i></td>
+                    <td onclick="window.location='#';" style="cursor:pointer" align="center"><i class="fas fa-thumbs-down text-danger"></i></td>
+                  </tr>
+                  </a>
+                  <?php
+                  }
+                  ?>
+                </tbody>
+              </table>
+            </div>
+          </td>
+        </tr>
       </table>
+
+
+
+
+
     </div>
   </div>
 </div>

@@ -104,8 +104,17 @@ class CommentManager extends Manager{
     $db = $this->dbConnect();
     $req = $db->prepare('SELECT * FROM flagged ORDER BY flag_date DESC');
     $req->execute();
-    $flagged = $req->fetchAll();
 
-    return $flagged;
+    return $req->fetchAll();
+  }
+
+  public function getComment($id)
+  {
+    $db = $this->dbConnect();
+    $req = $db->prepare('SELECT * FROM comments WHERE id = :id');
+    $req->bindValue(':id',$id);
+    $req->execute();
+
+    return $req->fetch();
   }
 }
