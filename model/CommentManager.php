@@ -117,4 +117,17 @@ class CommentManager extends Manager{
 
     return $req->fetch();
   }
+
+  public function unflag($id)
+  {
+    $db = $this->dbConnect();
+    $reqComm = $db->prepare('UPDATE comments SET flag = :flag WHERE id = :id');
+    $reqComm->bindValue(':flag',0);
+    $reqComm->bindValue(':id',$id);
+    $reqComm->execute();
+
+    $reqFlag = $db->prepare('DELETE FROM flagged WHERE comment_id = :id');
+    $reqFlag->bindValue(':id',$id);
+    $reqFlag->execute();
+  }
 }

@@ -26,4 +26,27 @@ class BackController
       $myView->goHome();
     }
   }
+
+  public function unflag()
+  {
+    $commentManager = new CommentManager();
+    $commentManager->unflag($_POST['commentId']);
+
+    $myView = new View();
+    $myView->redirect('admin');
+  }
+
+  public function deleteFlagged()
+  {
+    if($_SESSION['user_session']['user_status'] == 'admin'){
+      $commentManager = new CommentManager();
+      $commentManager->unflag($_POST['deleteId']);
+      $commentManager->deleteComment($_POST['deleteId']);
+
+      $myView = new View();
+      $myView->redirect('admin');
+    } else {
+      echo '404';
+    }
+  }
 }

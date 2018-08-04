@@ -21,6 +21,8 @@ class Router
                       "updateProfile" => ["controller" => 'UserController', "method" => 'updateProfile'],
 
                       "admin"         => ["controller" => 'BackController', "method" => 'admin'],
+                      "unflag"        => ["controller" => 'BackController', "method" => 'unflag'],
+                      "delAdmin"      => ["controller" => 'BackController', "method" => 'deleteFlagged'],
                     ];
 
   public function __construct($request)

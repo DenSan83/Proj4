@@ -57,7 +57,7 @@ ob_start();
                 <tr>
                   <th scope="col" style="width:5%">ID</th>
                   <th scope="col" style="width:10%">Auteur</th>
-                  <th scope="col" style="width:40%">Commentaire</th>
+                  <th scope="col" style="width:38%">Commentaire</th>
                   <th scope="col" style="width:10%">Signalé par</th>
                   <th scope="col" style="width:16%">Signalé le...</th>
                   <th scope="col" style="text-align:center">Enlever</th>
@@ -69,22 +69,86 @@ ob_start();
         </tr>
         <tr>
           <td style="padding:0">
-            <div class="" style="max-height:15em; overflow:auto;">
+            <?php
+            if(empty($flagged)){
+            ?>
+            <div class="container rounded bg-info col-6 text-white">
+              <p style="text-align:center">Il n'y a pas des commentaires signalés pour l'instant. Excellent !</p>
+            </div>
+            <?php
+            }
+            ?>
+            <div class="" style="min-height:8em;height:10em;overflow:auto;resize:vertical">
               <table class="table">
                 <tbody>
                   <?php
                   foreach ($flagged as $flag) {
                   ?>
                   <tr>
-                    <th scope="row" style="width:5%"><?= $flag['id'] ?></th>
+                    <th scope="row" style="width:5%"><?= $flag['comment_id'] ?></th>
                     <td style="width:10%"><?= $commentManager->getComment($flag['comment_id'])['author'] ?></td>
-                    <td onclick="window.location='<?= HOST.'post/id/'.$commentManager->getComment($flag['comment_id'])['post_id'].'#comment'.$flag['comment_id'] ?>';" style="color:blue;cursor:pointer;width:40%"><?= $commentManager->getComment($flag['comment_id'])['comment'] ?></td>
+                    <td onclick="window.location='<?= HOST.'post/id/'.$commentManager->getComment($flag['comment_id'])['post_id'].'#comment'.$flag['comment_id'] ?>';" style="color:blue;cursor:pointer;width:40%">
+                      <?= $commentManager->getComment($flag['comment_id'])['comment'] ?>
+                    </td>
                     <td style="width:10%"><?= $flag['flagger'] ?></td>
                     <td style="width:16%"><?= $flag['flag_date'] ?></td>
-                    <td onclick="window.location='#';" style="cursor:pointer" align="center"><i class="fas fa-thumbs-up text-info"></i></td>
-                    <td onclick="window.location='#';" style="cursor:pointer" align="center"><i class="fas fa-thumbs-down text-danger"></i></td>
+                    <td align="center">
+                      <a data-toggle="modal" href="#unflag" class="btn btn-link"><i class="fas fa-thumbs-up text-info"></i></a>
+                    </td>
+                    <td align="center">
+                      <a data-toggle="modal" href="#delAdmin" class="btn btn-link"><i class="fas fa-thumbs-down text-danger"></i>
+                    </td>
+
+
+
                   </tr>
-                  </a>
+
+                  <!-- modale unflag -->
+                  <div class="modal fade" id="unflag" tabindex="-1" role="dialog" aria-labelledby="unflagLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Enlever le signalement</h4>
+                                <button type="button" class="close" aria-hidden="true" data-dismiss="modal">×</button>
+                            </div>
+                            <div class="modal-body">
+                                <p><b><?= $commentManager->getComment($flag['comment_id'])['comment'] ?></b></p>
+                                <p>Êtes-vous sûr  de vouloir enlever le signalement de ce commentaire ?</p>
+                            </div>
+                            <div class="modal-footer">
+                              <form action="<?= HOST.'unflag' ?>" method="post">
+                                <input type="hidden" name="commentId" value="<?= $flag['comment_id'] ?>">
+                                <button class="btn btn-primary" type="submit"><i class="icon icon-check icon-lg"></i> Enlever</button>
+                              </form>
+                              <button class="btn btn-inverse" type="button" data-dismiss="modal"><i class="icon icon-times icon-lg"></i> Fermer</button>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+
+                  <!-- modale delete -->
+                  <div class="modal fade" id="delAdmin" tabindex="-1" role="dialog" aria-labelledby="delAdminLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Effacer le commentaire</h4>
+                                <button type="button" class="close" aria-hidden="true" data-dismiss="modal">×</button>
+                            </div>
+                            <div class="modal-body">
+                                <p><b><?= $commentManager->getComment($flag['comment_id'])['comment'] ?></b></p>
+                                <p>Êtes-vous sûr  de vouloir effacer ce commentaire ?</p>
+                            </div>
+                            <div class="modal-footer">
+                              <form action="<?= HOST.'delAdmin' ?>" method="post">
+                                <input type="hidden" name="deleteId" value="<?= $flag['comment_id'] ?>">
+                                <button class="btn btn-primary" type="submit"><i class="icon icon-check icon-lg"></i> Effacer</button>
+                              </form>
+                              <button class="btn btn-inverse" type="button" data-dismiss="modal"><i class="icon icon-times icon-lg"></i> Fermer</button>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+
                   <?php
                   }
                   ?>
