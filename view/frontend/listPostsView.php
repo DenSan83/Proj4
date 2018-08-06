@@ -18,7 +18,7 @@ foreach($params as $post){
         <h5><em>le <?= htmlspecialchars($post->getDateFr()) ?></em></h5>
     </div>
   </div>
-  <p> <?=  nl2br(htmlspecialchars($post->getShortContent(60))) ?> </p>
+  <p> <?=  htmlspecialchars_decode($post->getShortContent(60)) ?> </p>
   <em><a href="<?= HOST ?>post/id/<?= $post->getId() ?>">Lire la suite >></a></em>
 </div>
   <?php

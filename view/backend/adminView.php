@@ -98,9 +98,6 @@ ob_start();
                     <td align="center">
                       <a data-toggle="modal" href="#delAdmin" class="btn btn-link"><i class="fas fa-thumbs-down text-danger"></i>
                     </td>
-
-
-
                   </tr>
 
                   <!-- modale unflag -->
@@ -159,19 +156,19 @@ ob_start();
         </tr>
       </table>
 
-
-
-
-
     </div>
   </div>
 </div>
 
+<div class="container col-10" style="margin:2em auto">
+  <h4>Ajouter nouveau post</h4>
+  <form method="post" action="adminPost" enctype="multipart/form-data">
+    <input class="form-control" type="text" name="postTitle" placeholder="Titre" style="margin-bottom:1em">
+    <textarea id="editor" name="newPost"></textarea>
 
-<fieldset class="container">
-  <legend>Ajouter nouveau Post</legend>
-  <textarea name="name" rows="8" cols="80"></textarea>
-</fieldset>
+    <button class="form-control btn-info rounded" type="submit" style="margin-top:1em">Créer nouveau post</button>
+  </form>
+</div>
 
 <?php $content = ob_get_clean(); ?>
 <?php require(VIEW.'template.php'); ?>

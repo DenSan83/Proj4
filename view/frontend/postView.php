@@ -14,7 +14,7 @@ $siteKey = '6LeVFmQUAAAAAGSSMYlzvv-GvhyxhKNymbAAxtWe'; // captcha: clé publique
       <em>le <?= htmlspecialchars($post->getDateFr()) ?></em>
     </div>
   </div>
-    <p> <?= nl2br(htmlspecialchars($post->getContent())) ?> </p>
+    <p> <?= htmlspecialchars_decode($post->getContent()) ?> </p>
 </div>
 
 <h2>Commentaires</h2>

@@ -23,6 +23,7 @@ class Router
                       "admin"         => ["controller" => 'BackController', "method" => 'admin'],
                       "unflag"        => ["controller" => 'BackController', "method" => 'unflag'],
                       "delAdmin"      => ["controller" => 'BackController', "method" => 'deleteFlagged'],
+                      "adminPost"     => ["controller" => 'BackController', "method" => 'newPost'],
                     ];
 
   public function __construct($request)

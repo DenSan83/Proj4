@@ -49,4 +49,13 @@ class BackController
       echo '404';
     }
   }
+
+  public function newPost()
+  {
+    $postManager = new PostManager();
+    $postManager->newPost($_POST['postTitle'],$_POST['newPost']);
+
+    $myView = new View();
+    $myView->goHome();
+  }
 }
