@@ -5,13 +5,36 @@ extract($params);
 ob_start();
 ?>
 
-
 <div class="container" style="margin:2em auto">
-  <h4>Editer post (ID : <?= $id ?>)</h4>
-  <h5>
-    <a href="<?= HOST ?>admin">Retour</a> ||
-    <a href="<?= HOST.'post/id/'.$id ?>">Aller au post</a>
+  <h5 class="rounded" style="background-color:#f5f5f5;text-align:center">
+    <a href="<?= HOST ?>admin"><i class="fas fa-arrow-circle-left"></i> Retour</a> ||
+    <a href="<?= HOST.'post/id/'.$id ?>"><i class="fas fa-arrow-circle-right"></i> Aller au post</a> ||
+    <a data-toggle="modal" href="#delPost"><i class="far fa-trash-alt"></i> Effacer ce post</a>
   </h5>
+
+  <!-- modale delPost -->
+  <div class="modal fade" id="delPost" tabindex="-1" role="dialog" aria-labelledby="delPostLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Effacer le post</h4>
+                <button type="button" class="close" aria-hidden="true" data-dismiss="modal">×</button>
+            </div>
+            <div class="modal-body">
+                <p>Êtes-vous sûr  de vouloir effacer ce post ?</p>
+            </div>
+            <div class="modal-footer">
+              <form action="<?= HOST.'delPost' ?>" method="post">
+                <input type="hidden" name="delId" value="<?= $id ?>">
+                <button class="btn btn-primary" type="submit"><i class="icon icon-check icon-lg"></i> Effacer</button>
+              </form>
+              <button class="btn btn-inverse" type="button" data-dismiss="modal"><i class="icon icon-times icon-lg"></i> Fermer</button>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <h4>Editer post (ID : <?= $id ?>)</h4>
   <form method="post" action="<?= HOST.'modifyPost' ?>" enctype="multipart/form-data">
     <h4>Titre</h4>
     <input class="form-control" type="text" name="postTitle" placeholder="Titre" value="<?= $title ?>" style="margin-bottom:1em">

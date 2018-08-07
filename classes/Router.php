@@ -26,6 +26,7 @@ class Router
                       "adminPost"     => ["controller" => 'BackController', "method" => 'newPost'],
                       "editPost"      => ["controller" => 'BackController', "method" => 'editPost'],
                       "modifyPost"    => ["controller" => 'BackController', "method" => 'modifyPost'],
+                      "delPost"       => ["controller" => 'BackController', "method" => 'delPost'],
                     ];
 
   public function __construct($request)

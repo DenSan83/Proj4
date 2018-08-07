@@ -133,4 +133,19 @@ class BackController
     $myView = new View();
     $myView->redirect('editPost/id/'.$_POST['postId']);
   }
+
+  public function delPost()
+  {
+    var_dump($_POST);
+    if ($_SESSION['user_session']['user_status'] == 'admin'){
+      $postManager = new PostManager();
+      $postManager->delPost($_POST['delId']);
+
+      $myView = new View();
+      $myView->redirect('admin');
+    } else {
+      $myView = new View();
+      $myView->goHome();
+    }
+  }
 }

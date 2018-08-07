@@ -46,6 +46,14 @@ class PostManager extends Manager{
     $req->bindValue(':content',$content);
     if (!empty($image))
       $req->bindValue(':image',$image);
-    $test = $req->execute();
+    $req->execute();
+  }
+
+  public function delPost($id)
+  {
+    $db = $this->dbConnect();
+    $req = $db->prepare('DELETE FROM posts WHERE id = :id');
+    $req->bindValue(':id',$id);
+    $req->execute();
   }
 }

@@ -178,7 +178,7 @@ ob_start();
     {
     ?>
     <form class="" action="<?= HOST.'editPost/id/'.$post->getId() ?>" method="post">
-      <button type="submit" name="post"><?= $post->getTitle() ?></button>
+      <button type="submit" name="post"><?= $post->getTitle() ?> (Post ID : <?= $post->getId() ?>)</button>
     </form>
 
     <?php
