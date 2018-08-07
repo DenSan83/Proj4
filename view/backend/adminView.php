@@ -160,7 +160,7 @@ ob_start();
   </div>
 </div>
 
-<div class="container col-10" style="margin:2em auto">
+<div class="container" style="margin:2em auto">
   <h4>Ajouter nouveau post</h4>
   <form method="post" action="adminPost" enctype="multipart/form-data">
     <input class="form-control" type="text" name="postTitle" placeholder="Titre" style="margin-bottom:1em">
@@ -168,6 +168,24 @@ ob_start();
 
     <button class="form-control btn-info rounded" type="submit" style="margin-top:1em">Créer nouveau post</button>
   </form>
+</div>
+
+<div class="container col-10">
+  <h4>Editer un post :</h4>
+  <div class="container">
+    <?php
+    foreach($postManager->getPosts() as $post)
+    {
+    ?>
+    <form class="" action="<?= HOST.'editPost/id/'.$post->getId() ?>" method="post">
+      <button type="submit" name="post"><?= $post->getTitle() ?></button>
+    </form>
+
+    <?php
+    }
+
+    ?>
+  </div>
 </div>
 
 <?php $content = ob_get_clean(); ?>

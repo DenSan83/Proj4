@@ -4,15 +4,17 @@ class Post
   private $_id,
           $_title,
           $_content,
+          $_image,
           $_creation_date_fr;
 
   public function getId()           { return $this->_id; }
   public function getTitle()        { return $this->_title; }
   public function getContent()      { return $this->_content; }
+  public function getImage()        { return $this->_image; }
   public function getCreationDate() { return $this->_creation_date_fr; }
 
   public function __construct($data)
-  {
+  { 
     $this->hydrate($data);
   }
 
@@ -43,6 +45,11 @@ class Post
   public function setContent($content)
   {
      $this->_content = nl2br(htmlspecialchars($content));
+  }
+
+  public function setImage($image)
+  {
+     $this->_image = $image;
   }
 
   public function setCreation_date_fr($date)

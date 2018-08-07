@@ -136,6 +136,7 @@
         <?php
         usleep(1);
         unset($_SESSION['comment']);
+        unset($_SESSION['error']);
         ?>
       </footer>
       <script>
