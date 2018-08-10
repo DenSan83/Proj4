@@ -2,7 +2,7 @@
 class CommentManager extends Manager{
   public function getComments($postId){
     $db = $this->dbConnect();
-    $req = $db->prepare('SELECT id, post_id, author, author_id, comment, DATE_FORMAT(date_com, "%d/%m/%Y à %H:%i") AS comment_date_fr FROM comments WHERE post_id = :id ORDER BY date_com');
+    $req = $db->prepare('SELECT id, post_id, author, author_id, comment, date_com FROM comments WHERE post_id = :id ORDER BY date_com');
     $req->bindValue(':id',$postId);
     $req->execute();
     $comments = $req->fetchAll();
@@ -87,7 +87,7 @@ class CommentManager extends Manager{
   public function getLast($num)
   {
     $db = $this->dbConnect();
-    $req = $db->prepare('SELECT id, post_id, author, author_id, comment, DATE_FORMAT(date_com, "%d/%m/%Y à %H:%i") AS comment_date_fr FROM comments ORDER BY date_com DESC LIMIT '.(int)$num);
+    $req = $db->prepare('SELECT id, post_id, author, author_id, comment, date_com FROM comments ORDER BY date_com DESC LIMIT '.(int)$num);
     $req->execute();
     $comments = $req->fetchAll();
     $arrObjet = array();

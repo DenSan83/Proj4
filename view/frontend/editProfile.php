@@ -2,7 +2,7 @@
 $title = 'Modifier mon profil';
 ob_start();
 ?>
-<div class="container row col-9 bg-secondary rounded justify-content-center" style="margin:2em auto; padding:2em">
+<div class="container row col-9 bg-secondary rounded justify-content-center" style="margin:2em auto;margin-top:12em;padding:2em">
   <form method="post" action="<?= HOST ?>updateProfile" enctype="multipart/form-data" class="form-horizontal col-10 justify-content-center" role="form">
     <h2 style="margin:0.5em auto;text-align:center">Modifier mon profil</h2>
 

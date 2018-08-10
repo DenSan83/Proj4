@@ -18,21 +18,23 @@
         tinymce.init({
         selector: '#editor',
         height: 300,
-        theme: 'modern',
-        plugins: 'lists advlist wordcount',
+        plugins: 'lists advlist wordcount textcolor',
+        toolbar: 'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist | forecolor',
+        branding: false,
+        forced_root_blocks : false,
         });
       </script>
     </head>
 
     <body>
-      <header style="background-color:rgb(0,0,255)">
+      <header class="container-fluid" style="box-shadow:0 4px 4px rgba(0,0,0,0.2);position:absolute;top:0;background-color:rgba(0,0,0,0.5);width:100%;z-index:1">
         <nav class="container-fluid row sticky-top justify-content-between" style="padding:1em">
-          <a class="navbar-brand text-dark col-5" href="<?= HOST ?>">
-            <div class="rounded col-sm-12" style="margin:1em; background-color:rgba(255,255,255,0.4)">
-              <h1 style="font-size:3vw;" >Billet Simple pour Alaska</h1>
+          <a class="navbar-brand text-dark col-7 col-sm-6" href="<?= HOST ?>">
+            <div class="rounded" style="margin:1em;padding:0.5em;background-color:rgba(255,255,255,0.6)">
+              <h1 style="font-size:2.8vw;color:#29487d;text-align:center" >Billet Simple pour Alaska</h1>
             </div>
           </a>
-          <div class="container row col-sm-2 dropdown">
+          <div class="user">
             <?php
             if(empty($_SESSION['user_session'])){ // sans session
             ?>

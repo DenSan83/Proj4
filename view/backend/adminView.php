@@ -5,9 +5,9 @@ extract($params);
 ob_start();
 ?>
 
-<h1>Session Admin</h1>
+<h1 style="text-align:center;text-decoration:underline;margin:1em auto;margin-top:4.5em">Espace Administrateur</h1>
 
-<div class="container">
+<div class="container rounded" style="border:1px solid black;margin:1em auto;padding:1em">
   <h4>Derniers 5 commentaires</h4>
   <div class="container rounded" style="border:1px solid black; padding:0;overflow:hidden">
     <div class="comments">
@@ -30,7 +30,7 @@ ob_start();
             <td><?= $comment->getAuthor() ?></td>
             <td style="color:blue"><?= $comment->getComment() ?></td>
             <td><?= $postManager->getPost($comment->getPostId())->getTitle() ?></td>
-            <td>le <?= $comment->getDateFr() ?></td>
+            <td>le <?= $comment->getDateCom() ?></td>
           </tr>
           </a>
           <?php
@@ -41,10 +41,9 @@ ob_start();
     </div>
   </div>
 </div>
+</br>
 
-</br></br>
-
-<div class="container">
+<div class="container rounded" style="border:1px solid black;margin:1em auto;padding:1em">
   <h4>Nouveaux commentaires signalés</h4>
   <div class="container rounded" style="border:1px solid black; padding:0;overflow:hidden">
     <div class="comments">
@@ -78,7 +77,7 @@ ob_start();
             <?php
             }
             ?>
-            <div class="" style="min-height:8em;height:10em;overflow:auto;resize:vertical">
+            <div style="min-height:2em;height:5em;overflow:auto;resize:vertical">
               <table class="table">
                 <tbody>
                   <?php
@@ -159,8 +158,26 @@ ob_start();
     </div>
   </div>
 </div>
+</br>
 
-<div class="container" style="margin:2em auto">
+<div class="container rounded" style="border:1px solid black;margin:1em auto;padding:1em">
+  <h4>Editer un post :</h4>
+  <div class="container">
+    <?php
+    foreach($postManager->getPosts() as $post)
+    {
+    ?>
+    <form class="" action="<?= HOST.'editPost/id/'.$post->getId() ?>" method="post" style="margin:0.5em auto">
+      <button class="btn-info container form-control"type="submit" name="post"><?= $post->getTitle() ?> (Post ID : <?= $post->getId() ?>)</button>
+    </form>
+    <?php
+    }
+    ?>
+  </div>
+</div>
+</br>
+
+<div class="container rounded" style="margin:2em auto;border:1px solid black;padding:1em">
   <h4>Ajouter nouveau post</h4>
   <form method="post" action="adminPost" enctype="multipart/form-data">
     <input class="form-control" type="text" name="postTitle" placeholder="Titre" style="margin-bottom:1em">
@@ -168,24 +185,6 @@ ob_start();
 
     <button class="form-control btn-info rounded" type="submit" style="margin-top:1em">Créer nouveau post</button>
   </form>
-</div>
-
-<div class="container col-10">
-  <h4>Editer un post :</h4>
-  <div class="container">
-    <?php
-    foreach($postManager->getPosts() as $post)
-    {
-    ?>
-    <form class="" action="<?= HOST.'editPost/id/'.$post->getId() ?>" method="post">
-      <button type="submit" name="post"><?= $post->getTitle() ?> (Post ID : <?= $post->getId() ?>)</button>
-    </form>
-
-    <?php
-    }
-
-    ?>
-  </div>
 </div>
 
 <?php $content = ob_get_clean(); ?>

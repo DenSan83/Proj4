@@ -1,23 +1,24 @@
 <?php
 extract($params); // $params = array($post,$comments,$avatarList)
 $title = $post->getTitle();
-$postId = $post->getId();
 
 ob_start();
 $siteKey = '6LeVFmQUAAAAAGSSMYlzvv-GvhyxhKNymbAAxtWe'; // captcha: clé publique ?>
-<div class="rounded container news" style="border:1px solid black; margin:1em auto;">
-  <div class="container-liquid row justify-content-between bg-dark text-white" style="padding:0.5em">
-    <div class="container row align-items-start col-4">
-      <h3> <?= htmlspecialchars($post->getTitle()) ?> </h3>
-    </div>
-    <div class="container row align-items-end col-3">
-      <em>le <?= htmlspecialchars($post->getDateFr()) ?></em>
-    </div>
+<div class="container rounded news" style="border:1px solid black; margin:2em auto;margin-top:12em;padding:0;overflow:hidden">
+  <div class="container-liquid">
+    <img src="<?=HOST.'public/images/post/'.$post->getImage() ?>" alt="" style="width:100%">
   </div>
+  <div class="container-liquid row justify-content-between align-items-center bg-dark text-white" style="padding:1em">
+    <h3 class="container row align-items-start col-4" style="margin-left:1em;padding:0"> <?= htmlspecialchars($post->getTitle()) ?> </h3>
+    <em class="container row justify-content-end col-3" style="margin-right:1em;padding:0">le <?= $post->getCreationDate() ?></em>
+  </div>
+  <div style="padding:1em">
     <p> <?= htmlspecialchars_decode($post->getContent()) ?> </p>
+  </div>
 </div>
-
-<h2>Commentaires</h2>
+<div class="container">
+  <h2>Commentaires</h2>
+</div>
 <?php
 if (isset($_SESSION['comment']['success'])){
 ?>
@@ -29,7 +30,7 @@ if (isset($_SESSION['comment']['success'])){
 if(empty($comments[0]))
 {
 ?>
-<div class="container rounded bg-info text-white justify-content-center" style="height:3em;margin:2em auto">
+<div class="container rounded bg-info text-white justify-content-center align-items-center" style="margin:2em auto;padding:0.1em">
   <p class="col-5" style="margin:1em auto">Ce post ne contient pas encore des commentaires.</p>
 </div>
 <?php
@@ -37,8 +38,7 @@ if(empty($comments[0]))
   foreach ($comments as $comment)
   {
     if (isset($commentId) && $comment->getId() == $commentId) // when modifyComment($commentId)
-    {
-      // modifier commentaire
+    { // modifier commentaire
       $editing = $comment;
       echo $editCommentView;
     } else {
@@ -46,7 +46,7 @@ if(empty($comments[0]))
 ?>
 <div class="container rounded row commentBox col-10 col-lg-9 justify-content-between" style="border:1px solid blue; margin:1em auto; padding:0" id="comment<?= $comment->getId() ?>">
   <div class="container-liquid author col-2 row align-items-center" >
-    <div class="container-liquid commentAvatar col-4 offset-3">
+    <div class="container-liquid commentAvatar col-12" style="text-align:center;margin-top:0.5em">
       <?php
       if($comment->getAuthorId()) {
       $myAvatar = $avatarList[$comment->getAuthorId()];
@@ -57,14 +57,14 @@ if(empty($comments[0]))
       ?>
       <img class="rounded-circle" src="<?= HOST ?>public/images/avatar/<?= $myAvatar['avatar'] ?>" alt="avatar user" width="50px" height="50px" style="border:1px solid blue; margin: 0 auto">
     </div>
-    <div class="container col-6 offset-3 align-items-center">
-      <p><strong><?= htmlspecialchars($myAvatar['pseudo']) ?></strong></p>
-      <p><?= htmlspecialchars($myAvatar['status']) ?></p>
+    <div class="container col-12 align-items-center">
+      <p style="text-align:center;margin-bottom:0"><strong><?= htmlspecialchars($myAvatar['pseudo']) ?></strong></p>
+      <p style="text-align:center"><?= htmlspecialchars($myAvatar['status']) ?></p>
     </div>
   </div>
   <div class="container-liquid comment align-self-end col-10">
     <div class="container-liquid row justify-content-end" style="padding:0.5em 1em">
-      <p class="date-time"> <i class="far fa-clock"></i> le <?= htmlspecialchars($comment->getDateFr()) ?></p>
+      <p class="date-time"> <i class="far fa-clock"></i> le <?= $comment->getDateCom() ?></p>
     </div>
     <p><?=  nl2br(htmlspecialchars($comment->getComment())) ?></p>
     <hr/ style="margin-bottom:0">
@@ -104,6 +104,12 @@ if(empty($comments[0]))
         <?php
         }
         ?>
+      </div>
+      <?php
+      } else {
+      ?>
+      <div class="container liquid" style="justify-content:right">
+        <p style="text-align:right;color:blue">Pour avoir accès aux options des commentaires, <a href="<?=HOST.'newUser'?>">abonnez-vous !</a></p>
       </div>
       <?php
       }

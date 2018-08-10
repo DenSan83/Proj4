@@ -4,9 +4,9 @@ if(!empty($params)) extract($params);
 ob_start();
 ?>
 
-<div class="container row col-9 bg-secondary rounded justify-content-center" style="margin:2em auto; padding:2em">
+<div class="container row col-9 bg-secondary rounded justify-content-center" style="margin:2em auto;margin-top:12em;padding:2em">
   <form method="post" action="<?= HOST ?>newUser" class="form-horizontal col-10 justify-content-center" role="form">
-    <h2 style="margin:0.5em auto;text-align:center">Créez votre compte</h2>
+    <h2 class="text-primary" style="margin:0.5em auto;text-align:center"><b>Créez votre compte</b></h2>
     <div class="form-group">
       <label for="pseudo" class="col-sm-6 control-label">Pseudo *</label>
       <div class="col-sm-12">

@@ -83,7 +83,6 @@ class BackController
 
   public function modifyPost()
   {
-    //var_dump($_FILES,$_POST);exit();
     if(isset($_FILES['postImg']) && !empty($_FILES['postImg']['name'])) {
       $tailleMax = 2097152; // octets pour 2Mo
       $extensionsValides = array('jpg','jpeg','gif','png');
@@ -92,11 +91,12 @@ class BackController
         // strrchr: renvoyer extension du fichier à partir du point '.' /
         // substr : ignorer le caractère "1" de la chaine (le point) /
         // strtolower : tout en minuscule /
+        $newName = substr_replace($_FILES['postImg']['name'], '',-4);
         if(in_array($extensionUpload,$extensionsValides)){ // voir si l'extensionUpload contient un extensionValide
-          $chemin = 'public/images/post/post'.$_POST['postId'].'.'.$extensionUpload;
+          $chemin = 'public/images/post/'.$newName.'.'.$extensionUpload;
           $resultat = move_uploaded_file($_FILES['postImg']['tmp_name'],$chemin);
           if($resultat){
-            $image = 'post'.$_POST['postId'].'.'.$extensionUpload;
+            $image = $newName.'.'.$extensionUpload;
             $data = array(
               'id' => $_POST['postId'],
               'title' => $_POST['postTitle'],
@@ -118,10 +118,12 @@ class BackController
       if(isset($errImage))
         $_SESSION['error']['image'] = array('errImage' => $errImage);
     } else {
+      //$content = str_replace('<p>&nbsp;</p>','',$_POST['newPost']);
+      $content = str_replace("\r\n",'',$_POST['newPost']);
       $data = array(
         'id' => $_POST['postId'],
         'title' => $_POST['postTitle'],
-        'content' => $_POST['newPost'],
+        'content' => $content,
         'image' => null
       );
       $postManager = new PostManager();

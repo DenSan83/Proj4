@@ -1,8 +1,13 @@
 <?php
 class PostManager extends Manager{
-  public function getPosts(){
+  public function getPosts($limits = null){
+    if(isset($limits)) extract($limits); //$limits = $limFrom,$limTo
     $db = $this->dbConnect();
-    $req = $db->prepare('SELECT id, title, content, image, DATE_FORMAT(creation_date, "%d/%m/%Y à %H:%i") AS creation_date_fr FROM posts ORDER BY creation_date DESC LIMIT 0, 7');
+    if(isset($limits)){
+      $req = $db->prepare('SELECT id, title, content, image, creation_date FROM posts ORDER BY creation_date DESC LIMIT '.$limFrom.','.$limTo);
+    } else {
+      $req = $db->prepare('SELECT id, title, content, image, creation_date FROM posts ORDER BY creation_date DESC');
+    }
     $req->execute();
     $posts = $req->fetchAll();
     $arrObjet = array();
@@ -16,7 +21,7 @@ class PostManager extends Manager{
 
   public function getPost($postId){
     $db = $this->dbConnect();
-    $req = $db->prepare('SELECT id, title, content, image, DATE_FORMAT(creation_date, "%d/%m/%Y à %H:%i") AS creation_date_fr FROM posts WHERE id = :id');
+    $req = $db->prepare('SELECT id, title, content, image, creation_date FROM posts WHERE id = :id');
     $req->bindValue(':id',$postId);
     $req->execute();
     $data = $req->fetch();
@@ -27,7 +32,7 @@ class PostManager extends Manager{
 
   public function newPost($postTitle,$newPost)
   {
-    $db = $this->dbConnect();
+    $db = $this->dbConnect();var_dump($newPost);exit();
     $req = $db->prepare('INSERT INTO posts(title, content, creation_date) VALUES (:title,:content,NOW())');
     $req->bindValue(':title',$postTitle);
     $req->bindValue(':content',$newPost);
@@ -38,14 +43,17 @@ class PostManager extends Manager{
   {
     extract($data);
     $db = $this->dbConnect();
-    $req = $db->prepare('UPDATE posts SET title = :title, content = :content, image = :image WHERE id = :id');
-    if(empty($image))
+    if(empty($image)){
       $req = $db->prepare('UPDATE posts SET title = :title, content = :content WHERE id = :id');
+    } else {
+      $req = $db->prepare('UPDATE posts SET title = :title, content = :content, image = :image WHERE id = :id');
+    }
     $req->bindValue(':id',$id);
     $req->bindValue(':title',$title);
     $req->bindValue(':content',$content);
-    if (!empty($image))
+    if (!empty($image)) {
       $req->bindValue(':image',$image);
+    }
     $req->execute();
   }
 

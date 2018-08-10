@@ -6,10 +6,18 @@ class FrontController
   public function listPosts()
   {
     $postManager = new PostManager();
-    $posts = $postManager->getPosts();
+    $posts = $postManager->getPosts(array(
+      'limFrom' => 1,
+      'limTo' => 3
+    ));
+    $last = $postManager->getPosts(array(
+      'limFrom' => 0,
+      'limTo' =>1
+    ));
+    $data = array('posts' => $posts, 'last' => $last);
 
     $myView = new View('postsList');
-    $myView->render($posts);
+    $myView->render($data);
   }
 
   public function post($params)

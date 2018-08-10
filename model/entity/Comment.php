@@ -7,7 +7,7 @@ class Comment
           $_author_id,
           $_comment,
           $_flag,
-          $_comment_date_fr;
+          $_date_com;
 
   public function getId()       { return $this->_id; }
   public function getPostId()   { return $this->_post_id; }
@@ -15,7 +15,11 @@ class Comment
   public function getAuthorId() { return $this->_author_id; }
   public function getComment()  { return $this->_comment; }
   public function getFlag()     { return $this->_flag; }
-  public function getDateCom()  { return $this->_comment_date_fr; } //setlocalefr
+  public function getDateCom()  {
+    setlocale(LC_TIME,'fr');
+    $date = utf8_encode(strftime('%d %B %Y &agrave; %Hh%M',strtotime($this->_date_com)));
+    return $date;
+  }
 
   public function __construct($data)
   {
@@ -70,56 +74,8 @@ class Comment
     $this->_flag = (bool) $flag;
   }
 
-  public function setComment_date_fr($date)
+  public function setDate_com($date)
   {
-    $this->_comment_date_fr = $date;
-  }
-
-  public function getDateFr()
-  {
-    $dateFr = explode(' ',$this->_comment_date_fr);
-    $heure = $dateFr[2];
-
-    $date = explode('/',$dateFr[0]);
-    switch($date[1]){
-      case 1:
-        $mois = 'janvier';
-        break;
-      case 2:
-        $mois = 'février';
-        break;
-      case 3:
-        $mois = 'mars';
-        break;
-      case 4:
-        $mois = 'avril';
-        break;
-      case 5:
-        $mois = 'mai';
-        break;
-      case 6:
-        $mois = 'juin';
-        break;
-      case 7:
-        $mois = 'juillet';
-        break;
-      case 8:
-        $mois = 'août';
-        break;
-      case 9:
-        $mois = 'septembre';
-        break;
-      case 10:
-        $mois = 'octobre';
-        break;
-      case 11:
-        $mois = 'novembre';
-        break;
-      case 12:
-        $mois = 'décembre';
-        break;
-    }
-    $readable = $date[0].' '.$mois.' '.$date[2].' à '.$heure;
-    return $readable;
+    $this->_date_com = $date;
   }
 }

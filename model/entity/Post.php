@@ -5,16 +5,20 @@ class Post
           $_title,
           $_content,
           $_image,
-          $_creation_date_fr;
+          $_creation_date;
 
   public function getId()           { return $this->_id; }
   public function getTitle()        { return $this->_title; }
   public function getContent()      { return $this->_content; }
   public function getImage()        { return $this->_image; }
-  public function getCreationDate() { return $this->_creation_date_fr; }
+  public function getCreationDate() {
+    setlocale(LC_TIME,'fr');
+    $date = utf8_encode(strftime('%d %B %Y &agrave; %Hh%M',strtotime($this->_creation_date)));
+    return $date;
+  }
 
   public function __construct($data)
-  { 
+  {
     $this->hydrate($data);
   }
 
@@ -52,9 +56,9 @@ class Post
      $this->_image = $image;
   }
 
-  public function setCreation_date_fr($date)
+  public function setCreation_date($date)
   {
-    $this->_creation_date_fr = $date;
+    $this->_creation_date = $date;
   }
 
   public function getShortContent($max_words)
@@ -70,54 +74,5 @@ class Post
    }
 
    return $excerpt;
-  }
-
-  public function getDateFr()
-  {
-    $dateFr = explode(' ',$this->_creation_date_fr);
-    $heure = $dateFr[2];
-
-    $date = explode('/',$dateFr[0]);
-    switch($date[1]){
-      case 1:
-        $mois = 'janvier';
-        break;
-      case 2:
-        $mois = 'février';
-        break;
-      case 3:
-        $mois = 'mars';
-        break;
-      case 4:
-        $mois = 'avril';
-        break;
-      case 5:
-        $mois = 'mai';
-        break;
-      case 6:
-        $mois = 'juin';
-        break;
-      case 7:
-        $mois = 'juillet';
-        break;
-      case 8:
-        $mois = 'août';
-        break;
-      case 9:
-        $mois = 'septembre';
-        break;
-      case 10:
-        $mois = 'octobre';
-        break;
-      case 11:
-        $mois = 'novembre';
-        break;
-      case 12:
-        $mois = 'décembre';
-        break;
-    }
-    $readable = $date[0].' '.$mois.' '.$date[2].' à '.$heure;
-
-    return $readable;
   }
 }
