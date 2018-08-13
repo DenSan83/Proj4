@@ -181,7 +181,12 @@ ob_start();
   <h4>Ajouter nouveau post</h4>
   <form method="post" action="adminPost" enctype="multipart/form-data">
     <input class="form-control" type="text" name="postTitle" placeholder="Titre" style="margin-bottom:1em">
-    <textarea id="editor" name="newPost"></textarea>
+    <textarea id="editor" name="newPost" ></textarea>
+    <div class="container align-items-center rounded col-12" style="border:1px solid silver;margin:1em auto;padding:0.5em">
+      <div class="container align-items-center row">
+        <label for="postImg" class="col-4">Ajouter une image au post (taille max : 2Mo) :</label><input type="file" name="postImg" class="bg-light rounded form-control-file col-8" style="margin:5px auto">
+      </div>
+    </div>
 
     <button class="form-control btn-info rounded" type="submit" style="margin-top:1em">Créer nouveau post</button>
   </form>

@@ -30,12 +30,14 @@ class PostManager extends Manager{
     return $objPost;
   }
 
-  public function newPost($postTitle,$newPost)
+  public function newPost($data)
   {
-    $db = $this->dbConnect();var_dump($newPost);exit();
-    $req = $db->prepare('INSERT INTO posts(title, content, creation_date) VALUES (:title,:content,NOW())');
-    $req->bindValue(':title',$postTitle);
-    $req->bindValue(':content',$newPost);
+    extract($data);
+    $db = $this->dbConnect();//var_dump($newPost);exit();
+    $req = $db->prepare('INSERT INTO posts(title, content, image, creation_date) VALUES (:title,:content,:image, NOW())');
+    $req->bindValue(':title',$title);
+    $req->bindValue(':content',$content);
+    $req->bindValue(':image',$image);
     $req->execute();
   }
 

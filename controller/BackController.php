@@ -52,8 +52,51 @@ class BackController
 
   public function newPost()
   {
-    $postManager = new PostManager();
-    $postManager->newPost($_POST['postTitle'],$_POST['newPost']);
+    $errors = array();
+    $data = array();
+    if(isset($_FILES['postImg']) && !empty($_FILES['postImg']['name'])) {       // si on a une image
+
+      $tailleMax = 2097152; // octets pour 2Mo
+      $extensionsValides = array('jpg','jpeg','gif','png');                     // verifier taille
+      if($_FILES['postImg']['size'] > $tailleMax || $_FILES['postImg']['size'] <= 0 ){
+        $errors += ['errImage' => 'Erreur : L\'image ne doit pas depasser 2 Mo'];
+      }
+
+      $extensionUpload = strtolower(substr(strrchr($_FILES['postImg']['name'],'.'),1));
+      // strrchr: renvoyer extension du fichier à partir du point '.' /
+      // substr : ignorer le caractère "1" de la chaine (le point) /
+      // strtolower : tout en minuscule /
+      $newName = substr_replace($_FILES['postImg']['name'], '',-4);
+      if(!in_array($extensionUpload,$extensionsValides)){                       // verifier extensionValide
+        $errors += ['errImage' => 'Erreur : L\'image doit être de format jpg, jpeg, gif ou png'];
+      }
+
+      $chemin = 'public/images/post/'.$newName.'.'.$extensionUpload;
+      $resultat = move_uploaded_file($_FILES['postImg']['tmp_name'],$chemin);
+      if(!$resultat){                                                           // verifier chargement
+        $errors += ['errImage' => 'Erreur de chargement de photo'];
+      }
+
+      if (empty($errors)) {
+        $image = $newName.'.'.$extensionUpload;
+        $data += ['image' => $image];
+      }
+    }
+
+    $data += array(
+      'title' => $_POST['postTitle'],
+      'content' => $_POST['newPost']
+    );
+    $post = new Post($data);
+    $errors += $post->getErrors();
+
+    if(empty($errors)){
+      $postManager = new PostManager();
+      $postManager->newPost($data);
+      $_SESSION['error']['clear'] = '  Succès ! Le post a été créé.';
+    } else {
+      $_SESSION['error']['newPost'] = $errors;
+    }
 
     $myView = new View();
     $myView->goHome();

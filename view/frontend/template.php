@@ -133,7 +133,8 @@
         <?= $content ?>
       <footer>
         <div class="container-fluid bg-dark text-light" style="height:5em">
-          FOOTER
+          FOOTER 'unset($_SESSION['comment']);
+          unset($_SESSION['error']);'
         </div>
         <?php
         usleep(1);

@@ -49,8 +49,7 @@ class User
       $loginManager = new LoginManager();
       $pseudoExist = (bool)$loginManager->pseudoCheck($pseudo);
       if ($pseudoExist){
-        $errPseudo = 'Ce nom d\'utilisateur est déjà pris. Veuillez choisir un autre';
-        $this->setErrors('errPseudo',$errPseudo);
+        $this->setErrors('errPseudo','Ce nom d\'utilisateur est déjà pris. Veuillez choisir un autre');
       } else {
         $this->_pseudo = htmlspecialchars($pseudo);
       }
@@ -62,15 +61,13 @@ class User
     $loginManager = new LoginManager();
     $emailExist = (bool)$loginManager->emailCheck($email);
     if ($emailExist){
-      $errEmail = 'Cet adresse email est déjà pris. Veuillez renseigner un autre';
-      $this->setErrors('errEmail',$errEmail);
+      $this->setErrors('errEmail','Cet adresse email est déjà pris. Veuillez renseigner un autre');
     } else {
       $valide = filter_var($email, FILTER_VALIDATE_EMAIL);
       if($valide){
         $this->_email = $email;
       } else {
-        $errEmail = 'Veuillez insérer une adresse email valide.';
-        $this->setErrors('errEmail',$errEmail);
+        $this->setErrors('errEmail','Veuillez insérer une adresse email valide.');
       }
     }
   }
