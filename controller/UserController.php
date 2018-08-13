@@ -59,6 +59,7 @@ class UserController
       $_SESSION['comment']['error'] = 'Veuillez ajouter un commentaire';
     }
     if (!empty($pseudo) && !empty($comment)) {
+
       $commentManager = new CommentManager();
       $commentManager->postComment($postId,$pseudo,$authorId,$comment);
       $_SESSION['comment']['success'] = 1;
@@ -80,11 +81,12 @@ class UserController
     $elmZero = array('avatar' => 'default.png','status' => 'visiteur' );
     $avatarList += [ 0 => $elmZero];
     $loginManager = new LoginManager();
-    for ($i = 1; $i <= $loginManager->usersCount(); $i++)
-    {
-        $avatar = $loginManager->getAvatar($i);
-        if(empty($avatar)) { $avatar = 'default.png'; }
-        $avatarList += [$i => $avatar];
+    $idList = $loginManager->idList();
+
+    foreach ($idList as $id => $value) {
+      $value = (int) $value;
+      $userAv = $loginManager->getAvatar($value);
+      $avatarList += [$value => $userAv];
     }
 
     $myView = new View('editCommentView');

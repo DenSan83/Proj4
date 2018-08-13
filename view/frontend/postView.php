@@ -66,7 +66,7 @@ if(empty($comments[0]))
     <div class="container-liquid row justify-content-end" style="padding:0.5em 1em">
       <p class="date-time"> <i class="far fa-clock"></i> le <?= $comment->getDateCom() ?></p>
     </div>
-    <p><?=  nl2br(htmlspecialchars($comment->getComment())) ?></p>
+    <p><?=  nl2br(htmlspecialchars($comment->getComment()));var_dump(strlen($comment->getComment())); ?></p>
     <hr/ style="margin-bottom:0">
     <div class="container-liquid row options" style="padding:0.2em;min-height:3.5em">
     <?php

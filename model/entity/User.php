@@ -45,13 +45,18 @@ class User
 
   public function setPseudo($pseudo)
   {
+
     if(is_string($pseudo)){
-      $loginManager = new LoginManager();
-      $pseudoExist = (bool)$loginManager->pseudoCheck($pseudo);
-      if ($pseudoExist){
-        $this->setErrors('errPseudo','Ce nom d\'utilisateur est déjà pris. Veuillez choisir un autre');
+      if(strpos($pseudo,' ')){
+        $this->setErrors('errPseudo','Le nom d\'utilisateur ne doit pas contenir des espaces');
       } else {
-        $this->_pseudo = htmlspecialchars($pseudo);
+        $loginManager = new LoginManager();
+        $pseudoExist = (bool)$loginManager->pseudoCheck($pseudo);
+        if ($pseudoExist){
+          $this->setErrors('errPseudo','Ce nom d\'utilisateur est déjà pris. Veuillez choisir un autre');
+        } else {
+          $this->_pseudo = htmlspecialchars($pseudo);
+        }
       }
     }
   }

@@ -45,8 +45,8 @@ class Post
   public function setTitle($title)
   {
     if(is_string($title)){
-      if (strlen($title) >= 75 || strlen($title) <= 0 || ctype_space($title)){
-        $this->setErrors('errTitle','Le titre doit avoir entre 1 et 75 caractères.');
+      if (strlen($title) >= 255 || strlen($title) <= 0 || ctype_space($title)){
+        $this->setErrors('errTitle','Le titre doit avoir entre 1 et 255 caractères.');
       } else {
         $this->_title = htmlspecialchars($title);
       }

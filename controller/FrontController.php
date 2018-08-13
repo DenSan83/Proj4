@@ -34,9 +34,12 @@ class FrontController
       $elmZero = array('avatar' => 'default.png','status' => 'visiteur' );
       $avatarList += [ 0 => $elmZero];
       $loginManager = new LoginManager();
-      for ($i = 1; $i <= $loginManager->usersCount(); $i++) {
-        $userAv = $loginManager->getAvatar($i);
-        $avatarList += [$i => $userAv];
+      $idList = $loginManager->idList();
+
+      foreach ($idList as $id => $value) {
+        $value = (int) $value;
+        $userAv = $loginManager->getAvatar($value);
+        $avatarList += [$value => $userAv];
       }
 
       $myView = new View('postView');

@@ -24,7 +24,7 @@ foreach($comments as $comment) {
   </div>
   <div class="container-liquid comment align-self-end col-10">
     <div class="container-liquid row justify-content-end" style="padding:0.5em 1em;">
-      <p class="date-time"> <i class="far fa-clock"></i> le <?= htmlspecialchars($comment->getDateFr()) ?></p>
+      <p class="date-time"> <i class="far fa-clock"></i> le <?= htmlspecialchars($comment->getDateCom()) ?></p>
     </div>
     <form method="post" action="<?= HOST ?>commentUpdate" class="row align-items-start">
       <textarea name="updated" rows="2" cols="80"><?= nl2br(htmlspecialchars($comment->getComment())) ?></textarea>

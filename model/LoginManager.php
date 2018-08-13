@@ -5,10 +5,22 @@ class LoginManager extends Manager
   public function usersCount()
   {
     $db = $this->dbConnect();
-
     $usersCount = $db->prepare('SELECT * FROM membres');
     $usersCount->execute();
     return $usersCount->rowcount();
+  }
+
+  public function idList()
+  {
+    $db = $this->dbConnect();
+    $req = $db->prepare('SELECT id FROM membres');
+    $req->execute();
+    $ids = $req->fetchAll();
+    $list = array();
+    foreach ($ids as $key => $value) {
+      array_push($list,$value[0]);
+    }
+    return $list;
   }
 
   public function pseudoCheck($pseudo)
