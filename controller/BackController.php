@@ -29,11 +29,16 @@ class BackController
 
   public function unflag()
   {
-    $commentManager = new CommentManager();
-    $commentManager->unflag($_POST['commentId']);
+    if ($_SESSION['user_session']['user_status'] == 'admin'){
+      $commentManager = new CommentManager();
+      $commentManager->unflag($_POST['commentId']);
 
-    $myView = new View();
-    $myView->redirect('admin');
+      $myView = new View();
+      $myView->redirect('admin');
+    } else {
+      $myView = new View();
+      $myView->goHome();
+    }
   }
 
   public function deleteFlagged()
@@ -52,50 +57,53 @@ class BackController
 
   public function newPost()
   {
-    $errors = array();
-    $data = array();
-    if(isset($_FILES['postImg']) && !empty($_FILES['postImg']['name'])) {       // si on a une image
+    if ($_SESSION['user_session']['user_status'] == 'admin'){
+      $errors = array();
+      $data = array();
+      if(isset($_FILES['postImg']) && !empty($_FILES['postImg']['name'])) {       // si on a une image
 
-      $tailleMax = 2097152; // octets pour 2Mo
-      $extensionsValides = array('jpg','jpeg','gif','png');                     // verifier taille
-      if($_FILES['postImg']['size'] > $tailleMax || $_FILES['postImg']['size'] <= 0 ){
-        $errors += ['errImage' => 'Erreur : L\'image ne doit pas depasser 2 Mo'];
+        $tailleMax = 2097152; // octets pour 2Mo
+        $extensionsValides = array('jpg','jpeg','gif','png');                     // verifier taille
+        if($_FILES['postImg']['size'] > $tailleMax || $_FILES['postImg']['size'] <= 0 ){
+          $errors += ['errImage' => 'Erreur : L\'image ne doit pas depasser 2 Mo'];
+        }
+
+        $extensionUpload = strtolower(substr(strrchr($_FILES['postImg']['name'],'.'),1));
+        // strrchr: renvoyer extension du fichier à partir du point '.' /
+        // substr : ignorer le caractère "1" de la chaine (le point) /
+        // strtolower : tout en minuscule /
+        $newName = substr_replace($_FILES['postImg']['name'], '',-4);
+        if(!in_array($extensionUpload,$extensionsValides)){                       // verifier extensionValide
+          $errors += ['errImage' => 'Erreur : L\'image doit être de format jpg, jpeg, gif ou png'];
+        }
+
+        $chemin = 'public/images/post/'.$newName.'.'.$extensionUpload;
+        $resultat = move_uploaded_file($_FILES['postImg']['tmp_name'],$chemin);
+        if(!$resultat){                                                           // verifier chargement
+          $errors += ['errImage' => 'Erreur de chargement de photo'];
+        }
+
+        if (empty($errors)) {
+          $image = $newName.'.'.$extensionUpload;
+          $data += ['image' => $image];
+        }
       }
 
-      $extensionUpload = strtolower(substr(strrchr($_FILES['postImg']['name'],'.'),1));
-      // strrchr: renvoyer extension du fichier à partir du point '.' /
-      // substr : ignorer le caractère "1" de la chaine (le point) /
-      // strtolower : tout en minuscule /
-      $newName = substr_replace($_FILES['postImg']['name'], '',-4);
-      if(!in_array($extensionUpload,$extensionsValides)){                       // verifier extensionValide
-        $errors += ['errImage' => 'Erreur : L\'image doit être de format jpg, jpeg, gif ou png'];
+      $content = str_replace("\r\n",'',$_POST['newPost']);
+      $data += array(
+        'title' => $_POST['postTitle'],
+        'content' => $content
+      );
+      $post = new Post($data);
+      $errors += $post->getErrors();
+
+      if(empty($errors)){
+        $postManager = new PostManager();
+        $postManager->newPost($data);
+        $_SESSION['error']['clear'] = '  Succès ! Le post a été créé.';
+      } else {
+        $_SESSION['error']['newPost'] = $errors;
       }
-
-      $chemin = 'public/images/post/'.$newName.'.'.$extensionUpload;
-      $resultat = move_uploaded_file($_FILES['postImg']['tmp_name'],$chemin);
-      if(!$resultat){                                                           // verifier chargement
-        $errors += ['errImage' => 'Erreur de chargement de photo'];
-      }
-
-      if (empty($errors)) {
-        $image = $newName.'.'.$extensionUpload;
-        $data += ['image' => $image];
-      }
-    }
-
-    $data += array(
-      'title' => $_POST['postTitle'],
-      'content' => $_POST['newPost']
-    );
-    $post = new Post($data);
-    $errors += $post->getErrors();
-
-    if(empty($errors)){
-      $postManager = new PostManager();
-      $postManager->newPost($data);
-      $_SESSION['error']['clear'] = '  Succès ! Le post a été créé.';
-    } else {
-      $_SESSION['error']['newPost'] = $errors;
     }
 
     $myView = new View();
@@ -126,62 +134,64 @@ class BackController
 
   public function modifyPost()
   {
-    if(isset($_FILES['postImg']) && !empty($_FILES['postImg']['name'])) {
-      $tailleMax = 2097152; // octets pour 2Mo
-      $extensionsValides = array('jpg','jpeg','gif','png');
-      if($_FILES['postImg']['size'] <= $tailleMax && $_FILES['postImg']['size'] != 0){
+    if ($_SESSION['user_session']['user_status'] == 'admin'){
+      $errors = array();
+      $data = array('id' => $_POST['postId']);
+      if(isset($_FILES['postImg']) && !empty($_FILES['postImg']['name'])) {       // si on a une image
+
+        $tailleMax = 2097152; // octets pour 2Mo
+        $extensionsValides = array('jpg','jpeg','gif','png');                     // verifier taille
+        if($_FILES['postImg']['size'] > $tailleMax || $_FILES['postImg']['size'] <= 0 ){
+          $errors += ['errImage' => 'Erreur : L\'image ne doit pas depasser 2 Mo'];
+        }
+
         $extensionUpload = strtolower(substr(strrchr($_FILES['postImg']['name'],'.'),1));
         // strrchr: renvoyer extension du fichier à partir du point '.' /
         // substr : ignorer le caractère "1" de la chaine (le point) /
         // strtolower : tout en minuscule /
         $newName = substr_replace($_FILES['postImg']['name'], '',-4);
-        if(in_array($extensionUpload,$extensionsValides)){ // voir si l'extensionUpload contient un extensionValide
-          $chemin = 'public/images/post/'.$newName.'.'.$extensionUpload;
-          $resultat = move_uploaded_file($_FILES['postImg']['tmp_name'],$chemin);
-          if($resultat){
-            $image = $newName.'.'.$extensionUpload;
-            $data = array(
-              'id' => $_POST['postId'],
-              'title' => $_POST['postTitle'],
-              'content' => $_POST['newPost'],
-              'image' => $image
-            );
-            $postManager = new PostManager();
-            $postManager->postUpdate($data);
-            $_SESSION['error']['clear'] = '  Succès ! Le post a été mis à jour.';
-          } else {
-            $errImage = 'Erreur de chargement de photo';
-          }
-        } else {
-          $errImage = 'Erreur : L\'image doit être de format jpg, jpeg, gif ou png';
+        if(!in_array($extensionUpload,$extensionsValides)){                       // verifier extensionValide
+          $errors += ['errImage' => 'Erreur : L\'image doit être de format jpg, jpeg, gif ou png'];
         }
-      } else {
-        $errImage = 'Erreur : L\'image ne doit pas depasser 2 Mo';
+
+        $chemin = 'public/images/post/'.$newName.'.'.$extensionUpload;
+        $resultat = move_uploaded_file($_FILES['postImg']['tmp_name'],$chemin);
+        if(!$resultat){                                                           // verifier chargement
+          $errors += ['errImage' => 'Erreur de chargement de photo'];
+        }
+
+        if (empty($errors)) {
+          $image = $newName.'.'.$extensionUpload;
+          $data += ['image' => $image];
+        }
       }
-      if(isset($errImage))
-        $_SESSION['error']['image'] = array('errImage' => $errImage);
-    } else {
-      //$content = str_replace('<p>&nbsp;</p>','',$_POST['newPost']);
+
       $content = str_replace("\r\n",'',$_POST['newPost']);
-      $data = array(
-        'id' => $_POST['postId'],
+      $data += array(
         'title' => $_POST['postTitle'],
-        'content' => $content,
-        'image' => null
+        'content' => $content
       );
-      $postManager = new PostManager();
-      $postManager->postUpdate($data);
-      $_SESSION['error']['clear'] = '  Succès ! Le post a été mis à jour.';
+      $post = new Post($data);
+      $errors += $post->getErrors();
+
+      if(empty($errors)){
+        $postManager = new PostManager();
+        $postManager->postUpdate($data);
+        $_SESSION['error']['clear'] = '  Succès ! Le post a été mis à jour.';
+      } else {
+        $_SESSION['error']['newPost'] = $errors;
+      }
+
+      $myView = new View();
+      $myView->redirect('editPost/id/'.$_POST['postId']);
+    } else {
+      $myView = new View();
+      $myView->goHome();
     }
-
-
-    $myView = new View();
-    $myView->redirect('editPost/id/'.$_POST['postId']);
   }
 
   public function delPost()
   {
-    var_dump($_POST);
     if ($_SESSION['user_session']['user_status'] == 'admin'){
       $postManager = new PostManager();
       $postManager->delPost($_POST['delId']);

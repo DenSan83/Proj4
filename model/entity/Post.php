@@ -57,7 +57,7 @@ class Post
 
   public function setContent($content)
   {
-    if (ctype_space($content)){
+    if ($content !== ''){
       $this->_content = nl2br(htmlspecialchars($content));
     } else {
       $this->setErrors('errContent','Le contenu du post est vide');
