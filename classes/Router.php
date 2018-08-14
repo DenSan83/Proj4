@@ -21,6 +21,7 @@ class Router
                       "updateProfile" => ["controller" => 'UserController', "method" => 'updateProfile'],
 
                       "admin"         => ["controller" => 'BackController', "method" => 'admin'],
+                      "showComments"  => ["controller" => 'BackController', "method" => 'showComments'],
                       "unflag"        => ["controller" => 'BackController', "method" => 'unflag'],
                       "delAdmin"      => ["controller" => 'BackController', "method" => 'deleteFlagged'],
                       "adminPost"     => ["controller" => 'BackController', "method" => 'newPost'],

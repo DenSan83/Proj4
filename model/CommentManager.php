@@ -84,10 +84,14 @@ class CommentManager extends Manager{
     }
   }
 
-  public function getLast($num)
+  public function getLast($num = null)
   {
     $db = $this->dbConnect();
-    $req = $db->prepare('SELECT id, post_id, author, author_id, comment, date_com FROM comments ORDER BY date_com DESC LIMIT '.(int)$num);
+    if (isset($num)){
+      $req = $db->prepare('SELECT id, post_id, author, author_id, comment, date_com FROM comments ORDER BY date_com DESC LIMIT '.(int)$num);
+    } else {
+      $req = $db->prepare('SELECT id, post_id, author, author_id, comment, date_com FROM comments ORDER BY date_com');
+    }
     $req->execute();
     $comments = $req->fetchAll();
     $arrObjet = array();

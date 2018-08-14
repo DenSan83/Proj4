@@ -27,6 +27,25 @@ class BackController
     }
   }
 
+  public function showComments()
+  {
+    if ($_SESSION['user_session']['user_status'] == 'admin'){
+      $postManager = new PostManager();
+      $commentManager = new CommentManager();
+      $lastComments = $commentManager->getLast();
+      $params = array(
+        'lastComments' => $lastComments,
+        'postManager' => $postManager
+      );
+
+      $myView = new View('showComments');
+      $myView->render($params);
+    } else {
+      $myView = new View();
+      $myView->goHome();
+    }
+  }
+
   public function unflag()
   {
     if ($_SESSION['user_session']['user_status'] == 'admin'){

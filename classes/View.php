@@ -10,6 +10,7 @@ class View
   const EDIT_PROFILE = VIEW.'editProfile.php';
   const ADMIN_VIEW = VIEW_BCK.'adminView.php';
   const EDIT_POST = VIEW_BCK.'editPost.php';
+  const SHOW_COMMENTS = VIEW_BCK.'showComments.php';
 
   public function __construct($template = null)
   {
@@ -41,6 +42,9 @@ class View
         break;
       case 'editPost':
         include(self::EDIT_POST);
+        break;
+      case 'showComments':
+        include(self::SHOW_COMMENTS);
         break;
     }
   }

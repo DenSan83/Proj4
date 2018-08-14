@@ -40,6 +40,8 @@ ob_start();
       </table>
     </div>
   </div>
+  <br/>
+  <a href="<?=HOST?>showComments">Voir tous les commentaires >></a>
 </div>
 </br>
 
