@@ -146,6 +146,13 @@
           $(".maj").click(function(){
             location.reload(true);
           });
+
+          function timer(){
+            setTimeout(function() {
+              $(".timed").hide();
+            },3000);
+          };
+          timer();
       </script>
     </body>
 </html>

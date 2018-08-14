@@ -131,7 +131,7 @@ class UserController
     $succes = $commentManager->flagComment($commentId,$_SESSION['user_session']['user_pseudo']);
     if($succes){
       $postId .= '#comment'.$commentId;
-      $_SESSION['flagged'] = $commentId;
+      $_SESSION['comment']['flag'] = $commentId;
     }
 
     $myView = new View('postView');

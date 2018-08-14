@@ -87,7 +87,16 @@ if(empty($comments[0]))
       elseif (!empty($_SESSION['user_session']['user_pseudo'])){
       ?>
       <div class="container-liquid col-12 row justify-content-end" style="padding:0">
-        <form action="<?= HOST ?>flagComment" method="post"class="container row justify-content-end col-6" style="padding:0">
+        <?php
+        if(isset($_SESSION['comment']['flag']) && $_SESSION['comment']['flag'] == $comment->getId()){
+        ?>
+        <div class="container bg-success col-4 rounded row align-items-center text-white timed flagged">
+            <span><i class="far fa-check-circle"></i> Le commentaire a bien été signalé</span>
+        </div>
+        <?php
+        }
+        ?>
+        <form action="<?= HOST ?>flagComment" method="post"class="container row justify-content-end col-5" style="padding:0">
           <input type="hidden" name="postId" value="<?= $post->getId() ?>">
           <input type="hidden" name="commentId" value="<?= $comment->getId() ?>">
           <button type="submit" class="container col-5 text-primary bg-white option modify" style="margin:0;border:none;cursor:pointer">
@@ -95,15 +104,6 @@ if(empty($comments[0]))
             <span class="col-7">Signaler</span>
           </button>
         </form>
-        <?php
-        if(isset($_SESSION['flagged']) && $_SESSION['flagged'] == $comment->getId()){
-        ?>
-        <div class="flagged">
-            <p>Le commentaire a bien été signalé.</p>
-        </div>
-        <?php
-        }
-        ?>
       </div>
       <?php
       } else {
