@@ -1,7 +1,5 @@
 <?php
-$title = 'AdminView';
-extract($params);
-ob_start();
+$superTitle = 'Billet Siple pour Alaska - Zone Admin';
 ?>
 
 <div class="container" style="margin:2em auto;margin-top:12em">
@@ -53,6 +51,3 @@ ob_start();
     <button class="form-control btn-info rounded" type="submit" style="margin-top:1em">Enregistrer les changements du post</button>
   </form>
 </div>
-
-<?php $content = ob_get_clean(); ?>
-<?php require(VIEW.'template.php'); ?>

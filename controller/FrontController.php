@@ -16,7 +16,7 @@ class FrontController
     ));
     $data = array('posts' => $posts, 'last' => $last);
 
-    $myView = new View('postsList');
+    $myView = new View('listPostsView');
     $myView->render($data);
   }
 
@@ -58,6 +58,7 @@ class FrontController
   public function addComment($params)
   {
     extract($params);
+    $errors = array();
     $secret = '6LeVFmQUAAAAAGmnuGggo4GYbkxK-ejGajGOjFJd'; // clé privée captcha
     $reCaptcha = new ReCaptcha($secret);
     if(isset($_POST["g-recaptcha-response"]))
@@ -70,10 +71,19 @@ class FrontController
       if ($resp != null && $resp->success)
       {
         if(empty($prenom) || empty($nom) || empty($comment)){
-          $_SESSION['comment']['error'] = 'Veuillez remplir tous les champs';
+          $errors += ['errcomment' =>'Veuillez remplir tous les champs'];
+        }
+        if(!preg_match("#^\D+$#",$nom)){
+          $errors += ['errCommentNom' => 'Les chiffres ne sont pas autorisées au nom !'];
+        }
+        if(!preg_match("#^\D+$#",$prenom)){
+          $errors += ['errCommentPrenom' => 'Les chiffres ne sont pas autorisées au prénom !'];
+        }
+        if(strlen($comment) > 260){
+          $errors += ['errCommentContent' => 'Le commentaire ne doit pas dépasser les 260 caractères'];
         }
 
-        if (!isset($_SESSION['comment']['error'])){
+        if (!isset($errors)){
           $author = $prenom.' '.$nom;
           $authorId = null;
           $commentManager = new CommentManager();
@@ -81,8 +91,9 @@ class FrontController
           $_SESSION['comment']['success'] = 1;
         }
       } else {
-        $_SESSION['comment']['error'] = 'Veuillez completer le Captcha !';
-      }
+        $errors += ['errCommentCaptcha' => 'Veuillez completer le Captcha !'];
+      }var_dump($errors);exit();
+      $_SESSION['comment']['error'] = $errors;
       $myView = new View('postView');
       $myView->redirect('post/id/'.$postId);
     }

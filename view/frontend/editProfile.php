@@ -1,6 +1,5 @@
 <?php
-$title = 'Modifier mon profil';
-ob_start();
+$superTitle = 'Modifier mon profil';
 ?>
 <div class="container row col-9 bg-secondary rounded justify-content-center" style="margin:2em auto;margin-top:12em;padding:2em">
   <form method="post" action="<?= HOST ?>updateProfile" enctype="multipart/form-data" class="form-horizontal col-10 justify-content-center" role="form">
@@ -113,6 +112,4 @@ ob_start();
 </div>
 <?php
 unset($_SESSION['update_err']);
-$content = ob_get_clean();
-require(VIEW.'template.php');
 ?>

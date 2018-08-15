@@ -47,7 +47,6 @@ class Router
     // extract $_GET params :
     $elements = explode('/',$this->request);
     unset($elements[0]);
-
     for($i=1;$i<count($elements);$i++)
     {
       $params[$elements[$i]] = $elements[$i+1];

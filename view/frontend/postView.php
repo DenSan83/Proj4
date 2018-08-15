@@ -1,9 +1,7 @@
 <?php
-extract($params); // $params = array($post,$comments,$avatarList)
-$title = $post->getTitle();
-
-ob_start();
-$siteKey = '6LeVFmQUAAAAAGSSMYlzvv-GvhyxhKNymbAAxtWe'; // captcha: clé publique ?>
+$superTitle = $post->getTitle();
+$siteKey = '6LeVFmQUAAAAAGSSMYlzvv-GvhyxhKNymbAAxtWe'; // captcha: clé publique
+?>
 <div class="container rounded news" style="border:1px solid black; margin:2em auto;margin-top:12em;padding:0;overflow:hidden">
   <div class="container-liquid">
     <img src="<?=HOST.'public/images/post/'.$post->getImage() ?>" alt="" style="width:100%">
@@ -39,8 +37,7 @@ if(empty($comments[0]))
   {
     if (isset($commentId) && $comment->getId() == $commentId) // when modifyComment($commentId)
     { // modifier commentaire
-      $editing = $comment;
-      echo $editCommentView;
+      require('editCommentView.php');
     } else {
       // montrer commentaire
 ?>
@@ -66,7 +63,7 @@ if(empty($comments[0]))
     <div class="container-liquid row justify-content-end" style="padding:0.5em 1em">
       <p class="date-time"> <i class="far fa-clock"></i> le <?= $comment->getDateCom() ?></p>
     </div>
-    <p><?=  nl2br(htmlspecialchars($comment->getComment()));var_dump(strlen($comment->getComment())); ?></p>
+    <p><?=  nl2br(htmlspecialchars($comment->getComment())) ?></p>
     <hr/ style="margin-bottom:0">
     <div class="container-liquid row options" style="padding:0.2em;min-height:3.5em">
     <?php
@@ -122,7 +119,5 @@ if(empty($comments[0]))
   }
 }
 //ajouter commentaire
-include('addCommentView.php');
-
-$content = ob_get_clean();
-require('template.php'); ?>
+require('addCommentView.php');
+?>

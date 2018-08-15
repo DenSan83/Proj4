@@ -1,8 +1,5 @@
 <?php
-$title = 'AdminView';
-extract($params);
-
-ob_start();
+$superTitle = 'AdminView';
 ?>
 
 <h1 style="text-align:center;text-decoration:underline;margin:1em auto;margin-top:4.5em">Espace Administrateur</h1>
@@ -25,7 +22,7 @@ ob_start();
           <?php
           foreach ($lastComments as $comment) {
           ?>
-          <tr onclick="window.location='<?= HOST.'post/id/'.$comment->getPostId() ?>';" style="cursor:pointer">
+          <tr onclick="window.location='<?= HOST.'post/id/'.$comment->getPostId().'#comment'.$comment->getId() ?>';" style="cursor:pointer">
             <th scope="row"><?= $comment->getId() ?></th>
             <td><?= $comment->getAuthor() ?></td>
             <td style="color:blue"><?= $comment->getComment() ?></td>
@@ -61,7 +58,7 @@ ob_start();
                   <th scope="col" style="width:38%">Commentaire</th>
                   <th scope="col" style="width:10%">Signalé par</th>
                   <th scope="col" style="width:16%">Signalé le...</th>
-                  <th scope="col" style="text-align:center">Enlever</th>
+                  <th scope="col" style="text-align:center">Valider</th>
                   <th scope="col" style="text-align:center">Effacer</th>
                 </tr>
               </thead>
@@ -92,7 +89,7 @@ ob_start();
                       <?= $commentManager->getComment($flag['comment_id'])['comment'] ?>
                     </td>
                     <td style="width:10%"><?= $flag['flagger'] ?></td>
-                    <td style="width:16%"><?= $flag['flag_date'] ?></td>
+                    <td style="width:16%"><?= $flag['flag_date_fr'] ?></td>
                     <td align="center">
                       <a data-toggle="modal" href="#unflag" class="btn btn-link"><i class="fas fa-thumbs-up text-info"></i></a>
                     </td>
@@ -193,6 +190,3 @@ ob_start();
     <button class="form-control btn-info rounded" type="submit" style="margin-top:1em">Créer nouveau post</button>
   </form>
 </div>
-
-<?php $content = ob_get_clean(); ?>
-<?php require(VIEW.'template.php'); ?>

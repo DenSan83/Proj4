@@ -1,7 +1,5 @@
 <?php
-$title = 'Créer une compte utilisateur';
-if(!empty($params)) extract($params);
-ob_start();
+$superTitle = 'Créer une compte utilisateur';
 ?>
 
 <div class="container row col-9 bg-secondary rounded justify-content-center" style="margin:2em auto;margin-top:12em;padding:2em">
@@ -102,6 +100,3 @@ ob_start();
   }
   ?>
 </div>
-
-<?php $content = ob_get_clean(); ?>
-<?php require(VIEW.'template.php'); ?>

@@ -33,14 +33,6 @@ class CommentManager extends Manager{
     $comments->bindValue(':id',$commentId);
     $comments->bindValue(':comment',$commentContent);
     $comments->execute();
-
-    $db = $this->dbConnect();
-    $req = $db->prepare('SELECT post_id FROM comments WHERE id = :id');
-    $req->bindValue(':id',$commentId);
-    $req->execute();
-    $post = $req->fetch();
-
-    return $post['post_id'];
   }
 
   public function deleteComment($id){
@@ -106,7 +98,7 @@ class CommentManager extends Manager{
   public function getFlagged()
   {
     $db = $this->dbConnect();
-    $req = $db->prepare('SELECT * FROM flagged ORDER BY flag_date DESC');
+    $req = $db->prepare('SELECT id,comment_id,flagger,DATE_FORMAT(flag_date, "%d/%m/%Y à %H:%i") AS flag_date_fr FROM flagged ORDER BY flag_date DESC');
     $req->execute();
 
     return $req->fetchAll();

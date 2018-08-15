@@ -22,7 +22,13 @@
         <?php
         if(isset($_SESSION['comment']['error'])) { ?>
         <div class="noCaptcha bg-danger text-white col-9 rounded row justify-content-center" style="padding:1em; margin:0.5em auto">
-          <span><i class="fas fa-exclamation-triangle"></i>&nbsp;&nbsp;</span><span><?= htmlspecialchars($_SESSION['comment']['error']) ?></span>
+          <?php
+          foreach($_SESSION['comment']['error'] as $eKey => $error){
+          ?>
+          <span><i class="fas fa-exclamation-triangle"></i>&nbsp;&nbsp;</span><span><?= htmlspecialchars($error) ?></span>
+          <?php
+          }
+          ?>
         </div>
         <?php } ?>
         <div class="row justify-content-center">

@@ -1,6 +1,4 @@
 <?php
-ob_start();
-extract($params);
 foreach($comments as $comment) {
   if($comment->getId() == (int) $commentId){
 ?>
@@ -29,6 +27,7 @@ foreach($comments as $comment) {
     <form method="post" action="<?= HOST ?>commentUpdate" class="row align-items-start">
       <textarea name="updated" rows="2" cols="80"><?= nl2br(htmlspecialchars($comment->getComment())) ?></textarea>
       <input type="hidden" name="commentId" value="<?= $comment->getId() ?>">
+      <input type="hidden" name="postId" value="<?= $comment->getPostId() ?>">
 
       <button type="submit" class="btn-success rounded" style="border:none;padding:0.8em;margin-left:0.5em"><i class="far fa-check-circle"></i></button>
       <a href="<?= HOST ?>post/id/<?= $post->getId().'#comment'.$comment->getId() ?>" class="btn-danger rounded" style="padding:0.8em;margin-left:0.5em"><i class="far fa-times-circle"></i></a>
@@ -69,7 +68,6 @@ foreach($comments as $comment) {
   </div>
 </div>
 <?php
-} }
-$editCommentView = ob_get_clean();
-require('postView.php');
+  }
+}
 ?>

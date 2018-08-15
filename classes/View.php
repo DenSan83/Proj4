@@ -3,14 +3,6 @@
 class View
 {
   private $template;
-  const LIST_POST = VIEW.'listPostsView.php';
-  const POST_VIEW = VIEW.'postView.php';
-  const EDIT_COMMENT_VIEW = VIEW.'editCommentView.php';
-  const NEW_USER = VIEW.'newUser.php';
-  const EDIT_PROFILE = VIEW.'editProfile.php';
-  const ADMIN_VIEW = VIEW_BCK.'adminView.php';
-  const EDIT_POST = VIEW_BCK.'editPost.php';
-  const SHOW_COMMENTS = VIEW_BCK.'showComments.php';
 
   public function __construct($template = null)
   {
@@ -19,34 +11,20 @@ class View
 
   public function render($params = null)
   {
+    $backendList = array('adminView','editPost','showComments');
     $template = $this->template;
-    switch($template)
-    {
-      case 'postsList':
-        include(self::LIST_POST);
-        break;
-      case 'postView':
-        include(self::POST_VIEW);
-        break;
-      case 'editCommentView':
-        include(self::EDIT_COMMENT_VIEW);
-        break;
-      case 'newUser':
-        include(self::NEW_USER);
-        break;
-      case 'editProfile':
-        include(self::EDIT_PROFILE);
-        break;
-      case 'adminView':
-        include(self::ADMIN_VIEW);
-        break;
-      case 'editPost':
-        include(self::EDIT_POST);
-        break;
-      case 'showComments':
-        include(self::SHOW_COMMENTS);
-        break;
+
+    ob_start();
+    if(!empty($params)){
+      extract($params);
     }
+    if(in_array($template,$backendList)){
+      require(VIEW_BCK.$template.'.php');
+    } else {
+      require(VIEW.$template.'.php');
+    }
+    $content = ob_get_clean();
+    require(VIEW.'template.php');
   }
 
   public function redirect($route)

@@ -1,7 +1,5 @@
 <?php
-$title = 'Commentaires des Posts';
-extract($params);
-ob_start();
+$superTitle = 'Commentaires des Posts';
 ?>
 
 <div class="container" style="margin-top:12em">
@@ -24,7 +22,7 @@ ob_start();
             <?php
             foreach ($lastComments as $comment) {
             ?>
-            <tr onclick="window.location='<?= HOST.'post/id/'.$comment->getPostId() ?>';" style="cursor:pointer">
+            <tr onclick="window.location='<?= HOST.'post/id/'.$comment->getPostId().'#comment'.$comment->getId() ?>';" style="cursor:pointer">
               <th scope="row"><?= $comment->getId() ?></th>
               <td><?= $comment->getAuthor() ?></td>
               <td style="color:blue"><?= $comment->getComment() ?></td>
@@ -43,6 +41,3 @@ ob_start();
     <a href="<?=HOST?>admin"><< Retour</a>
   </div>
 </div>
-<?php
-$content = ob_get_clean();
-require(VIEW.'template.php'); ?>

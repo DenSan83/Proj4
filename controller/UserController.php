@@ -45,24 +45,30 @@ class UserController
   public function logout()
   {
     session_destroy();
-    $myView = new View('postLists');
+    $myView = new View('listPostsView');
     $myView->goHome();
   }
 
   public function onlineComment($params)
   {
     extract($params);
+    $errors = array();
     if (empty($pseudo)){
-      $_SESSION['comment']['error'] = 'Le commentaire n\'a pas été ajouté. Veuillez reesayer ulterieurement';
+      $errors += ['errPseudo' => 'Le commentaire n\'a pas été ajouté. Veuillez reesayer ulterieurement'];
     }
     if(empty($comment)){
-      $_SESSION['comment']['error'] = 'Veuillez ajouter un commentaire';
+      $errors += ['errComment' => 'Veuillez ajouter un commentaire'];
     }
-    if (!empty($pseudo) && !empty($comment)) {
+    if(strlen($comment) > 260){
+      $errors += ['errCommentContent' => 'Le commentaire ne doit pas dépasser les 260 caractères'];
+    }
 
+    if (empty($errors)) {
       $commentManager = new CommentManager();
       $commentManager->postComment($postId,$pseudo,$authorId,$comment);
       $_SESSION['comment']['success'] = 1;
+    } else {
+      $_SESSION['comment']['error'] = $errors;
     }
 
     $myView = new View('postView');
@@ -89,13 +95,14 @@ class UserController
       $avatarList += [$value => $userAv];
     }
 
-    $myView = new View('editCommentView');
-    $myView->render(array(
+    $data = array(
       'post' => $post,
       'comments' => $comments,
       'avatarList' => $avatarList,
       'commentId' => $commentId
-    ));
+    );
+    $myView = new View('postView');
+    $myView->render($data);
   }
 
   public function commentUpdate($params)
@@ -104,17 +111,16 @@ class UserController
     $commentManager = new CommentManager();
     $check = $commentManager->verifyAuthor($commentId,$_SESSION['user_session']['user_id']);
     if($check){
-      $modified = $commentManager->commentUpdate($commentId,$updated);
-      $modified .= '#comment'.$commentId;
+      $commentManager->commentUpdate($commentId,$updated);
     }
 
     $myView = new View('postView');
-    $myView->redirect('post/id/'.$modified);
+    $myView->redirect('post/id/'.$postId.'#comment'.$commentId);
   }
 
   public function deleteComment($data)
   {
-    extract($data); //if (!empty($data))
+    extract($data);
     $commentManager = new CommentManager();
     $check = $commentManager->verifyAuthor($commId,$_SESSION['user_session']['user_id']);
     if($check)

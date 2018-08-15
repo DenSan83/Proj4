@@ -1,7 +1,5 @@
-<?php $title = 'Mon blog'; ?>
-
-<?php ob_start();
-extract($params);
+<?php
+$superTitle = 'Billet Simple pour Alaska';
 $last = $last[0];
 ?>
 <div class="container-fluid row justify-content-center align-items-center last" style="height:60em;position:relative;margin:0;padding:0">
@@ -80,6 +78,3 @@ $last = $last[0];
 <div class="container col-3" style="margin:1em auto;text-align:center">
     <a href="#" >Lire tout le Chapitre 1</a>
 </div>
-<?php $content = ob_get_clean(); ?>
-
-<?php require('view/frontend/template.php'); ?>
