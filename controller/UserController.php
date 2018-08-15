@@ -155,78 +155,78 @@ class UserController
 
   public function updateProfile()
   {
-    unset($_SESSION['update_err']);
-    if(isset($_FILES['avatar']) && !empty($_FILES['avatar']['name'])) {
+    $errors = array();
+    $data = array( 'id' => $_SESSION['user_session']['user_id']);
+    $userInfos = array();
+    if(isset($_FILES['avatar']) && !empty($_FILES['avatar']['name'])) {         // si on a une image
+
       $tailleMax = 2097152; // octets pour 2Mo
-      $extensionsValides = array('jpg','jpeg','gif','png');
-      if($_FILES['avatar']['size'] <= $tailleMax && $_FILES['avatar']['size'] != 0){
-        $extensionUpload = strtolower(substr(strrchr($_FILES['avatar']['name'],'.'),1));
-        // strrchr: renvoyer extension du fichier à partir du point '.' /
-        // substr : ignorer le caractère "1" de la chaine (le point) /
-        // strtolower : tout en minuscule /
-        if(in_array($extensionUpload,$extensionsValides)){ // voir si l'extensionUpload contient un extensionValide
-          $chemin = 'public/images/avatar/'.$_SESSION['user_session']['user_id'].'.'.$extensionUpload;
-          $resultat = move_uploaded_file($_FILES['avatar']['tmp_name'],$chemin);
-          if($resultat){
-            $loginManager = new LoginManager();
-            $_SESSION['user_session']['user_avatar'] = $_SESSION['user_session']['user_id'].'.'.$extensionUpload;
-            $loginManager->avatarUpdate($_SESSION['user_session']['user_avatar']);
-            $_SESSION['update_err']['errClear'] = '  Succès ! L\'avatar a été mis à jour.';
-          } else {
-            $errAvatar = 'Erreur de chargement de photo';
-          }
-        } else {
-          $errAvatar = 'Votre photo de profil doit être de format jpg, jpeg, gif ou png';
-        }
-      } else {
-        $errAvatar = 'Votre photo de profil ne doit pas depasser 2 Mo';
-      }
-      if(isset($errAvatar))
-        $_SESSION['update_err'] = array('errAvatar' => $errAvatar);
-
-    } else {
-
-      $data = array();
-      if ($_POST['pseudo'] !== $_SESSION['user_session']['user_pseudo']){       // verif pseudo
-        $data += ['pseudo' => $_POST['pseudo']];
-      }
-      if ($_POST['email'] !== $_SESSION['user_session']['user_email']){         // verif email
-        $data += ['email' => $_POST['email']];
-      }
-      if(!empty($_POST['password'])){                                           //verif password
-        if(strlen($_POST['password']) >= 6){ // min 6 caractères
-          $hashedPw = password_hash($_POST['password'],PASSWORD_DEFAULT,['cost' => 12]);
-        } else {
-          $data += ['errPassword' => 'Le mot de passe doit avoir au moins 6 caractères.'];
-        }
-      } else {
-        $hashedPw = null;
-      }
-      if ($_POST['password'] !== $_POST['password2']){                          // verif pw = pw2
-        $data += ['errPassword2' => 'Les mots de passe ne se correspondent pas.'];
+      $extensionsValides = array('jpg','jpeg','gif','png');                     // verifier taille
+      if($_FILES['avatar']['size'] > $tailleMax || $_FILES['avatar']['size'] <= 0){
+        $errors['errAvatar']['size'] = 'Votre photo de profil ne doit pas depasser 2 Mo';
       }
 
-      $newUser = new User($data);
-      $arrErrors = $newUser->getErrors();
-
-      if(empty($arrErrors)){
-        $userInfos = array(
-          'id'        => $_SESSION['user_session']['user_id'],
-          'pseudo'    => $_POST['pseudo'],
-          'email'     => $_POST['email']
-        );
-        if(!empty($hashedPw))
-          $userInfos += ['mdp' => $hashedPw];
-        $loginManager = new LoginManager();
-        $loginManager->userUpdate($userInfos);
-        $_SESSION['user_session']['user_pseudo']  = $_POST['pseudo'];
-        $_SESSION['user_session']['user_email']   = $_POST['email'];
-
-        $arrErrors += ['errClear' => '  Succès ! Le profil a été mis à jour.'];
+      $extensionUpload = strtolower(substr(strrchr($_FILES['avatar']['name'],'.'),1));
+      // strrchr: renvoyer extension du fichier à partir du point '.' /
+      // substr : ignorer le caractère "1" de la chaine (le point) /
+      // strtolower : tout en minuscule /
+      if(!in_array($extensionUpload,$extensionsValides)){                       // verifier extensionValide
+        $errors['errAvatar']['ext'] = 'Votre photo de profil doit être de format jpg, jpeg, gif ou png';
       }
 
-      $_SESSION['update_err'] = $arrErrors;
+      $chemin = 'public/images/avatar/'.$_SESSION['user_session']['user_id'].'.'.$extensionUpload;
+      $resultat = move_uploaded_file($_FILES['avatar']['tmp_name'],$chemin);
+      if(!$resultat){                                                           // verifier chargement
+        $errors['errAvatar']['load'] = 'Erreur de chargement de photo';
+      }
+
+      if (empty($errors)) {
+        $image = $_SESSION['user_session']['user_id'].'.'.$extensionUpload;
+        $userInfos += ['image' => $image];
+        $_SESSION['user_session']['user_avatar'] = $_SESSION['user_session']['user_id'].'.'.$extensionUpload;
+      }
     }
+
+    if ($_POST['pseudo'] !== $_SESSION['user_session']['user_pseudo']){         // verif pseudo
+      $data += ['pseudo' => htmlspecialchars($_POST['pseudo'])];
+    }
+    if ($_POST['email'] !== $_SESSION['user_session']['user_email']){           // verif email
+      $data += ['email' => htmlspecialchars($_POST['email'])];
+    }
+    if(!empty(htmlspecialchars($_POST['password']))){                           //verif password
+      if(strlen($_POST['password']) >= 6){ // min 6 caractères
+        $hashedPw = password_hash($_POST['password'],PASSWORD_DEFAULT,['cost' => 12]);
+      } else {
+        $data += ['errPassword' => 'Le mot de passe doit avoir au moins 6 caractères.'];
+      }
+    } else {
+      $hashedPw = null;
+    }
+    if ($_POST['password'] !== $_POST['password2']){                            // verif pw = pw2
+      $data += ['errPassword2' => 'Les mots de passe ne se correspondent pas.'];
+    }
+
+    $newUser = new User($data);
+    $errors += $newUser->getErrors();
+
+    if(empty($errors)){
+      $userInfos += array(
+        'id'        => $_SESSION['user_session']['user_id'],
+        'pseudo'    => $_POST['pseudo'],
+        'email'     => $_POST['email']
+      );
+      if(!empty($hashedPw)){
+        $userInfos += ['mdp' => $hashedPw];
+      }
+
+      $loginManager = new LoginManager();
+      $loginManager->userUpdate($userInfos);
+      $_SESSION['user_session']['user_pseudo'] = $_POST['pseudo'];
+      $_SESSION['user_session']['user_email'] = $_POST['email'];
+      $errors += ['errClear' => '  Succès ! Le profil a été mis à jour.'];
+    }
+    $_SESSION['error'] = $errors;
+
     $myView = new View();
     $myView->redirect('editProfile');
   }

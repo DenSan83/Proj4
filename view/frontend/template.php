@@ -153,6 +153,11 @@
             },3000);
           };
           timer();
+
+          $('#overlay').modal('show');
+          setTimeout(function() {
+              $('#overlay').modal('hide');
+          }, 3000);
       </script>
     </body>
 </html>

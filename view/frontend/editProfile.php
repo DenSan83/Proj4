@@ -14,13 +14,14 @@ $superTitle = 'Modifier mon profil';
         </div>
       </div>
       <?php
-      if (isset($_SESSION['update_err']['errAvatar'])){
+      if (isset($_SESSION['error']['errAvatar'])){
+        foreach ($_SESSION['error']['errAvatar'] as $errAvatar) {
       ?>
       <div class="container bg-danger col-6 text-white rounded" style="margin-top:0.5em">
-        <p style="margin:0.5em auto;text-align:center"><?= htmlspecialchars($_SESSION['update_err']['errAvatar']) ?></p>
+        <p style="margin:0.5em auto;text-align:center"><?= $errAvatar ?></p>
       </div>
       <?php
-      }
+      }}
       ?>
     </div>
 
@@ -30,10 +31,10 @@ $superTitle = 'Modifier mon profil';
         <input type="text" id="pseudo" placeholder="Pseudo" class="form-control" name="pseudo" value="<?= $_SESSION['user_session']['user_pseudo'] ?>" autofocus>
       </div>
       <?php
-      if (isset($_SESSION['update_err']['errPseudo'])){
+      if (isset($_SESSION['error']['errPseudo'])){
       ?>
       <div class="container bg-danger col-6 text-white rounded" style="margin-top:0.5em">
-        <p style="margin:0.5em auto;text-align:center"><?= htmlspecialchars($_SESSION['update_err']['errPseudo']) ?></p>
+        <p style="margin:0.5em auto;text-align:center"><?= htmlspecialchars($_SESSION['error']['errPseudo']) ?></p>
       </div>
       <?php
       }
@@ -46,10 +47,10 @@ $superTitle = 'Modifier mon profil';
           <input type="email" id="email" placeholder="Email" class="form-control" name= "email" value="<?= $_SESSION['user_session']['user_email'] ?>">
         </div>
         <?php
-        if (isset($_SESSION['update_err']['errEmail'])){
+        if (isset($_SESSION['error']['errEmail'])){
         ?>
         <div class="container bg-danger col-6 text-white rounded" style="margin-top:0.5em">
-          <p style="margin:0.5em auto;text-align:center"><?= htmlspecialchars($_SESSION['update_err']['errEmail']) ?></p>
+          <p style="margin:0.5em auto;text-align:center"><?= htmlspecialchars($_SESSION['error']['errEmail']) ?></p>
         </div>
         <?php
         }
@@ -62,10 +63,10 @@ $superTitle = 'Modifier mon profil';
         <input type="password" id="password" placeholder="Mot de passe (au moins 6 caractères)" class="form-control" name="password">
       </div>
       <?php
-      if (isset($_SESSION['update_err']['errPassword'])){
+      if (isset($_SESSION['error']['errPassword'])){
       ?>
       <div class="container bg-danger col-6 text-white rounded" style="margin-top:0.5em">
-        <p style="margin:0.5em auto;text-align:center"><?= htmlspecialchars($_SESSION['update_err']['errPassword']) ?></p>
+        <p style="margin:0.5em auto;text-align:center"><?= htmlspecialchars($_SESSION['error']['errPassword']) ?></p>
       </div>
       <?php
       }
@@ -77,10 +78,10 @@ $superTitle = 'Modifier mon profil';
         <input type="password" id="password2" placeholder="Confirmer mot de passe" class="form-control" name="password2">
       </div>
       <?php
-      if (isset($_SESSION['update_err']['errPassword2'])){
+      if (isset($_SESSION['error']['errPassword2'])){
       ?>
       <div class="container bg-danger col-6 text-white rounded" style="margin-top:0.5em">
-        <p style="margin:0.5em auto;text-align:center"><?= htmlspecialchars($_SESSION['update_err']['errPassword2']) ?></p>
+        <p style="margin:0.5em auto;text-align:center"><?= htmlspecialchars($_SESSION['error']['errPassword2']) ?></p>
       </div>
       <?php
       }
@@ -101,15 +102,22 @@ $superTitle = 'Modifier mon profil';
     </a>
   </form>
   <?php
-  if(isset($_SESSION['update_err']['errClear'])){
+  if(isset($_SESSION['error']['errClear'])){
   ?>
-  <div class="container bg-success col-8 text-white rounded justify-content-center" style="margin-top:0.5em;padding:2em">
-      <p style="margin:0.5em auto;text-align:center"> <i class="far fa-check-circle"></i> <?= htmlspecialchars($_SESSION['update_err']['errClear']) ?></p>
+  <div class="modal fade" id="overlay">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h4 class="modal-title">Profil mis à jour</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p><i class="far fa-check-circle text-success"></i> <?= htmlspecialchars($_SESSION['error']['errClear']) ?></p>
+        </div>
+      </div>
+    </div>
   </div>
   <?php
   }
   ?>
 </div>
-<?php
-unset($_SESSION['update_err']);
-?>
