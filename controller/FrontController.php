@@ -159,4 +159,13 @@ class FrontController
     $myView = new View('newUser');
     $myView->render($arrErrors);
   }
+
+  public function showPosts()
+  {
+    $postManager = new PostManager();
+    $posts = $postManager->getPosts();
+
+    $myView = new View('showPosts');
+    $myView->render($posts);
+  }
 }

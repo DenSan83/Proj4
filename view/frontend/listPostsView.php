@@ -76,5 +76,5 @@ $last = $last[0];
 </div>
 
 <div class="container col-3" style="margin:1em auto;text-align:center">
-    <a href="#" >Lire tout le Chapitre 1</a>
+    <a href="<?=HOST?>showPosts" >Lire tout le Chapitre 1</a>
 </div>

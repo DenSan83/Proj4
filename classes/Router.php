@@ -9,6 +9,7 @@ class Router
                       "post"          => ["controller" => 'FrontController', "method" => 'post'],
                       "addComment"    => ["controller" => 'FrontController', "method" => 'addComment'],
                       "newUser"       => ["controller" => 'FrontController', "method" => 'newUser'],
+                      "showPosts"     => ["controller" => 'FrontController', "method" => 'showPosts'],
 
                       "login"         => ["controller" => 'UserController', "method" => 'login'],
                       "logout"        => ["controller" => 'UserController', "method" => 'logout'],
