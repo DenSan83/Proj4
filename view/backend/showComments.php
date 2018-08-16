@@ -2,19 +2,19 @@
 $superTitle = 'Commentaires des Posts';
 ?>
 
-<div class="container" style="margin-top:12em">
-  <div class="container rounded" style="border:1px solid black;margin:1em auto;padding:1em">
+<div id="showComments" class="container">
+  <div class="container rounded showComs">
     <h4>Tous les commentaires :</h4>
     <h4>(Total : <?= count($lastComments) ?>)</h4>
-    <div class="container rounded" style="border:1px solid black; padding:0;overflow:hidden">
+    <div class="container rounded tousComs">
       <div class="comments">
         <table class="table table-hover">
           <thead class="thead-dark">
             <tr>
               <th scope="col">ID</th>
-              <th scope="col" style="width:15%">Auteur</th>
-              <th scope="col" style="width:30%">Commentaire</th>
-              <th scope="col" style="width:20%">Sur le post...</th>
+              <th scope="col" width="15%">Auteur</th>
+              <th scope="col" width="30%">Commentaire</th>
+              <th scope="col" width="20%">Sur le post...</th>
               <th scope="col">Date</th>
             </tr>
           </thead>
@@ -22,10 +22,10 @@ $superTitle = 'Commentaires des Posts';
             <?php
             foreach ($lastComments as $comment) {
             ?>
-            <tr onclick="window.location='<?= HOST.'post/id/'.$comment->getPostId().'#comment'.$comment->getId() ?>';" style="cursor:pointer">
+            <tr onclick="window.location='<?= HOST.'post/id/'.$comment->getPostId().'#comment'.$comment->getId() ?>';" class="pointer">
               <th scope="row"><?= $comment->getId() ?></th>
               <td><?= $comment->getAuthor() ?></td>
-              <td style="color:blue"><?= $comment->getComment() ?></td>
+              <td class="tdComment"><?= $comment->getComment() ?></td>
               <td><?= $postManager->getPost($comment->getPostId())->getTitle() ?></td>
               <td>le <?= $comment->getDateCom() ?></td>
             </tr>

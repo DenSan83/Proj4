@@ -1,24 +1,24 @@
 <?php
 $superTitle = 'Modifier mon profil';
 ?>
-<div class="container row col-9 bg-secondary rounded justify-content-center" style="margin:2em auto;margin-top:12em;padding:2em">
+<div id="editProfile" class="container row col-9 bg-secondary rounded justify-content-center">
   <form method="post" action="<?= HOST ?>updateProfile" enctype="multipart/form-data" class="form-horizontal col-10 justify-content-center" role="form">
-    <h2 style="margin:0.5em auto;text-align:center">Modifier mon profil</h2>
+    <h2>Modifier mon profil</h2>
 
     <div class="form-group">
       <div class="container-liquid avatar">
-        <img class="rounded-circle" id="avatar" src="<?= HOST ?>public/images/avatar/<?= $_SESSION['user_session']['user_avatar'] ?>" alt="Avatar de <?= $_SESSION['user_session']['user_pseudo'] ?>" width="200px" height="200px" style="border:2px solid blue;display:block;margin:0 auto">
+        <img class="rounded-circle" id="avatar" src="<?= HOST ?>public/images/avatar/<?= $_SESSION['user_session']['user_avatar'] ?>" alt="Avatar de <?= $_SESSION['user_session']['user_pseudo'] ?>">
         <label for="avatar" class="col-sm-3 control-label">Changer avatar* :</label>
         <div class="col-sm-12">
-            <input type="file" name="avatar" class="bg-light rounded form-control-file" style="margin:5px auto">
+          <input type="file" name="avatar" class="bg-light rounded form-control-file">
         </div>
       </div>
       <?php
       if (isset($_SESSION['error']['errAvatar'])){
         foreach ($_SESSION['error']['errAvatar'] as $errAvatar) {
       ?>
-      <div class="container bg-danger col-6 text-white rounded" style="margin-top:0.5em">
-        <p style="margin:0.5em auto;text-align:center"><?= $errAvatar ?></p>
+      <div class="container bg-danger col-6 text-white rounded">
+        <p><?= $errAvatar ?></p>
       </div>
       <?php
       }}
@@ -33,8 +33,8 @@ $superTitle = 'Modifier mon profil';
       <?php
       if (isset($_SESSION['error']['errPseudo'])){
       ?>
-      <div class="container bg-danger col-6 text-white rounded" style="margin-top:0.5em">
-        <p style="margin:0.5em auto;text-align:center"><?= htmlspecialchars($_SESSION['error']['errPseudo']) ?></p>
+      <div class="container bg-danger col-6 text-white rounded">
+        <p><?= htmlspecialchars($_SESSION['error']['errPseudo']) ?></p>
       </div>
       <?php
       }
@@ -49,8 +49,8 @@ $superTitle = 'Modifier mon profil';
         <?php
         if (isset($_SESSION['error']['errEmail'])){
         ?>
-        <div class="container bg-danger col-6 text-white rounded" style="margin-top:0.5em">
-          <p style="margin:0.5em auto;text-align:center"><?= htmlspecialchars($_SESSION['error']['errEmail']) ?></p>
+        <div class="container bg-danger col-6 text-white rounded">
+          <p><?= htmlspecialchars($_SESSION['error']['errEmail']) ?></p>
         </div>
         <?php
         }
@@ -65,8 +65,8 @@ $superTitle = 'Modifier mon profil';
       <?php
       if (isset($_SESSION['error']['errPassword'])){
       ?>
-      <div class="container bg-danger col-6 text-white rounded" style="margin-top:0.5em">
-        <p style="margin:0.5em auto;text-align:center"><?= htmlspecialchars($_SESSION['error']['errPassword']) ?></p>
+      <div class="container bg-danger col-6 text-white rounded">
+        <p><?= htmlspecialchars($_SESSION['error']['errPassword']) ?></p>
       </div>
       <?php
       }
@@ -80,8 +80,8 @@ $superTitle = 'Modifier mon profil';
       <?php
       if (isset($_SESSION['error']['errPassword2'])){
       ?>
-      <div class="container bg-danger col-6 text-white rounded" style="margin-top:0.5em">
-        <p style="margin:0.5em auto;text-align:center"><?= htmlspecialchars($_SESSION['error']['errPassword2']) ?></p>
+      <div class="container bg-danger col-6 text-white rounded">
+        <p><?= htmlspecialchars($_SESSION['error']['errPassword2']) ?></p>
       </div>
       <?php
       }
@@ -95,8 +95,8 @@ $superTitle = 'Modifier mon profil';
     </div>
 
     <button type="submit" class="btn btn-primary btn-block col-12 maj">Mise à jour</button>
-    <a href="<?= HOST ?>" style="text-decoration:none">
-      <div class="btn btn-light btn-block col-12" style="margin-top:1em">
+    <a href="<?=HOST?>" id="backHome">
+      <div class="btn btn-light btn-block col-12">
         Retour à l'accueil
       </div>
     </a>

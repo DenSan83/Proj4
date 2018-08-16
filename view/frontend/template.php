@@ -6,7 +6,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <title><?= $superTitle ?></title>
       <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-      <!-- <link href="<?= HOST ?>public/css/style.css" rel="stylesheet" /> -->
+      <link href="<?= HOST ?>public/css/styles.css" rel="stylesheet" />
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
       <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
@@ -27,16 +27,16 @@
     </head>
 
     <body>
-      <header class="container-fluid" style="box-shadow:0 4px 4px rgba(0,0,0,0.2);position:absolute;top:0;background-color:rgba(0,0,0,0.5);width:100%;z-index:1">
-        <nav class="container-fluid row sticky-top justify-content-between" style="padding:1em">
+      <header class="container-fluid">
+        <nav class="container-fluid row sticky-top">
           <a class="navbar-brand text-dark col-7 col-sm-6" href="<?= HOST ?>">
-            <div class="rounded" style="margin:1em;padding:0.5em;background-color:rgba(255,255,255,0.6)">
-              <h1 style="font-size:2.8vw;color:#29487d;text-align:center" >Billet Simple pour Alaska</h1>
+            <div class="rounded">
+              <h1>Billet Simple pour Alaska</h1>
             </div>
           </a>
-          <div class="user">
+          <div class="usercont row align-items-center">
             <?php
-            if(empty($_SESSION['user_session'])){ // sans session
+            if(empty($_SESSION['user_session'])){                               // sans session
             ?>
             <div class="btn-group dropdown">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -46,11 +46,25 @@
               <?php
               if(isset($_SESSION['noUser']) && $_SESSION['noUser'] == 1)
               {
-                echo '<div class="container" id="noUser">Pseudo ou mot de passe incorrect !</div>';
+              ?>
+              <div class="modal fade" id="overlay">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header bg-danger text-white">
+                      <h4 class="modal-title">Error</h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                      <p>Pseudo ou mot de passe incorrect !</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <?php
               }
               ?>
               <div class="dropdown-menu dropdown-menu-right bg-lg">
-                <form method="post" action="<?= HOST ?>login">
+                <form method="post" action="<?= HOST ?>login" class="login">
                   <?php
                   if(isset($postId)){
                   ?>
@@ -59,7 +73,7 @@
                   }
                   ?>
 
-                  <div style="margin-bottom:15px;margin-top:25px" class="input-group">
+                  <div class="input-group">
                     <div class="col-md-12">
                       <input type="text" class="form-control" name="login" placeholder="Pseudo">
                     </div>
@@ -67,15 +81,15 @@
 
                   <div class="input-group">
                     <div class="col-md-12">
-                      <div style="margin-bottom: 25px" class="input-group">
+                      <div class="input-group">
                         <input type="password" class="form-control" name="password" placeholder="Mot de passe">
                       </div>
                     </div>
                   </div>
 
-                  <div class="form-group">
-                    <div class="col-md-offset-3 col-md-9">
-                      <button id="btn-signup" type="submit" class="btn btn-default"><i class="icon-hand-right"></i>Connexion</button>
+                  <div class="form-group row align-items-center">
+                    <div class="button">
+                      <button id="btn-signup" type="submit" class="btn btn-default">Connexion</button>
                     </div>
                   </div>
 
@@ -86,7 +100,7 @@
               </div>
             </div>
             <?php
-            } else { //avec session
+            } else {                                                            //avec session
             ?>
             <div class="user">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -107,20 +121,20 @@
                 <?php
                 if($_SESSION['user_session']['user_status'] == 'admin'){
                 ?>
-                <form action="<?= HOST ?>admin" method="post">
-                  <button type="admin" name="admin" class="col-12 bg-white" style="border:none;cursor:pointer">Administrer le site</button>
+                <form action="<?=HOST?>admin" method="post">
+                  <button type="admin" name="admin" class="col-12 bg-white option">Administrer le site</button>
                 </form>
                 <hr/>
                 <?php
                 }
                 ?>
-                <form action="<?= HOST ?>editProfile" method="post">
-                  <input type="hidden" name="userId" value="<?php $_SESSION['user_session']['user_id'] ?>">
-                  <button type="logout" name="logout" class="col-12 bg-white" style="border:none;cursor:pointer">Editer mon Profil</button>
+                <form action="<?=HOST?>editProfile" method="post">
+                  <input type="hidden" name="userId" value="<?= $_SESSION['user_session']['user_id'] ?>">
+                  <button type="logout" name="logout" class="col-12 bg-white option">Editer mon Profil</button>
                 </form>
                 <hr/>
-                <form action="<?= HOST ?>logout" method="post">
-                  <button type="logout" name="logout" class="col-12 bg-white" style="border:none;cursor:pointer">Se déconnecter</button>
+                <form action="<?=HOST?>logout" method="post">
+                  <button type="logout" name="logout" class="col-12 bg-white option">Se déconnecter</button>
                 </form>
               </div>
             </div>
@@ -130,16 +144,53 @@
 
         </div>
       </header>
+
         <?= $content ?>
+
+
       <footer>
-        <div class="container-fluid bg-dark text-light" style="height:5em">
-          FOOTER 'unset($_SESSION['comment']);
-          unset($_SESSION['error']);'
+        <div class="container-fluid bg-dark text-light row main">
+          <div class="container row first">
+            <div class="col-4 disclaimer">
+              <p>Ce site a été fait dans le cadre du Projet 4 : <b>"Créez un blog pour un écrivain"</b>
+                 de la formation <em>Développeur Web Junior</em> avec <a href="https://openclassrooms.com" target="_blank" >OpenClassrooms</a>.</p>
+            </div>
+            <div class="col-4 about">
+              <p>L'auteur</p>
+              <p>L'extrait de l'ouvrage</p>
+              <p>unset($_SESSION['comment']);<br/>
+              unset($_SESSION['error']);</p>
+            </div>
+            <div class="col-4 links">
+              <?php
+              if(isset($_SESSION['user_session'])){
+              ?>
+              <h5>Ma Session</h5>
+              <?php
+                if($_SESSION['user_session']['user_status'] == 'admin'){
+              ?>
+              <p><a href="<?=HOST?>admin">Administrer le site</a></p>
+              <?php
+                }
+              ?>
+              <p><a href="<?=HOST?>editProfile">Editer mon profil</a></p>
+              <p><a href="<?=HOST?>logout">Se déconnecter</a></p>
+              <?php
+            } else {
+              ?>
+              <p>Dennis Santillan - 2018</p>
+              <?php
+              }
+              ?>
+            </div>
+          </div>
         </div>
+
         <?php
         usleep(1);
         unset($_SESSION['comment']);
         unset($_SESSION['error']);
+        unset($_SESSION['noUser']);
         ?>
       </footer>
       <script>

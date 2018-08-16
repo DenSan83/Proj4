@@ -1,306 +1,736 @@
-/************************* STYLES PRINCIPAUX *******************************/
-body
-{
-  font-family:sans-serif;
-  margin:0;
-  position:absolute;
-  min-height:46em;
-  width:100%;
-}
-hr { width:100%; }
-h1 { text-align:center; }
-h2 { margin-left:3em; }
-h3
-{
-    background-color:black;
-    color:white;
-    font-size:0.9em;
-    margin-bottom:0;
-    padding:1em;
-    text-align:center;
-}
+/***************************************************************************
+                                  INDEX
+****************************************************************************
+FRONT
+-----
+**template:                             26
+**listPostsView:                        112
+**postView:                             291
+**showPosts:                            397
+**404                                   428
 
-/************************** NAVBAR ET LOGO  ********************************/
-header
-{
-  background-image: url("../images/ice.jpg");
-  margin:0;
-  height:10em;
-  display:flex;
-  padding:1em;
-}
-header a { text-decoration:none; color:#000; }
-.logo
-{
-  position:absolute;
-  left:4em;
-  display:flex;
-  align-content:center;
-  justify-content:center;
-  margin-top:1.5em;
-  background-color:rgba(255,255,255,0.8);
-  padding:1em;
-  border-radius:10px;
+USER
+-----
+**newUser:                               435
+**editProfile:                           459
+**addCommentView:                        503
+**editCommentView:                       526
 
-}
-.user
-{
-  position:absolute;
-  right:5em;
-  display:flex;
-  align-content:center;
-  justify-content:center;
-  margin-top:2em;
-  background-color:rgba(255,255,255,0.8);
-  padding:1em;
-  border-radius:10px;
-}
-.avatar
-{
-  border:1px solid black;
-  border-radius:50%;
-  overflow:hidden;
-  width:50px;
-  height:50px;
-  margin-right:1em;
-}
-.avatar img
-{
-  display:inline;
-  margin: 0 auto;
-  height: 100%;
-  width: auto;
-}
-.user p
-{
-  font-weight:bold;
-}
-.menu
-{
-  display:none;
-}
-.menu a
-{
-  color:#0000FF;
-  text-decoration:underline;
-}
-.user:hover ~ .menu,
-.menu:hover
-{
-  border:1px solid black;
-  position:absolute;
-  right:5em;
-  top:8.3em;
-  background-color: #fff;
-  padding:0.5em;
-  display:flex;
-  z-index:5;
-}
-.menu button
-{
-  background-color:#fff;
-  border:none;
-  font-weight:bold;
-  cursor:pointer;
-  padding:1em;
-}
-select:hover
-{
-  border:1px solid black;
-  position:absolute;
-  right:5em;
-  top:8.3em;
-  background-color: #fff;
-  padding:0.5em;
-  display:flex;
-}
+BACK
+-----
+**adminView:                             561
+**showComments:                          666
+**editPost:                              690
 
+**RESPONSIVE
 
 /***************************************************************************
-                                  CORPS
+                            FRONT : TEMPLATE
 ****************************************************************************/
-/******************************** POSTS ************************************/
-.news
+/************************* STYLES PRINCIPAUX *******************************/
+/* ndlr: ajouter typo? */
+/***************************** BARRE LOGO **********************************/
+header
 {
-    width:70%;
-    margin:auto;
+  background-color:rgba(0,0,0,0.5);
+  box-shadow:0 4px 4px rgba(0,0,0,0.2);
+  width:100%;
+  position:absolute;
+  top:0;
+  z-index:1;
 }
-.news p
+header nav
 {
-    background-color:#CCCCCC;
-    margin-top:0px;
-    padding:1em;
+  padding:1em;
+  position:relative;
+}
+header h1
+{
+  text-align:center;
+  font-size:2.8vw;
+  color:#29487d;
+}
+header div.rounded
+{
+  background-color:rgba(255,255,255,0.6);
+  margin:0.5em;
+  padding:0.5em;
+}
+header div.usercont
+{
+  position:absolute;
+  right:2em;
+  height:70%;
+}
+/************************** BOUTON LOGIN  **********************************/
+header .login
+{
+  margin-top:2em;
+  margin-bottom:1em;
+}
+header form .input-group
+{
+  margin-bottom:1em;
+  margin-top:0;
+}
+header form .form-group
+{
+  width:100%;
+  margin:0;
+  margin-bottom:1em;
+}
+header form .button
+{
+  margin:0 auto;
+}
+header form .option
+{
+  border:none;
+  cursor:pointer;
+}
+#overlay
+{
+  z-index:1;
+}
+.modal-backdrop.show
+{
+  z-index:0;
+}
+/****************************** FOOTER  ************************************/
+footer .main
+{
+  min-height:5em;
+  margin:0;
+  padding:0;
+}
+footer .first
+{
+  margin:0 auto;
+  padding:1em;
+}
+footer .links h5
+{
+  text-decoration:underline;
+}
+footer .links a
+{
+  color:#fff;
+}
+/***************************************************************************
+                        FRONT : LISTPOSTSVIEW
+****************************************************************************/
+/***************************** DERNIER POST ********************************/
+#last
+{
+  height:60em;
+  position:relative;
+  margin:0;
+  padding:0;
+  width:100%;
+}
+.background
+{
+  background-image: url('../images/backalaska.png');
+  width:100%;
+  height:60em;
+  position:absolute;
+}
+.coat
+{
+  height:60em;
+  width:100%;
+  background-color:rgba(255,255,255,0.2);
+  position:absolute;
+  top:0
+}
+.pic
+{
+  position:absolute;
+  margin:0 auto;
+  margin-top:7em;
+}
+.pic .news
+{
+  border:1px solid #000;
+  box-shadow:4px 4px 4px rgba(0,0,0,0.2);
+  margin:1em auto;
+  padding:0;
+  overflow:hidden;
+}
+.pic .news .first
+{
+  padding:0;
+  position:relative;
+}
+.pic .news .second
+{
+  height:100%;
+  background-color:rgba(255,255,255,0.8);
+  position:absolute;
+  padding:2em 1.2em;
+}
+.pic .second div
+{
+  text-align:justify;
+}
+em.link.rounded
+{
+  background-color:#fff;
+  box-shadow:2px 2px 1px silver;
+  padding:0.5em;
+}
+.pic .first img
+{
+  width:100%;
+  max-height:49em;
+  min-height:28em;
 }
 
-/******************************* COMMENTS **********************************/
+/****************************** BLUE BAR ***********************************/
+#bar
+{
+  height:5em;
+  margin:0;
+}
+#bar h3
+{
+  color:#1C3257;
+}
+#bar a
+{
+  text-decoration:underline;
+  color:#fff;
+}
+
+/***************************** LISSEZ AUSSI ********************************/
+#lissez
+{
+  border:1px solid #000;
+  margin-top:5em;
+  padding:0;
+}
+#lissez .second
+{
+  padding:0.5em;
+}
+#lissez .second .whole
+{
+  border:1px solid #000;
+  padding:0.1em;
+  margin:0.3em;
+  overflow:hidden;
+}
+#lissez .whole .img
+{
+  padding:0;
+  height:10em;
+  overflow:hidden;
+}
+#lissez .whole img
+{
+  width:100%;
+}
+#lissez .whole .news
+{
+  margin:0 auto;
+  z-index:5;
+  height:10em;
+  padding:0;
+}
+#lissez .news .first
+{
+  padding:0.5em;
+  margin:0;
+}
+#lissez .news .second
+{
+  padding:0;
+  margin:0;
+}
+#lissez .news .second div:first-child
+{
+  padding:0.5em;
+  margin:0;
+}
+#lissez .news .second div:first-child p
+{
+  margin:0;
+  text-align:justify;
+}
+#lissez .news .second div:last-child
+{
+  margin:0;
+  height:7em;
+}
+#lissez .news .second div:last-child a
+{
+  color:#fff;
+  text-decoration:none;
+}
+#lissez .news .second div:last-child a div
+{
+  margin:0;
+  padding:0;
+  border-radius:50%;
+  width:30px;
+  height:30px;
+}
+#lissez .news .second div:last-child a p
+{
+  text-align:center;
+}
+
+/*****************************  SHOWPOSTS ********************************/
+#showPosts
+{
+  margin:1em auto;
+  text-align:center;
+}
+
+/***************************************************************************
+                          FRONT : POSTVIEW
+****************************************************************************/
+/************************* IMAGE ET BARRE NOIRE ****************************/
+#myPost
+{
+  border:1px solid #000;
+  margin:2em auto;
+  margin-top:12em;
+  padding:0;
+  overflow:hidden;
+}
+#myPost div img
+{
+  width:100%;
+}
+#myPost div.bg-dark, #myPost div:last-child
+{
+  padding:1em;
+}
+#myPost div.bg-dark h3
+{
+  margin-left:1em;
+  padding:0;
+}
+#myPost div.bg-dark em
+{
+  margin-right:1em;
+  padding:0;
+}
+
+/************************** SANS COMMENTAIRES ******************************/
+#noComs
+{
+  margin:2em auto;
+  padding:0.1em;
+}
+#noComs p
+{
+  margin:1em auto;
+  text-align:center;
+}
+
+/**************************** COMMENTAIRES *********************************/
 .commentBox
 {
-    width:70%;
-    margin: 0.5em auto;
-    padding:1em;
-    display:flex;
-    background-color:#F5F5F5;
+  border:1px solid #007bff;
+  margin:1em auto!important;
+  padding:0;
 }
-.commentBox:hover { background-color:#E8E8E8; }
 .commentAvatar
 {
-  border:1px solid black;
-  border-radius:50%;
-  overflow:hidden;
-  width:50px;
-  height:50px;
-  margin:5px auto;
+  text-align:center;
+  margin-top:0.5em;
 }
 .commentAvatar img
 {
-  display:inline;
+  width:4em;
+  height:4em;
+  border:1px solid #007bff;
   margin: 0 auto;
-  height: 100%;
-  width: auto;
 }
-.author
+.author div:last-child p:first-child
 {
-  width:10%;
-  padding:1em;
   text-align:center;
-  color:#1E90FF;
+  margin-bottom:0;
 }
-span strong
+.author div:last-child p:last-child
 {
-  width:10%;
   text-align:center;
-  color:#1E90FF;
-}
-.author p { margin:auto; }
-.comment
-{
-  padding:1em;
-  width:90%;
-  position:relative;
-}
-.date-time
-{
-  position:absolute;
-  right:1em;
-  top:0;
-}
-.options
-{
-  display:flex;
-  justify-content:flex-end;
-}
-.option
-{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-}
-.modify, .signaler, .repondre
-{
-  margin: 0 0.3em;
-}
-.options p
-{
-  margin:0;
-  text-align: right;
-}
-a
-{
-    text-decoration:none;
-    color:#0000FF;
-}
-.comment form { display:flex; }
-.comment form textarea
-{
-  width: 60%;
-  height: 4em;
-}
-.comment form button
-{
-  border:none;
-  background:none;
-  font-size:2em;
-}
-.comment form a
-{
-  border:none;
-  background:none;
-  font-size:2em;
-  margin-top: 0.35em;
-}
-.comment form .fa-times-circle
-{
-  background-color:#ff6666;
-  color:#ff0000;
-  border-radius:50%;
-}
-.comment form .fa-check-circle
-{
-  color:#4f994f;
-  background-color: #84FF84;
-  border-radius: 50%;
-  cursor:pointer;
-}
-.options form button
-{
-  font-size:1em;
-  cursor:pointer;
-}
-.option .fas, .option span
-{
-  border: none;
-  text-decoration: none;
-  color: #0000FF;
 }
 
-/************************* NOUVEAU COMMENTAIRE *****************************/
-#optionsSession
+.commentText div:first-child
 {
-  background-color:#CCCCCC;
-  padding:1em;
-  width:70%;
-  margin:auto;
-  margin-bottom:10em;
-  display:flex;
-  flex-direction:row;
-  justify-content:space-around;
+  padding:0.5em 1em;
 }
-input[type="text"], input[type="password"]
+.commentText hr
 {
-  width:80%;
+  margin-bottom:0;
 }
-.noCaptcha, .noUser
+.commentText div:last-child
 {
-  color:red;
-  margin:0.8em;
+  padding:0.2em;
+  min-height:3.5em;
 }
-.offLine, .login
+.choix div
 {
-  width:20em;
-  padding:1em;
-  background-color:#E8E8E8;
+  padding:0;
+  justify-content:right;
 }
-.offLineSp
+.modifer form, form.signaler
 {
-  width:20em;
+  padding:0;
+}
+button.modify, button.flag
+{
+  margin:0;
+  border:none;
+  cursor:pointer;
+}
+.offline p
+{
+  text-align:right;
+  color:#007bff;
 }
 
 /***************************************************************************
-					                       FOOTER
+                          FRONT : SHOWPOSTS
 ****************************************************************************/
-footer
+#chapter
 {
-  height:5em;
-  color:#fff;
-  background-color:#000;
-  padding:1em;
-  margin-top:2em;
-  width:100%;
-  position:absolute;
-  bottom:0;
+  margin-top:12em;
+  margin-bottom:6em;
 }
+#chapter a
+{
+  text-decoration:none;
+  color:#000;
+  text-align:justify;
+}
+#chapter .post
+{
+  padding:0.5em;
+}
+#chapter .post:hover
+{
+  background-color:#c0c0c0;
+}
+#retour
+{
+  margin-bottom:6em;
+}
+#retour a
+{
+  text-decoration:underline;
+}
+
+/***************************************************************************
+                              FRONT : 404
+****************************************************************************/
+
+
+
+
+/***************************************************************************
+                            USER : NEWUSER
+****************************************************************************/
+#newUser
+{
+  margin:2em auto;
+  margin-top:12em;
+  padding:2em;
+}
+#newUser form h2
+{
+  margin:0.5em auto;
+  text-align:center;
+}
+#newUser .bg-danger
+{
+  margin-top:0.5em;
+}
+#newUser .bg-danger p
+{
+  margin:0.5em auto;
+  text-align:center;
+}
+
+/***************************************************************************
+                          USER : EDITPROFILE
+****************************************************************************/
+#editProfile
+{
+  margin:2em auto;
+  margin-top:12em;
+  padding:2em;
+}
+#editProfile form h2
+{
+  margin:0.5em auto;
+  text-align:center;
+}
+#avatar
+{
+  width:15em;
+  height:15em;
+  border:2px solid #007bff;
+  display:block;
+  margin:0 auto;
+}
+#editProfile form .avatar input
+{
+  margin:0.2em auto;
+}
+#editProfile form .bg-danger
+{
+  margin-top:0.5em;
+}
+#editProfile form .bg-danger p
+{
+  margin:0.5em auto;
+  text-align:center;
+}
+#backHome
+{
+  text-decoration:none;
+}
+#backHome div
+{
+  margin-top:1em!important;
+}
+
+/***************************************************************************
+                          USER : ADDCOMMENTVIEW
+****************************************************************************/
+#offline, #onLine
+{
+  margin:1em auto;
+}
+#offline .captchaDiv div:first-child
+{
+  margin:0.5em auto;
+  width:305px;
+}
+#offline .captchaDiv .noCaptcha
+{
+  padding:1em;
+  margin:0.5em auto;
+}
+.commentError
+{
+  text-align:center;
+  margin-bottom:1em;
+}
+
+/***************************************************************************
+                        USER : EDITCOMMENTVIEW
+****************************************************************************/
+.editComment
+{
+  border:1px solid #007bff;
+  margin:1em auto;
+  padding:0;
+}
+#change, .btn-danger.refuse
+{
+  border:none;
+  padding:0.8em;
+  margin-left:0.5em;
+}
+.commentText .choix button.effacer
+{
+  margin:0;
+  border:none;
+  cursor:pointer;
+}
+#effacer .modal-body
+{
+  min-height:3em;
+  padding:1em;
+}
+#effacer .modal-footer
+{
+  justify-content:flex-end;
+}
+#deleteForm
+{
+  padding:0;
+}
+
+/***************************************************************************
+                            BACK : ADMINVIEW
+****************************************************************************/
+/***************************  5 COMMENTAIRES *******************************/
+#adminH2
+{
+  text-align:center;
+  text-decoration:underline;
+  margin:1em auto;
+  margin-top:5em;
+}
+#adminComments
+{
+  border:1px solid #000;
+  margin:1em auto;
+  padding:1em;
+}
+#adminComments div.tableau
+{
+  border:1px solid #000;
+  padding:0;
+  overflow:hidden;
+}
+.tdComment
+{
+  color:#007bff;
+}
+.trComment
+{
+  cursor:pointer;
+}
+
+/***********************  COMMENTAIRES SIGNALES ****************************/
+#flagList
+{
+  border:1px solid #000;
+  margin:1em auto;
+  padding:1em;
+}
+#flagList .first
+{
+  border:1px solid #000;
+  padding:0;
+  overflow:hidden;
+}
+#flagList table.top tr td.top
+{
+  padding:0;
+}
+.thCenter
+{
+  text-align:center;
+}
+#flagIn
+{
+  min-height:2em;
+  height:5em;
+  overflow:auto;
+  resize:vertical;
+}
+.tdComFlag
+{
+  color:#007bff;
+  cursor:pointer;
+  width:40%;
+}
+
+/**************************** EDITER UN POST *******************************/
+#editAdmin
+{
+  border:1px solid #000;
+  margin:1em auto;
+  padding:1em;
+}
+#editAdmin form
+{
+  margin:0.5em auto;
+}
+
+/**************************** CREER UN POST ********************************/
+#newPostAdmin
+{
+  margin:2em auto;
+  border:1px solid #000;
+  padding:1em;
+}
+#newPostAdmin form input
+{
+  margin-bottom:1em;
+}
+#newPostAdmin form div.images
+{
+  border:1px solid #c0c0c0;
+  margin:1em auto;
+  padding:0.5em;
+}
+#newPostAdmin form div.images div input
+{
+  margin:5px auto;
+}
+#newPostAdmin form button
+{
+  margin-top:1em;
+}
+
+/***************************************************************************
+                          BACK : SHOWCOMMENTS
+****************************************************************************/
+#showComments
+{
+  margin-top:12em;
+}
+#showComments div.showComs
+{
+  border:1px solid #000;
+  margin:1em auto;
+  padding:1em;
+}
+#showComments .tousComs
+{
+  border:1px solid #000;
+  padding:0;
+  overflow:hidden;
+}
+#showComments .pointer
+{
+  cursor:pointer;
+}
+
+/***************************************************************************
+                            BACK : EDITPOST
+****************************************************************************/
+/***************************  OPTIONS BAR **********************************/
+#editPost
+{
+  margin:2em auto;
+  margin-top:12em;
+}
+#editPost h5
+{
+  background-color:#f5f5f5;
+  text-align:center;
+}
+
+/****************************** MAIN FORM **********************************/
+#mainForm .title
+{
+  margin-bottom:1em;
+}
+#mainForm .imageFrame
+{
+  border:1px solid #c0c0c0;
+  margin:1em auto;
+  padding:0.5em;
+}
+#mainForm .imageFrame div
+{
+  margin:0 auto;
+}
+#mainForm .imageFrame div img
+{
+  width:100%;
+  margin:0 auto 1em auto;
+}
+#mainForm .imageFrame .postImg
+{
+  margin:5px auto;
+}
+#mainForm button
+{
+  margin-top:1em;
+}
+
 /***************************************************************************
                               RESPONSIVE
 ****************************************************************************/
-
 /************************** 1025 - 1200 px *********************************/

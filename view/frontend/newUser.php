@@ -2,9 +2,9 @@
 $superTitle = 'Créer une compte utilisateur';
 ?>
 
-<div class="container row col-9 bg-secondary rounded justify-content-center" style="margin:2em auto;margin-top:12em;padding:2em">
+<div id="newUser" class="container row col-9 bg-secondary rounded justify-content-center">
   <form method="post" action="<?= HOST ?>newUser" class="form-horizontal col-10 justify-content-center" role="form">
-    <h2 class="text-primary" style="margin:0.5em auto;text-align:center"><b>Créez votre compte</b></h2>
+    <h2 class="text-primary"><b>Créez votre compte</b></h2>
     <div class="form-group">
       <label for="pseudo" class="col-sm-6 control-label">Pseudo *</label>
       <div class="col-sm-12">
@@ -13,8 +13,8 @@ $superTitle = 'Créer une compte utilisateur';
       <?php
       if (isset($errPseudo)){
       ?>
-      <div class="container bg-danger col-6 text-white rounded" style="margin-top:0.5em">
-        <p style="margin:0.5em auto;text-align:center"><?= htmlspecialchars($errPseudo) ?></p>
+      <div class="container bg-danger col-6 text-white rounded">
+        <p><?= htmlspecialchars($errPseudo) ?></p>
       </div>
       <?php
       }
@@ -29,8 +29,8 @@ $superTitle = 'Créer une compte utilisateur';
         <?php
         if (isset($errEmail)){
         ?>
-        <div class="container bg-danger col-6 text-white rounded" style="margin-top:0.5em">
-          <p style="margin:0.5em auto;text-align:center"><?= htmlspecialchars($errEmail) ?></p>
+        <div class="container bg-danger col-6 text-white rounded">
+          <p><?= htmlspecialchars($errEmail) ?></p>
         </div>
         <?php
         }
@@ -44,8 +44,8 @@ $superTitle = 'Créer une compte utilisateur';
         <?php
         if (isset($errEmail2)){
         ?>
-        <div class="container bg-danger col-6 text-white rounded" style="margin-top:0.5em">
-          <p style="margin:0.5em auto;text-align:center"><?= htmlspecialchars($errEmail2) ?></p>
+        <div class="container bg-danger col-6 text-white rounded">
+          <p><?= htmlspecialchars($errEmail2) ?></p>
         </div>
         <?php
         }
@@ -59,8 +59,8 @@ $superTitle = 'Créer une compte utilisateur';
       <?php
       if (isset($errPassword)){
       ?>
-      <div class="container bg-danger col-6 text-white rounded" style="margin-top:0.5em">
-        <p style="margin:0.5em auto;text-align:center"><?= htmlspecialchars($errPassword) ?></p>
+      <div class="container bg-danger col-6 text-white rounded">
+        <p><?= htmlspecialchars($errPassword) ?></p>
       </div>
       <?php
       }
@@ -74,8 +74,8 @@ $superTitle = 'Créer une compte utilisateur';
       <?php
       if (isset($errPassword2)){
       ?>
-      <div class="container bg-danger col-6 text-white rounded" style="margin-top:0.5em">
-        <p style="margin:0.5em auto;text-align:center"><?= htmlspecialchars($errPassword2) ?></p>
+      <div class="container bg-danger col-6 text-white rounded">
+        <p><?= htmlspecialchars($errPassword2) ?></p>
       </div>
       <?php
       }
@@ -93,8 +93,18 @@ $superTitle = 'Créer une compte utilisateur';
   <?php
   if(isset($errClear)){
   ?>
-  <div class="container bg-success col-8 text-white rounded justify-content-center" style="margin-top:0.5em">
-      <p style="margin:0.5em auto;text-align:center"> <?= htmlspecialchars($errClear) ?></p>
+  <div class="modal fade" id="overlay">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-success text-white">
+          <h4 class="modal-title">Succès !</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p><span><i class="fas fa-check-circle text-success"></i>&nbsp;&nbsp;</span><span><?= $errClear ?></span></p>
+        </div>
+      </div>
+    </div>
   </div>
   <?php
   }

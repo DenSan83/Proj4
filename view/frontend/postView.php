@@ -2,15 +2,15 @@
 $superTitle = $post->getTitle();
 $siteKey = '6LeVFmQUAAAAAGSSMYlzvv-GvhyxhKNymbAAxtWe'; // captcha: clé publique
 ?>
-<div class="container rounded news" style="border:1px solid black; margin:2em auto;margin-top:12em;padding:0;overflow:hidden">
+<div id="myPost" class="container rounded news">
   <div class="container-liquid">
-    <img src="<?=HOST.'public/images/post/'.$post->getImage() ?>" alt="" style="width:100%">
+    <img src="<?=HOST.'public/images/post/'.$post->getImage() ?>" alt="image du post <?=$post->getId()?>">
   </div>
-  <div class="container-liquid row justify-content-between align-items-center bg-dark text-white" style="padding:1em">
-    <h3 class="container row align-items-start col-4" style="margin-left:1em;padding:0"> <?= htmlspecialchars($post->getTitle()) ?> </h3>
-    <em class="container row justify-content-end col-3" style="margin-right:1em;padding:0">le <?= $post->getCreationDate() ?></em>
+  <div class="container-liquid row justify-content-between align-items-center bg-dark text-white">
+    <h3 class="container row align-items-start col-4"> <?= htmlspecialchars($post->getTitle()) ?> </h3>
+    <em class="container row justify-content-end col-3">le <?= $post->getCreationDate() ?></em>
   </div>
-  <div style="padding:1em">
+  <div>
     <p> <?= htmlspecialchars_decode($post->getContent()) ?> </p>
   </div>
 </div>
@@ -20,16 +20,26 @@ $siteKey = '6LeVFmQUAAAAAGSSMYlzvv-GvhyxhKNymbAAxtWe'; // captcha: clé publique
 <?php
 if (isset($_SESSION['comment']['success'])){
 ?>
-<div class="container rounded text-white bg-success col-4" style="text-align:center;padding:1em">
-  <span><i class="fas fa-check-circle"></i>&nbsp;&nbsp;</span><span>Votre commentaire à été ajouté !</span>
+<div class="modal fade" id="overlay">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white">
+        <h4 class="modal-title">Succès !</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p><span><i class="fas fa-check-circle text-success"></i>&nbsp;&nbsp;</span><span>Votre commentaire à été ajouté !</span></p>
+      </div>
+    </div>
+  </div>
 </div>
 <?php
 }
 if(empty($comments[0]))
 {
 ?>
-<div class="container rounded bg-info text-white justify-content-center align-items-center" style="margin:2em auto;padding:0.1em">
-  <p class="col-5" style="margin:1em auto">Ce post ne contient pas encore des commentaires.</p>
+<div id="noComs" class="container rounded bg-info text-white justify-content-center align-items-center">
+  <p class="col-5">Ce post ne contient pas encore des commentaires.</p>
 </div>
 <?php
 } else {
@@ -41,9 +51,9 @@ if(empty($comments[0]))
     } else {
       // montrer commentaire
 ?>
-<div class="container rounded row commentBox col-10 col-lg-9 justify-content-between" style="border:1px solid blue; margin:1em auto; padding:0" id="comment<?= $comment->getId() ?>">
-  <div class="container-liquid author col-2 row align-items-center" >
-    <div class="container-liquid commentAvatar col-12" style="text-align:center;margin-top:0.5em">
+<div class="container rounded row col-10 col-lg-9 justify-content-between commentBox" id="comment<?= $comment->getId() ?>">
+  <div class="container-liquid col-2 row align-items-center author" >
+    <div class="container-liquid col-12 commentAvatar">
       <?php
       if($comment->getAuthorId()) {
       $myAvatar = $avatarList[$comment->getAuthorId()];
@@ -52,28 +62,28 @@ if(empty($comments[0]))
         $myAvatar['pseudo'] = $comment->getAuthor();
       }
       ?>
-      <img class="rounded-circle" src="<?= HOST ?>public/images/avatar/<?= $myAvatar['avatar'] ?>" alt="avatar user" width="50px" height="50px" style="border:1px solid blue; margin: 0 auto">
+      <img class="rounded-circle" src="<?= HOST ?>public/images/avatar/<?= $myAvatar['avatar'] ?>" alt="user avatar">
     </div>
     <div class="container col-12 align-items-center">
-      <p style="text-align:center;margin-bottom:0"><strong><?= htmlspecialchars($myAvatar['pseudo']) ?></strong></p>
-      <p style="text-align:center"><?= htmlspecialchars($myAvatar['status']) ?></p>
+      <p><strong><?= htmlspecialchars($myAvatar['pseudo']) ?></strong></p>
+      <p><?= htmlspecialchars($myAvatar['status']) ?></p>
     </div>
   </div>
-  <div class="container-liquid comment align-self-end col-10">
-    <div class="container-liquid row justify-content-end" style="padding:0.5em 1em">
+  <div class="container-liquid align-self-end col-10 commentText">
+    <div class="container-liquid row justify-content-end">
       <p class="date-time"> <i class="far fa-clock"></i> le <?= $comment->getDateCom() ?></p>
     </div>
-    <p><?=  nl2br(htmlspecialchars($comment->getComment())) ?></p>
-    <hr/ style="margin-bottom:0">
-    <div class="container-liquid row options" style="padding:0.2em;min-height:3.5em">
+    <p><?= nl2br(htmlspecialchars($comment->getComment())) ?></p>
+    <hr/>
+    <div class="container-liquid row choix">
     <?php
     if (!empty($_SESSION['user_session']) && $_SESSION['user_session']['user_id'] == $comment->getAuthorId()) {
     ?>
-      <div class="container-liquid col-12 row justify-content-end" style="padding:0">
-        <form action="<?= HOST ?>modifyComment#comment<?= $comment->getId()?>" method="post"class="container row justify-content-end col-6" style="padding:0">
+      <div class="container-liquid col-12 row justify-content-end modifier">
+        <form action="<?= HOST ?>modifyComment#comment<?= $comment->getId()?>" method="post"class="container row justify-content-end col-5">
           <input type="hidden" name="postId" value="<?= $post->getId() ?>">
           <input type="hidden" name="commentId" value="<?= $comment->getId() ?>">
-          <button type="submit" class="container col-5 text-primary bg-white option modify" style="margin:0;border:none;cursor:pointer">
+          <button type="submit" class="container col-5 text-primary bg-white modify">
             <i class="fas fa-edit col-7"></i>
             <span class="col-7">Modifier</span>
           </button>
@@ -83,7 +93,7 @@ if(empty($comments[0]))
       }
       elseif (!empty($_SESSION['user_session']['user_pseudo'])){
       ?>
-      <div class="container-liquid col-12 row justify-content-end" style="padding:0">
+      <div class="container-liquid col-12 row justify-content-end">
         <?php
         if(isset($_SESSION['comment']['flag']) && $_SESSION['comment']['flag'] == $comment->getId()){
         ?>
@@ -93,10 +103,10 @@ if(empty($comments[0]))
         <?php
         }
         ?>
-        <form action="<?= HOST ?>flagComment" method="post"class="container row justify-content-end col-5" style="padding:0">
+        <form action="<?= HOST ?>flagComment" method="post"class="container row justify-content-end col-5 signaler">
           <input type="hidden" name="postId" value="<?= $post->getId() ?>">
           <input type="hidden" name="commentId" value="<?= $comment->getId() ?>">
-          <button type="submit" class="container col-5 text-primary bg-white option modify" style="margin:0;border:none;cursor:pointer">
+          <button type="submit" class="container col-5 text-primary bg-white flag">
             <i class="fas fa-fire col-7"></i>
             <span class="col-7">Signaler</span>
           </button>
@@ -105,8 +115,8 @@ if(empty($comments[0]))
       <?php
       } else {
       ?>
-      <div class="container liquid" style="justify-content:right">
-        <p style="text-align:right;color:blue">Pour avoir accès aux options des commentaires, <a href="<?=HOST.'newUser'?>">abonnez-vous !</a></p>
+      <div class="container liquid offline">
+        <p>Pour avoir accès aux options des commentaires, <a href="<?=HOST.'newUser'?>">abonnez-vous !</a></p>
       </div>
       <?php
       }
@@ -118,6 +128,6 @@ if(empty($comments[0]))
     }
   }
 }
-//ajouter commentaire
+//ajouter commentaires
 require('addCommentView.php');
 ?>

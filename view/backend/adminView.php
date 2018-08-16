@@ -2,19 +2,19 @@
 $superTitle = 'AdminView';
 ?>
 
-<h1 style="text-align:center;text-decoration:underline;margin:1em auto;margin-top:4.5em">Espace Administrateur</h1>
+<h2 id="adminH2">Espace Administrateur</h2>
 
-<div class="container rounded" style="border:1px solid black;margin:1em auto;padding:1em">
+<div id="adminComments" class="container rounded">
   <h4>Derniers 5 commentaires</h4>
-  <div class="container rounded" style="border:1px solid black; padding:0;overflow:hidden">
+  <div class="container rounded tableau">
     <div class="comments">
       <table class="table table-hover">
         <thead class="thead-dark">
           <tr>
             <th scope="col">ID</th>
-            <th scope="col" style="width:15%">Auteur</th>
-            <th scope="col" style="width:30%">Commentaire</th>
-            <th scope="col" style="width:20%">Sur le post...</th>
+            <th scope="col" width="15%">Auteur</th>
+            <th scope="col" width="40%">Commentaire</th>
+            <th scope="col" width="20%">Sur le post...</th>
             <th scope="col">Date</th>
           </tr>
         </thead>
@@ -22,10 +22,10 @@ $superTitle = 'AdminView';
           <?php
           foreach ($lastComments as $comment) {
           ?>
-          <tr onclick="window.location='<?= HOST.'post/id/'.$comment->getPostId().'#comment'.$comment->getId() ?>';" style="cursor:pointer">
+          <tr onclick="window.location='<?= HOST.'post/id/'.$comment->getPostId().'#comment'.$comment->getId() ?>';" class="trComment">
             <th scope="row"><?= $comment->getId() ?></th>
             <td><?= $comment->getAuthor() ?></td>
-            <td style="color:blue"><?= $comment->getComment() ?></td>
+            <td class="tdComment"><?= $comment->getComment() ?></td>
             <td><?= $postManager->getPost($comment->getPostId())->getTitle() ?></td>
             <td>le <?= $comment->getDateCom() ?></td>
           </tr>
@@ -42,54 +42,54 @@ $superTitle = 'AdminView';
 </div>
 </br>
 
-<div class="container rounded" style="border:1px solid black;margin:1em auto;padding:1em">
+<div id="flagList" class="container rounded">
   <h4>Nouveaux commentaires signalés</h4>
-  <div class="container rounded" style="border:1px solid black; padding:0;overflow:hidden">
+  <div class="container rounded first">
     <div class="comments">
 
-      <table class="table">
+      <table class="table top">
         <tr>
-          <td style="padding:0">
+          <td class="top">
             <table class="table">
               <thead class="thead-dark">
                 <tr>
-                  <th scope="col" style="width:5%">ID</th>
-                  <th scope="col" style="width:10%">Auteur</th>
-                  <th scope="col" style="width:38%">Commentaire</th>
-                  <th scope="col" style="width:10%">Signalé par</th>
-                  <th scope="col" style="width:16%">Signalé le...</th>
-                  <th scope="col" style="text-align:center">Valider</th>
-                  <th scope="col" style="text-align:center">Effacer</th>
+                  <th scope="col" width="5%">ID</th>
+                  <th scope="col" width="10%">Auteur</th>
+                  <th scope="col" width="38%">Commentaire</th>
+                  <th scope="col" width="10%">Signalé par</th>
+                  <th scope="col" width="16%">Signalé le...</th>
+                  <th scope="col" class="thCenter">Valider</th>
+                  <th scope="col" class="thCenter">Effacer</th>
                 </tr>
               </thead>
             </table>
           </td>
         </tr>
         <tr>
-          <td style="padding:0">
+          <td class="top">
             <?php
             if(empty($flagged)){
             ?>
             <div class="container rounded bg-info col-6 text-white">
-              <p style="text-align:center">Il n'y a pas des commentaires signalés pour l'instant. Excellent !</p>
+              <p class="thCenter">Il n'y a pas des commentaires signalés pour l'instant. Excellent !</p>
             </div>
             <?php
             }
             ?>
-            <div style="min-height:2em;height:5em;overflow:auto;resize:vertical">
+            <div id="flagIn">
               <table class="table">
                 <tbody>
                   <?php
                   foreach ($flagged as $flag) {
                   ?>
                   <tr>
-                    <th scope="row" style="width:5%"><?= $flag['comment_id'] ?></th>
-                    <td style="width:10%"><?= $commentManager->getComment($flag['comment_id'])['author'] ?></td>
-                    <td onclick="window.location='<?= HOST.'post/id/'.$commentManager->getComment($flag['comment_id'])['post_id'].'#comment'.$flag['comment_id'] ?>';" style="color:blue;cursor:pointer;width:40%">
+                    <th scope="row" width="5%"><?= $flag['comment_id'] ?></th>
+                    <td width="10%"><?= $commentManager->getComment($flag['comment_id'])['author'] ?></td>
+                    <td onclick="window.location='<?= HOST.'post/id/'.$commentManager->getComment($flag['comment_id'])['post_id'].'#comment'.$flag['comment_id'] ?>';" class="tdComFlag">
                       <?= $commentManager->getComment($flag['comment_id'])['comment'] ?>
                     </td>
-                    <td style="width:10%"><?= $flag['flagger'] ?></td>
-                    <td style="width:16%"><?= $flag['flag_date_fr'] ?></td>
+                    <td width="10%"><?= $flag['flagger'] ?></td>
+                    <td width="16%"><?= $flag['flag_date_fr'] ?></td>
                     <td align="center">
                       <a data-toggle="modal" href="#unflag" class="btn btn-link"><i class="fas fa-thumbs-up text-info"></i></a>
                     </td>
@@ -159,14 +159,14 @@ $superTitle = 'AdminView';
 </div>
 </br>
 
-<div class="container rounded" style="border:1px solid black;margin:1em auto;padding:1em">
+<div id="editAdmin" class="container rounded">
   <h4>Editer un post :</h4>
   <div class="container">
     <?php
     foreach($postManager->getPosts() as $post)
     {
     ?>
-    <form class="" action="<?= HOST.'editPost/id/'.$post->getId() ?>" method="post" style="margin:0.5em auto">
+    <form class="" action="<?= HOST.'editPost/id/'.$post->getId() ?>" method="post">
       <button class="btn-info container form-control"type="submit" name="post"><?= $post->getTitle() ?> (Post ID : <?= $post->getId() ?>)</button>
     </form>
     <?php
@@ -176,17 +176,18 @@ $superTitle = 'AdminView';
 </div>
 </br>
 
-<div class="container rounded" style="margin:2em auto;border:1px solid black;padding:1em">
+<div id="newPostAdmin" class="container rounded">
   <h4>Ajouter nouveau post</h4>
   <form method="post" action="adminPost" enctype="multipart/form-data">
-    <input class="form-control" type="text" name="postTitle" placeholder="Titre" style="margin-bottom:1em">
+    <input class="form-control" type="text" name="postTitle" placeholder="Titre">
     <textarea id="editor" name="newPost" ></textarea>
-    <div class="container align-items-center rounded col-12" style="border:1px solid silver;margin:1em auto;padding:0.5em">
-      <div class="container align-items-center row">
-        <label for="postImg" class="col-4">Ajouter une image au post (taille max : 2Mo) :</label><input type="file" name="postImg" class="bg-light rounded form-control-file col-8" style="margin:5px auto">
+    <div class="container align-items-center rounded col-12 images">
+      <div class="container row align-items-center">
+        <label for="postImg" class="col-4">Ajouter une image au post (taille max : 2Mo) :</label>
+        <input type="file" name="postImg" class="bg-light rounded form-control-file col-8">
       </div>
     </div>
 
-    <button class="form-control btn-info rounded" type="submit" style="margin-top:1em">Créer nouveau post</button>
+    <button class="form-control btn-info rounded" type="submit">Créer nouveau post</button>
   </form>
 </div>
