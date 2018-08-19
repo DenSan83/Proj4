@@ -83,7 +83,7 @@ class FrontController
           $errors += ['errCommentContent' => 'Le commentaire ne doit pas dépasser les 260 caractères'];
         }
 
-        if (!isset($errors)){
+        if (empty($errors)){
           $author = $prenom.' '.$nom;
           $authorId = null;
           $commentManager = new CommentManager();
@@ -92,7 +92,7 @@ class FrontController
         }
       } else {
         $errors += ['errCommentCaptcha' => 'Veuillez completer le Captcha !'];
-      }var_dump($errors);exit();
+      }
       $_SESSION['comment']['error'] = $errors;
       $myView = new View('postView');
       $myView->redirect('post/id/'.$postId);

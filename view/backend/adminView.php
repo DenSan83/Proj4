@@ -5,6 +5,7 @@ $superTitle = 'AdminView';
 <h2 id="adminH2">Espace Administrateur</h2>
 
 <div id="adminComments" class="container rounded">
+  <p class="hidden">Pour meilleurs résultats, tournez l'écran à l'horizontale</p>
   <h4>Derniers 5 commentaires</h4>
   <div class="container rounded tableau">
     <div class="comments">
@@ -55,8 +56,8 @@ $superTitle = 'AdminView';
                 <tr>
                   <th scope="col" width="5%">ID</th>
                   <th scope="col" width="10%">Auteur</th>
-                  <th scope="col" width="38%">Commentaire</th>
-                  <th scope="col" width="10%">Signalé par</th>
+                  <th scope="col" id="flagCom" width="38%">Commentaire</th>
+                  <th scope="col" id="flagPar" width="10%">Signalé par</th>
                   <th scope="col" width="16%">Signalé le...</th>
                   <th scope="col" class="thCenter">Valider</th>
                   <th scope="col" class="thCenter">Effacer</th>
@@ -89,7 +90,7 @@ $superTitle = 'AdminView';
                       <?= $commentManager->getComment($flag['comment_id'])['comment'] ?>
                     </td>
                     <td width="10%"><?= $flag['flagger'] ?></td>
-                    <td width="16%"><?= $flag['flag_date_fr'] ?></td>
+                    <td width="16%" class="tdDateFlag"><?= $flag['flag_date_fr'] ?></td>
                     <td align="center">
                       <a data-toggle="modal" href="#unflag" class="btn btn-link"><i class="fas fa-thumbs-up text-info"></i></a>
                     </td>

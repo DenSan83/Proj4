@@ -33,7 +33,7 @@ class PostManager extends Manager{
   public function newPost($data)
   {
     extract($data);
-    $db = $this->dbConnect();//var_dump($newPost);exit();
+    $db = $this->dbConnect();
     $req = $db->prepare('INSERT INTO posts(title, content, image, creation_date) VALUES (:title,:content,:image, NOW())');
     $req->bindValue(':title',$title);
     $req->bindValue(':content',$content);

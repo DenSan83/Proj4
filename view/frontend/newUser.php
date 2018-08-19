@@ -2,8 +2,8 @@
 $superTitle = 'Créer une compte utilisateur';
 ?>
 
-<div id="newUser" class="container row col-9 bg-secondary rounded justify-content-center">
-  <form method="post" action="<?= HOST ?>newUser" class="form-horizontal col-10 justify-content-center" role="form">
+<div id="newUser" class="container row col-xs-12 col-sm-9 bg-secondary rounded justify-content-center">
+  <form method="post" action="<?= HOST ?>newUser" class="form-horizontal col-xs-12 col-sm-10 justify-content-center" role="form">
     <h2 class="text-primary"><b>Créez votre compte</b></h2>
     <div class="form-group">
       <label for="pseudo" class="col-sm-6 control-label">Pseudo *</label>

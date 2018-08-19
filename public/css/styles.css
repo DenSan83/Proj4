@@ -3,32 +3,30 @@
 ****************************************************************************
 FRONT
 -----
-**template:                             26
-**listPostsView:                        112
-**postView:                             291
-**showPosts:                            397
-**404                                   428
+**template:                             28
+**listPostsView:                        126
+**postView:                             304
+**showPosts:                            423
+**404                                   454
 
 USER
 -----
-**newUser:                               435
-**editProfile:                           459
-**addCommentView:                        503
-**editCommentView:                       526
+**newUser:                               461
+**editProfile:                           485
+**addCommentView:                        529
+**editCommentView:                       556
 
 BACK
 -----
-**adminView:                             561
-**showComments:                          666
-**editPost:                              690
+**adminView:                             591
+**showComments:                          700
+**editPost:                              724
 
-**RESPONSIVE
+**RESPONSIVE:                            768
 
 /***************************************************************************
                             FRONT : TEMPLATE
 ****************************************************************************/
-/************************* STYLES PRINCIPAUX *******************************/
-/* ndlr: ajouter typo? */
 /***************************** BARRE LOGO **********************************/
 header
 {
@@ -49,6 +47,10 @@ header h1
   text-align:center;
   font-size:2.8vw;
   color:#29487d;
+}
+header h1 span
+{
+  display:none;
 }
 header div.rounded
 {
@@ -116,6 +118,10 @@ footer .links a
 {
   color:#fff;
 }
+.foot:hover
+{
+  background-color:#191919;
+}
 /***************************************************************************
                         FRONT : LISTPOSTSVIEW
 ****************************************************************************/
@@ -127,6 +133,7 @@ footer .links a
   margin:0;
   padding:0;
   width:100%;
+  overflow:hidden;
 }
 .background
 {
@@ -147,7 +154,8 @@ footer .links a
 {
   position:absolute;
   margin:0 auto;
-  margin-top:7em;
+  margin-top:5em;
+  width:75%;
 }
 .pic .news
 {
@@ -176,7 +184,7 @@ footer .links a
 em.link.rounded
 {
   background-color:#fff;
-  box-shadow:2px 2px 1px silver;
+  box-shadow:2px 2px 1px #c0c0c0;
   padding:0.5em;
 }
 .pic .first img
@@ -242,6 +250,11 @@ em.link.rounded
   padding:0.5em;
   margin:0;
 }
+#lissez .news .first div:last-child
+{
+  text-align:right;
+}
+
 #lissez .news .second
 {
   padding:0;
@@ -266,14 +279,14 @@ em.link.rounded
 {
   color:#fff;
   text-decoration:none;
+  border-radius:50%;
+  width:30px;
+  height:30px;
 }
 #lissez .news .second div:last-child a div
 {
   margin:0;
   padding:0;
-  border-radius:50%;
-  width:30px;
-  height:30px;
 }
 #lissez .news .second div:last-child a p
 {
@@ -337,10 +350,15 @@ em.link.rounded
   margin:1em auto!important;
   padding:0;
 }
+.commentBox .author, .commentBox .userIds
+{
+  padding:0;
+}
 .commentAvatar
 {
   text-align:center;
   margin-top:0.5em;
+  padding:0!important;
 }
 .commentAvatar img
 {
@@ -358,10 +376,18 @@ em.link.rounded
 {
   text-align:center;
 }
-
+.commentText .date p
+{
+  width:100%;
+  text-align:right;
+}
 .commentText div:first-child
 {
   padding:0.5em 1em;
+}
+.commentText .date-time
+{
+  text-align:right;
 }
 .commentText hr
 {
@@ -383,7 +409,7 @@ em.link.rounded
 }
 button.modify, button.flag
 {
-  margin:0;
+  padding:0;
   border:none;
   cursor:pointer;
 }
@@ -502,6 +528,10 @@ button.modify, button.flag
 /***************************************************************************
                           USER : ADDCOMMENTVIEW
 ****************************************************************************/
+#userCom
+{
+  display:none;
+}
 #offline, #onLine
 {
   margin:1em auto;
@@ -561,6 +591,10 @@ button.modify, button.flag
                             BACK : ADMINVIEW
 ****************************************************************************/
 /***************************  5 COMMENTAIRES *******************************/
+.hidden
+{
+  display:none;
+}
 #adminH2
 {
   text-align:center;
@@ -733,4 +767,137 @@ button.modify, button.flag
 /***************************************************************************
                               RESPONSIVE
 ****************************************************************************/
-/************************** 1025 - 1200 px *********************************/
+/************************** 993 - 1200 px *********************************/
+@media screen and (min-width: 993px) and (max-width: 1200px)
+{
+  #last h4 b { font-size:0.7em; }
+  #last .second span { font-size:8pt!important; }
+  .editComment textarea { width:80%; }
+  #flagCom, .tdComFlag { width:30%; }
+  #flagPar { width:15%; }
+  .tdDateFlag { width:20%; }
+}
+/************************** 576 - 992 px *********************************/
+@media screen and (min-width: 576px) and (max-width: 992px)
+{
+  #last { height:45em; }
+  #last h4 b { font-size:0.5em; }
+  #last h6 em { font-size:0.5em; }
+  #last .second span { font-size:6pt!important; }
+  #last .pic {
+    margin-top:4.5em;
+    width:100%;
+    padding:0;
+  }
+  #lissez .news .first { height:2.5em; }
+  #lissez .news .first h5 { font-size:0.9em; }
+  #lissez .first em { font-size:0.8em; }
+  #lissez .whole .news { height:6em; }
+  #lissez .whole .second {
+    font-size:0.5em;
+    height:4.5em;
+  }
+  #go { width:100%;font-size:2.2em; }
+  #lissez .whole .second a div {
+    font-size:1.5em;
+    width:25px;
+    height:25px;
+  }
+  #lissez .whole .second div:last-child {
+    height:4.5em;
+    padding:5px;
+  }
+  #lissez .whole .img { max-height:6em; }
+  #myPost div.bg-dark h3 { font-size:1.6em; }
+  .editComment textarea { width:calc(100% - 100px); }
+  #flagCom, .tdComFlag { width:30%; }
+  #flagPar { width:15%; }
+  .tdDateFlag { width:20%; }
+}
+/************************** < 576 px *********************************/
+@media screen and (max-width: 576px)
+{
+  header { padding-left:0!important;height:8em; }
+  header nav a { padding:0; }
+  header nav a div.rounded { margin:0; }
+  header h1 { font-size:0.8em; }
+  header h1 span {
+    display:block;
+    height:0.4em;
+  }
+  header div.usercont { right:0.3em; }
+  nav .user button span, #seConnecter { display:none; }
+  nav .user button:last-child { display:none; }
+  nav .user .usrOption {
+    display:block!important;
+    border:none;
+  }
+  #last { height:38em; }
+  .pic { margin-top:4em;width:100%; }
+  #last h4 b { font-size:0.7em; }
+  .pic .news .second { bottom:0;
+    height:auto;
+    width:105%;
+    padding:2em;
+  }
+  #last .second span { font-size:8pt!important; }
+  #bar h3 { font-size:1.5rem; }
+  #lissez .whole .news { height:15em; }
+  #lissez .news .first { height:4em; }
+  #lissez .news .second .col-11 { height:13em; }
+  #go { font-size:1.2em; }
+  #lissez .news .second div:last-child { width:100%; }
+  #lissez .news .second div:last-child {
+    height:13em;
+    padding:0;
+  }
+  #lissez .news .second div:last-child a div {
+    border-radius:0;
+    height:13em;
+    text-align:center;
+  }
+  #lissez .news .first div h5 {
+    font-size:1rem;
+    width:100%!important;
+  }
+  #lissez .news .first div:last-child { font-size:0.9em; }
+  #lissez .second { padding:0; }
+  #lissez .second .img { display:none; }
+  #lissez .whole .second { font-size:0.9em; }
+  #myPost { margin-top:8em; }
+  .commentBox { margin:1em 0!important;padding:0; }
+  .commentText .date-time { text-align:center; }
+  .editComment textarea {
+    width:calc(100% - 100px);
+    height:100%;
+  }
+  #userCom {
+    display:block;
+    height:0.4em;
+  }
+  #newUser {
+    padding:0;
+    margin-top:9em;
+  }
+  #newUser form button { margin-bottom:1em; }
+  #optionsSession div:first-child {
+    width:90%;
+    margin:1em 5%;
+  }
+  #optionsSession form { width:100%; }
+  #optionsSession textarea { width:100%; }
+  #optionsSession h4 {
+    font-size:1.3em;
+    text-align:center;
+  }
+  .hidden{
+    display:block;
+    text-align:center;
+  }
+  #adminComments,#flagList { padding:0 }
+  #flagCom, .tdComFlag { width:30%; }
+  #flagPar { width:15%; }
+  .tdDateFlag { width:20%; }
+  #showComments h4 { font-size:1.4em; }
+  #editPost h5 a { font-size:0.7em; }
+}

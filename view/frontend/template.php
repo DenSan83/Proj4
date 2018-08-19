@@ -28,10 +28,10 @@
 
     <body>
       <header class="container-fluid">
-        <nav class="container-fluid row sticky-top">
+        <nav class="container-fluid row">
           <a class="navbar-brand text-dark col-7 col-sm-6" href="<?= HOST ?>">
             <div class="rounded">
-              <h1>Billet Simple pour Alaska</h1>
+              <h1>Billet Simple <span></br></span> pour Alaska</h1>
             </div>
           </a>
           <div class="usercont row align-items-center">
@@ -41,7 +41,7 @@
             <div class="btn-group dropdown">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <img class="rounded-circle" src="<?= HOST ?>public/images/avatar/default.png" alt="avatar user" width="50px" height="50px">
-                Se connecter
+                <span id="seConnecter">Se connecter</span>
               </button>
               <?php
               if(isset($_SESSION['noUser']) && $_SESSION['noUser'] == 1)
@@ -114,15 +114,19 @@
                 <img src="<?= HOST ?>public/images/avatar/<?= $_SESSION['user_session']['user_avatar'] ?>" class="rounded-circle" alt="avatar user" width="50px" height="50px">
                 <?php
                 }
-                echo ' Bonjour '.$_SESSION['user_session']['user_pseudo'];
                 ?>
+                <span>
+                  <?php
+                  echo ' Bonjour '.$_SESSION['user_session']['user_pseudo'];
+                  ?>
+                </span>
               </button>
               <div class="dropdown-menu dropdown-menu-right bg-lg">
                 <?php
                 if($_SESSION['user_session']['user_status'] == 'admin'){
                 ?>
                 <form action="<?=HOST?>admin" method="post">
-                  <button type="admin" name="admin" class="col-12 bg-white option">Administrer le site</button>
+                  <button type="admin" name="admin" class="col-12 bg-white usrOption">Administrer le site</button>
                 </form>
                 <hr/>
                 <?php
@@ -130,11 +134,11 @@
                 ?>
                 <form action="<?=HOST?>editProfile" method="post">
                   <input type="hidden" name="userId" value="<?= $_SESSION['user_session']['user_id'] ?>">
-                  <button type="logout" name="logout" class="col-12 bg-white option">Editer mon Profil</button>
+                  <button type="logout" name="logout" class="col-12 bg-white usrOption">Editer mon Profil</button>
                 </form>
                 <hr/>
                 <form action="<?=HOST?>logout" method="post">
-                  <button type="logout" name="logout" class="col-12 bg-white option">Se déconnecter</button>
+                  <button type="logout" name="logout" class="col-12 bg-white usrOption">Se déconnecter</button>
                 </form>
               </div>
             </div>
@@ -151,17 +155,14 @@
       <footer>
         <div class="container-fluid bg-dark text-light row main">
           <div class="container row first">
-            <div class="col-4 disclaimer">
-              <p>Ce site a été fait dans le cadre du Projet 4 : <b>"Créez un blog pour un écrivain"</b>
-                 de la formation <em>Développeur Web Junior</em> avec <a href="https://openclassrooms.com" target="_blank" >OpenClassrooms</a>.</p>
-            </div>
-            <div class="col-4 about">
+            <div class="col-xs-12 col-sm-4 rounded about foot">
               <p>L'auteur</p>
               <p>L'extrait de l'ouvrage</p>
-              <p>unset($_SESSION['comment']);<br/>
-              unset($_SESSION['error']);</p>
+              <p>($_SESSION['comment']);<br/>
+                ($_SESSION['error']);<br/>
+              ($_SESSION['noUser']);</p>
             </div>
-            <div class="col-4 links">
+            <div class="col-xs-12 col-sm-4 rounded links foot">
               <?php
               if(isset($_SESSION['user_session'])){
               ?>
@@ -182,6 +183,10 @@
               <?php
               }
               ?>
+            </div>
+            <div class="col-xs-12 col-sm-4 rounded disclaimer foot">
+              <p>Ce site a été fait dans le cadre du Projet 4 : <b>"Créez un blog pour un écrivain"</b>
+                 de la formation <em>Développeur Web Junior</em> avec <a href="https://openclassrooms.com" target="_blank" >OpenClassrooms</a>.</p>
             </div>
           </div>
         </div>

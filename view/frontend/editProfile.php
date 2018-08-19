@@ -8,7 +8,7 @@ $superTitle = 'Modifier mon profil';
     <div class="form-group">
       <div class="container-liquid avatar">
         <img class="rounded-circle" id="avatar" src="<?= HOST ?>public/images/avatar/<?= $_SESSION['user_session']['user_avatar'] ?>" alt="Avatar de <?= $_SESSION['user_session']['user_pseudo'] ?>">
-        <label for="avatar" class="col-sm-3 control-label">Changer avatar* :</label>
+        <label for="avatar" class="col-sm-6 control-label">Changer avatar* :</label>
         <div class="col-sm-12">
           <input type="file" name="avatar" class="bg-light rounded form-control-file">
         </div>
@@ -73,7 +73,7 @@ $superTitle = 'Modifier mon profil';
       ?>
     </div>
     <div class="form-group">
-      <label for="password2" class="col-sm-6 control-label">Confirmer mot de passe :</label>
+      <label for="password2" class="col-sm-10 control-label">Confirmer mot de passe :</label>
       <div class="col-sm-12">
         <input type="password" id="password2" placeholder="Confirmer mot de passe" class="form-control" name="password2">
       </div>

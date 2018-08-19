@@ -21,17 +21,31 @@
         <div class="g-recaptcha col-7 row justify-content-center" data-sitekey="<?= $siteKey ?>">
         </div>
         <?php
-        if(isset($_SESSION['comment']['error'])) { ?>
-        <div class="noCaptcha bg-danger text-white col-9 rounded row justify-content-center">
-          <?php
-          foreach($_SESSION['comment']['error'] as $eKey => $error){
-          ?>
-          <span><i class="fas fa-exclamation-triangle"></i>&nbsp;&nbsp;</span><span><?= htmlspecialchars($error) ?></span>
-          <?php
-          }
-          ?>
+        if(isset($_SESSION['comment']['error'])) {
+        ?>
+        <div class="modal fade" id="overlay">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header bg-danger text-white">
+                <h4 class="modal-title">Erreur !</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              </div>
+              <div class="modal-body">
+                <?php
+                foreach($_SESSION['comment']['error'] as $eKey => $error){
+                ?>
+                <p><span><i class="fas fa-exclamation-triangle"></i>&nbsp;&nbsp;</span>
+                <span><?= htmlspecialchars($error) ?></span></p>
+                <?php
+                }
+                ?>
+              </div>
+            </div>
+          </div>
         </div>
-        <?php } ?>
+        <?php
+        }
+        ?>
         <div class="row justify-content-center">
           <button type="submit" class="btn btn-primary col-8">Envoyer</button>
         </div>
@@ -42,7 +56,7 @@
     } else {
     ?>
     <form action="<?= HOST ?>onlineComment/id/<?= $post->getId() ?>" method="post" id="onLine">
-      <h4>Ajouter un message en tant que <span class="text-primary"><strong><?= $_SESSION['user_session']['user_pseudo'] ?></strong></span> :</h4>
+      <h4>Ajouter un message en tant que<span id="userCom"><br/></span> <span class="text-primary"><strong><?= $_SESSION['user_session']['user_pseudo'] ?></strong></span> :</h4>
       <input type="hidden" name="postId" value="<?= $post->getId() ?>">
       <input type="hidden" name="authorId" value="<?= $_SESSION['user_session']['user_id'] ?>">
       <input type="hidden" id="pseudo" name="pseudo" value="<?= $_SESSION['user_session']['user_pseudo'] ?>" required/>
@@ -55,13 +69,6 @@
       </div>
     </form>
     <?php
-    if (isset($_SESSION['comment']['error'])){
-    ?>
-    <div class="container rounded text-white bg-danger col-8 commentError">
-      <span><i class="fas fa-exclamation-triangle"></i>&nbsp;&nbsp;</span> <span><?= $_SESSION['comment']['error'] ?></span>
-    </div>
-    <?php
-      }
     }
     ?>
   </div>

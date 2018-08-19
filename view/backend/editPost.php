@@ -3,6 +3,7 @@ $superTitle = 'Billet Siple pour Alaska - Zone Admin';
 ?>
 
 <div id="editPost" class="container">
+  <p class="hidden">Pour meilleurs résultats, tournez l'écran à l'horizontale</p>
   <h5 class="rounded">
     <a href="<?= HOST ?>admin"><i class="fas fa-arrow-circle-left"></i> Retour</a> ||
     <a href="<?= HOST.'post/id/'.$id ?>"><i class="fas fa-arrow-circle-right"></i> Aller au post</a> ||

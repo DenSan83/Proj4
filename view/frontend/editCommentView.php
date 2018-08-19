@@ -2,9 +2,9 @@
 foreach($comments as $comment) {
   if($comment->getId() == (int) $commentId){
 ?>
-<div class="container rounded row commentBox col-10 col-lg-9 justify-content-between editComment" id="comment<?= $comment->getId() ?>">
-  <div class="container-liquid author col-2 row align-items-center" >
-    <div class="container-liquid commentAvatar col-4 offset-3">
+<div class="container rounded row col-xs-12 col-sm-10 col-lg-9 justify-content-between commentBox editComment" id="comment<?= $comment->getId() ?>">
+  <div class="container-liquid col-xs-6 col-sm-2 row align-items-center author" >
+    <div class="container-liquid col-12 commentAvatar">
       <?php
       if($comment->getAuthorId()) {
       $myAvatar = $avatarList[$comment->getAuthorId()];
@@ -15,13 +15,13 @@ foreach($comments as $comment) {
       ?>
       <img class="rounded-circle" src="<?= HOST ?>public/images/avatar/<?= $myAvatar['avatar'] ?>" alt="avatar user">
     </div>
-    <div class="container col-6 offset-3 align-items-center">
+    <div class="container col-12 align-items-center userIds">
       <p><strong><?= htmlspecialchars($myAvatar['pseudo']) ?></strong></p>
       <p><?= htmlspecialchars($myAvatar['status']) ?></p>
     </div>
   </div>
-  <div class="container-liquid commentText align-self-end col-10">
-    <div class="container-liquid row justify-content-end">
+  <div class="container-liquid col-xs-12 col-sm-10 commentText">
+    <div class="container-liquid">
       <p class="date-time"> <i class="far fa-clock"></i> le <?= $comment->getDateCom() ?></p>
     </div>
     <form method="post" action="<?= HOST ?>commentUpdate" class="row align-items-start">

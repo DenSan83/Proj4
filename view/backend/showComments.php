@@ -3,6 +3,7 @@ $superTitle = 'Commentaires des Posts';
 ?>
 
 <div id="showComments" class="container">
+  <p class="hidden">Pour meilleurs résultats, tournez l'écran à l'horizontale</p>
   <div class="container rounded showComs">
     <h4>Tous les commentaires :</h4>
     <h4>(Total : <?= count($lastComments) ?>)</h4>
