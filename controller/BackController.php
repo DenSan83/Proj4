@@ -70,7 +70,8 @@ class BackController
       $myView = new View();
       $myView->redirect('admin');
     } else {
-      echo '404';
+      $myView = new View();
+      $myView->redirect('notFound');
     }
   }
 

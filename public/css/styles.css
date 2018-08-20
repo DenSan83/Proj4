@@ -3,26 +3,27 @@
 ****************************************************************************
 FRONT
 -----
-**template:                             28
-**listPostsView:                        126
-**postView:                             304
-**showPosts:                            423
-**404                                   454
+**template:                             29
+**listPostsView:                        127
+**postView:                             305
+**showPosts:                            424
+**about:                                455
+**404                                   497
 
 USER
 -----
-**newUser:                               461
-**editProfile:                           485
-**addCommentView:                        529
-**editCommentView:                       556
+**newUser:                               515
+**editProfile:                           539
+**addCommentView:                        583
+**editCommentView:                       610
 
 BACK
 -----
-**adminView:                             591
-**showComments:                          700
-**editPost:                              724
+**adminView:                             645
+**showComments:                          754
+**editPost:                              778
 
-**RESPONSIVE:                            768
+**RESPONSIVE:                            822
 
 /***************************************************************************
                             FRONT : TEMPLATE
@@ -98,6 +99,10 @@ header form .option
 {
   z-index:0;
 }
+nav .user .usrOption
+{
+  border:none;
+}
 /****************************** FOOTER  ************************************/
 footer .main
 {
@@ -113,10 +118,6 @@ footer .first
 footer .links h5
 {
   text-decoration:underline;
-}
-footer .links a
-{
-  color:#fff;
 }
 .foot:hover
 {
@@ -451,12 +452,65 @@ button.modify, button.flag
 }
 
 /***************************************************************************
+                              FRONT : ABOUT
+****************************************************************************/
+#forteroche
+{
+  margin:auto;
+  margin-top:12em;
+  padding:0;
+}
+#forteroche .img
+{
+  margin:0 auto;
+  position:relative;
+  padding:0;
+  overflow:hidden;
+}
+#forteroche img
+{
+  margin:0 auto;
+  padding:0;
+  width:100%;
+}
+#forteroche .text
+{
+  position:absolute;
+  top:0;
+  right:15px;
+  background-color:rgba(255,255,255,0.4);
+  height:100%;
+  width:50%;
+  padding:0.8em;
+}
+#forteroche .subText
+{
+  text-align:justify;
+}
+#bspalaska
+{
+  margin:2em auto;
+  text-align:justify;
+  border:1px solid #000;
+}
+/***************************************************************************
                               FRONT : 404
 ****************************************************************************/
-
-
-
-
+.container.notFound
+{
+  margin-top:10em;
+  margin-bottom:2em;
+  text-align:center;
+}
+.container.notFound h3
+{
+  font-size:5em;
+  color:#007bff;
+}
+.container.notFound img
+{
+  width:100%
+}
 /***************************************************************************
                             USER : NEWUSER
 ****************************************************************************/
@@ -813,6 +867,8 @@ button.modify, button.flag
   #flagCom, .tdComFlag { width:30%; }
   #flagPar { width:15%; }
   .tdDateFlag { width:20%; }
+  #forteroche .text { padding:0; }
+  #forteroche .subText{ font-size:0.55em; }
 }
 /************************** < 576 px *********************************/
 @media screen and (max-width: 576px)
@@ -828,10 +884,7 @@ button.modify, button.flag
   header div.usercont { right:0.3em; }
   nav .user button span, #seConnecter { display:none; }
   nav .user button:last-child { display:none; }
-  nav .user .usrOption {
-    display:block!important;
-    border:none;
-  }
+  nav .user .usrOption { display:block!important; }
   #last { height:38em; }
   .pic { margin-top:4em;width:100%; }
   #last h4 b { font-size:0.7em; }
@@ -900,4 +953,19 @@ button.modify, button.flag
   .tdDateFlag { width:20%; }
   #showComments h4 { font-size:1.4em; }
   #editPost h5 a { font-size:0.7em; }
+  #forteroche .text {
+    position:static;
+    height:auto;
+    width:auto;
+    border:1px solid #000;
+    border-radius:5px;
+    margin:1em;
+  }
+  #bspalaska
+  {
+    margin:1em;
+    margin-bottom:2em;
+    padding-top:1em;
+    width:95%;
+  }
 }

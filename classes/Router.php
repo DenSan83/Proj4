@@ -10,6 +10,8 @@ class Router
                       "addComment"    => ["controller" => 'FrontController', "method" => 'addComment'],
                       "newUser"       => ["controller" => 'FrontController', "method" => 'newUser'],
                       "showPosts"     => ["controller" => 'FrontController', "method" => 'showPosts'],
+                      "about"         => ["controller" => 'FrontController', "method" => 'about'],
+                      "notFound"      => ["controller" => 'FrontController', "method" => 'notFound'],
 
                       "login"         => ["controller" => 'UserController', "method" => 'login'],
                       "logout"        => ["controller" => 'UserController', "method" => 'logout'],
@@ -28,7 +30,7 @@ class Router
                       "adminPost"     => ["controller" => 'BackController', "method" => 'newPost'],
                       "editPost"      => ["controller" => 'BackController', "method" => 'editPost'],
                       "modifyPost"    => ["controller" => 'BackController', "method" => 'modifyPost'],
-                      "delPost"       => ["controller" => 'BackController', "method" => 'delPost'],
+                      "delPost"       => ["controller" => 'BackController', "method" => 'delPost']
                     ];
 
   public function __construct($request)
@@ -79,7 +81,8 @@ class Router
       $currentController->$method($params);
 
     } else {
-      echo '404';
+      $myView = new View();
+      $myView->redirect('notFound');
     }
   }
 }

@@ -22,10 +22,15 @@ class FrontController
 
   public function post($params)
   {
-    extract($params);
+    if(is_array($params)){
+      extract($params);
+    } else {
+      $myView = new View();
+      $myView->redirect('notFound');
+    }
     $postManager = new PostManager();
-    $idExist = (bool) $postManager->getPost($id);
-    if ($id > 0 && $idExist) {
+    $idExist = $postManager->getPost($id);
+    if ($idExist !== 404) {
       $commentManager = new CommentManager();
       $post = $postManager->getPost($id);
       $comments = $commentManager->getComments($id);
@@ -51,13 +56,19 @@ class FrontController
 
       $myView->render($parametres);
     } else {
-      echo '404';
+      $myView = new View();
+      $myView->redirect('notFound');
     }
   }
 
   public function addComment($params)
   {
-    extract($params);
+    if(is_array($params) && !empty($_POST)){
+      extract($params);
+    } else {
+      $myView = new View();
+      $myView->redirect('notFound');
+    }
     $errors = array();
     $secret = '6LeVFmQUAAAAAGmnuGggo4GYbkxK-ejGajGOjFJd'; // clé privée captcha
     $reCaptcha = new ReCaptcha($secret);
@@ -167,5 +178,18 @@ class FrontController
 
     $myView = new View('showPosts');
     $myView->render($posts);
+  }
+
+  public function about()
+  {
+    $myView = new View('about');
+    $myView->render();
+  }
+
+
+  public function notFound()
+  {
+    $myView = new View('404');
+    $myView->render();
   }
 }

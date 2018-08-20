@@ -116,9 +116,7 @@
                 }
                 ?>
                 <span>
-                  <?php
-                  echo ' Bonjour '.$_SESSION['user_session']['user_pseudo'];
-                  ?>
+                  <?=' Bonjour '.$_SESSION['user_session']['user_pseudo'] ?>
                 </span>
               </button>
               <div class="dropdown-menu dropdown-menu-right bg-lg">
@@ -156,11 +154,8 @@
         <div class="container-fluid bg-dark text-light row main">
           <div class="container row first">
             <div class="col-xs-12 col-sm-4 rounded about foot">
-              <p>L'auteur</p>
-              <p>L'extrait de l'ouvrage</p>
-              <p>($_SESSION['comment']);<br/>
-                ($_SESSION['error']);<br/>
-              ($_SESSION['noUser']);</p>
+              <p><a href="<?=HOST?>about">L'auteur</a></p>
+              <p><a href="<?=HOST?>about#bspalaska">L'extrait de l'ouvrage</a></p>
             </div>
             <div class="col-xs-12 col-sm-4 rounded links foot">
               <?php

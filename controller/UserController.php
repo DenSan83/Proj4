@@ -77,7 +77,12 @@ class UserController
 
   public function modifyComment($params)
   {
-    extract($params);
+    if(is_array($params)){
+      extract($params);
+    } else {
+      $myView = new View();
+      $myView->redirect('notFound');
+    }
     $postManager = new PostManager();
     $post = $postManager->getPost($postId);
     $commentManager = new CommentManager();
@@ -107,7 +112,12 @@ class UserController
 
   public function commentUpdate($params)
   {
-    extract($params);
+    if(is_array($params)){
+      extract($params);
+    } else {
+      $myView = new View();
+      $myView->redirect('notFound');
+    }
     $commentManager = new CommentManager();
     $check = $commentManager->verifyAuthor($commentId,$_SESSION['user_session']['user_id']);
     if($check){
@@ -120,7 +130,12 @@ class UserController
 
   public function deleteComment($data)
   {
-    extract($data);
+    if(is_array($data)){
+      extract($data);
+    } else {
+      $myView = new View();
+      $myView->redirect('notFound');
+    }
     $commentManager = new CommentManager();
     $check = $commentManager->verifyAuthor($commId,$_SESSION['user_session']['user_id']);
     if($check)
@@ -132,7 +147,12 @@ class UserController
 
   public function flagComment($data)
   {
-    extract($data); // $data = array($postId,$commentId)
+    if(is_array($data)){
+      extract($data);
+    } else {
+      $myView = new View();
+      $myView->redirect('notFound');
+    }
     $commentManager = new CommentManager();
     $succes = $commentManager->flagComment($commentId,$_SESSION['user_session']['user_pseudo']);
     if($succes){
@@ -146,6 +166,10 @@ class UserController
 
   public function editProfile()
   {
+    if(empty($_SESSION['user_session']['user_id'])){
+      $myView = new View();
+      $myView->redirect('notFound');
+    }
     $loginManager = new LoginManager();
     $user = $loginManager->getUser($_SESSION['user_session']['user_pseudo']);
 
@@ -155,6 +179,10 @@ class UserController
 
   public function updateProfile()
   {
+    if(empty($_SESSION['user_session']['user_id'])){
+      $myView = new View();
+      $myView->redirect('notFound');
+    }
     $errors = array();
     $data = array( 'id' => $_SESSION['user_session']['user_id']);
     $userInfos = array();

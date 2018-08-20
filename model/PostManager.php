@@ -25,7 +25,11 @@ class PostManager extends Manager{
     $req->bindValue(':id',$postId);
     $req->execute();
     $data = $req->fetch();
-    $objPost = new Post($data);
+    if($data){
+      $objPost = new Post($data);
+    } else {
+      $objPost = 404;
+    }
 
     return $objPost;
   }
