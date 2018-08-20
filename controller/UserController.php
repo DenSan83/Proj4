@@ -28,7 +28,7 @@ class UserController
           $_SESSION['user_session']['user_status']  = $user['status'];
 
 
-          if ($postId !== null){
+          if (isset($postId) && $postId !== null){
             $myView->redirect('post/id/'.$postId);
           } else {
             $myView->goHome();

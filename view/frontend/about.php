@@ -7,7 +7,7 @@ $superTitle = 'About';
     <div class="container text row align-items-end">
       <div class="container subText">
         <h4>Jean <b>Forteroche</b></h4>
-        <p>Jean Forteroche est un écrivain et comedien factice, créé avec le seul but d'immerser les étudiants
+        <p>Jean Forteroche est un écrivain et comedien factice, créé avec le seul but d'immerger les étudiants
           de Développement Web d'Open Classrooms dans une situation réaliste: <em>"Créez un blog pour un écrivain"</em>.
           Néanmoins, l'image qui sert de fond à ce texte appartient à
         un vrai écrivain du nom de Gary Paulsen.</p>
