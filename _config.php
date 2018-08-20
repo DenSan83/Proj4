@@ -13,8 +13,8 @@ class MyAutoload
     $root = $_SERVER['DOCUMENT_ROOT'];
     $host = $_SERVER['HTTP_HOST'];
 
-    define('HOST','http://'.$host.'/test/27.blog1/');
-    define('ROOT',$root.'/test/27.blog1/');
+    define('HOST','http://'.$host.'/');
+    define('ROOT',$root.'/');
 
     define('MODEL',ROOT.'model/');
     define('ENTITY',MODEL.'entity/');
